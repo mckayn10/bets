@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, CheckBox, FlatList, Text, View, Platform, TextInput, Alert, ScrollView, TouchableOpacity } from 'react-native'
-import Colors from '../../constants/colors'
+import Colors from '../constants/colors'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -8,8 +8,8 @@ import { Feather } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button, Switch } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
-import { updateBet } from '../../store/actions/bets';
-import { deleteBet } from '../../store/actions/bets';
+import { updateBet } from '../store/actions/bets';
+import { deleteBet } from '../store/actions/bets';
 import Modal from 'react-native-modal'
 import { KeyboardAvoidingView } from 'react-native';
 
@@ -50,14 +50,15 @@ const ViewBetModal = props => {
         }, 500)
     }
 
-    const handleUpdateBet = () => {
+    const handleUpdateBet = async () => {
         const data = {
             otherBettor: nameOfBettor,
             amount: parseInt(betAmount),
             description: betDescription,
             complete: betComplete,
             wonBet: betComplete ? betWon : false,
-            id: id
+            id: id,
+            date: date,
         }
 
         closeModal()

@@ -5,35 +5,35 @@ export const DELETE_BET = 'DELETE_BET';
 export const GET_BETS = 'GET_BETS';
 
 export const fetchBets = () => {
-    return dispatch => {
-        fetch('https://mybets-f9188-default-rtdb.firebaseio.com/bets.json')
-            .then(response => response.json())
-            .then(resData => {
-                const loadedBets = [];
-                for (const key in resData) {
-                    let bet = {
-                        id: key,
-                        otherBettor: resData[key].otherBettor,
-                        amount: resData[key].amount,
-                        date: resData[key].date,
-                        description: resData[key].description,
-                        complete: resData[key].complete,
-                        wonBet: resData[key].wonBet,
-                        lastUpdated: Date.now()
-                    }
-                    loadedBets.push(bet)
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId
+        const response = await fetch(`https://mybets-f9188-default-rtdb.firebaseio.com/bets/${userId}/.json`)
 
-                }
-                dispatch({
-                    type: GET_BETS,
-                    bets: loadedBets
-                })
+        if (!response.ok) {
+            throw new Error('error creating bet')
+        }
+        const resData = await response.json()
 
-            })
-            .catch(error => {
-                console.log('Error loading bets', error)
+        const loadedBets = [];
+        for (const key in resData) {
+            let bet = {
+                id: key,
+                otherBettor: resData[key].otherBettor,
+                amount: resData[key].amount,
+                date: resData[key].date,
+                description: resData[key].description,
+                complete: resData[key].complete,
+                wonBet: resData[key].wonBet,
+            }
+            loadedBets.push(bet)
+            
+        }
 
-            })
+        dispatch({
+            type: GET_BETS,
+            bets: loadedBets
+        })
+
     }
 }
 
@@ -41,9 +41,10 @@ export const fetchBets = () => {
 export const createBet = (betData) => {
     const { otherBettor, description, amount, wonBet, complete } = betData
     const date = new Date().toLocaleDateString()
-    const lastUpdated = Date().toString()
-    return dispatch => {
-        fetch('https://mybets-f9188-default-rtdb.firebaseio.com/bets.json', {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const userId = getState().auth.userId
+        const response = await fetch(`https://mybets-f9188-default-rtdb.firebaseio.com/bets/${userId}.json?auth=${token}`, {
             method: 'POST',
             header: {
                 'Content-Type': 'application/json'
@@ -55,39 +56,39 @@ export const createBet = (betData) => {
                 date: date,
                 wonBet,
                 complete,
-                lastUpdated: lastUpdated
+                userId: userId
             })
         })
-            .then(response => response.json())
-            .then(resData => {
-                dispatch({
-                    type: CREATE_BET,
-                    bet: {
-                        id: resData.name,
-                        date,
-                        otherBettor,
-                        description,
-                        amount,
-                        wonBet,
-                        complete,
-                        lastUpdated
-                    }
-                })
 
-            })
-            .catch(error => {
-                console.log('Error saving bet', error)
+        if (!response.ok) {
+            throw new Error('error creating bet')
+        }
+        const resData = await response.json()
+        dispatch({
+            type: CREATE_BET,
+            bet: {
+                id: resData.name,
+                date,
+                otherBettor,
+                description,
+                amount,
+                wonBet,
+                complete,
+            }
+        })
 
-            })
     }
 }
 
 export const updateBet = (betData) => {
-    const { otherBettor, description, amount, wonBet, complete, date } = betData
+    const { otherBettor, description, amount, wonBet, complete, date} = betData
 
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const userId = getState().auth.userId
+    
         const response = await fetch(
-            `https://mybets-f9188-default-rtdb.firebaseio.com/bets/${betData.id}.json`, {
+            `https://mybets-f9188-default-rtdb.firebaseio.com/bets/${userId}/${betData.id}.json?auth=${token}`, {
             method: 'PUT',
             header: {
                 'Content-Type': 'application/json'
@@ -99,9 +100,11 @@ export const updateBet = (betData) => {
                 date,
                 wonBet,
                 complete,
-                lastUpdate: Date().toString()
             })
         })
+        if (!response.ok) {
+            throw new Error('error updating bet')
+        }
         const resData = await response.json()
         dispatch({
             type: UPDATE_BET,
@@ -111,11 +114,16 @@ export const updateBet = (betData) => {
 }
 
 export const deleteBet = (id) => {
-    return async dispatch => {
-        await fetch(
-            `https://mybets-f9188-default-rtdb.firebaseio.com/bets/${id}.json`, {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const response = await fetch(
+            `https://mybets-f9188-default-rtdb.firebaseio.com/bets/${id}.json?auth=${token}`, {
             method: 'DELETE',
         })
+        if (!response.ok) {
+            throw new Error('error deleting bet')
+        }
+        const resData = await response.json()
         dispatch({
             type: DELETE_BET,
             id: id

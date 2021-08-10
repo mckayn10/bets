@@ -6,24 +6,26 @@ import Incomplete_Bets_Screen from './Incomplete_Bets_Screen';
 import Colors from '../constants/colors'
 import { AntDesign } from '@expo/vector-icons';
 import Swiper from 'react-native-swiper/src'
-import CreateBetModal from '../components/modals/CreateBetModal';
+import CreateBetModal from '../modals/CreateBetModal';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 
-const Home_Screen = () => {
+const Home_Screen = (props) => {
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [swiperIndex, setSwiperIndex] = useState(0);
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchBets())
+    try{
+      dispatch(fetchBets())
+    } 
+    catch(err){
+      console.error(err)
+    }
   }, [dispatch])
-
-  const modalStatus = useSelector(state => state.bets.betModalStatus)
-  const [modalVisible, setModalVisible] = useState(false);
-  const [swiperIndex, setSwiperIndex] = useState(0);
-
-
 
   return (
 
@@ -56,11 +58,6 @@ const Home_Screen = () => {
           onPress={() => setModalVisible(true)}
         />
       </View>
-      {modalStatus
-        ? <View style={styles.modalContainer}></View>
-        : null
-      }
-
     </View>
 
   );

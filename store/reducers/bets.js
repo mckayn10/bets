@@ -11,11 +11,9 @@ const initialState = {
 
 const betsReducer = (state = initialState, action) => {
     let updatedArr = [...state.bets]
-    let sortedByLastUpdated = []
     switch (action.type) {
         case GET_BETS:
-            sortedByLastUpdated = action.bets.sort((a,b) => b.lastUpdated - a.lastUpdated)
-            return {...state, bets: sortedByLastUpdated}
+            return {...state, bets: action.bets}
 
         case CREATE_BET:
             updatedArr.unshift(action.bet)
@@ -39,6 +37,8 @@ const betsReducer = (state = initialState, action) => {
                     bet.description = newData.description
                     bet.complete = newData.complete
                     bet.wonBet = newData.wonBet
+                    bet.date = newData.date
+
 
                     if (placeToTop) {
                         updatedArr.splice(index, 1)
@@ -47,7 +47,6 @@ const betsReducer = (state = initialState, action) => {
                 }
 
             })
-            sortedByLastUpdated = updatedArr.sort((a,b) => b.lastUpdated - a.lastUpdated)
 
             return { ...state, bets: updatedArr }
         default:

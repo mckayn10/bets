@@ -1,25 +1,61 @@
 import React, { Component, useState } from 'react'
-import { StyleSheet, SafeAreaView, FlatList, Text, View, TextInput, TouchableOpacity, Button } from 'react-native'
+import {
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    TouchableOpacity,
+    ActivityIndicator
+} from 'react-native'
 import Colors from '../constants/colors'
 import { useDispatch } from 'react-redux'
-import { signIn } from '../store/actions/auth'
+import { signIn, signUp } from '../store/actions/auth'
+import { MaterialIcons } from '@expo/vector-icons';
 
 
-const Auth_Screen = () => {
+const Auth_Screen = (props) => {
     const [emailText, setUsernameText] = useState('');
     const [passwordText, setPasswordText] = useState('');
+    const [isSignIn, setIsSignIn] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState()
+
 
     const dispatch = useDispatch()
-    
-    const handleSignIn = () => {
-        console.log(emailText, passwordText)
 
-        dispatch(signIn(emailText, passwordText))
+    const handleAuthenticate = async () => {
+        let action;
+
+        if (isSignIn) {
+            action = signIn(emailText, passwordText)
+        } else {
+            action = signUp(emailText, passwordText)
+        }
+
+        setError(null)
+        setIsLoading(true)
+        try {
+            await dispatch(action)
+            props.navigation.navigate('Home')
+        }
+        catch (err) {
+            setError(err.message)
+            setIsLoading(false)
+        }
+
+
 
     }
 
     return (
         <View style={styles.container}>
+            {error
+                ? <View style={styles.errorContainer}>
+                    <MaterialIcons style={{marginRight: 5}} name="error-outline" size={17} color={Colors.red} />
+                    <Text style={styles.error}>{error}</Text>
+                </View>
+                : null
+            }
             <Text style={styles.pageTitle}>mybetz.</Text>
             <TextInput
                 style={styles.textInput}
@@ -38,9 +74,27 @@ const Auth_Screen = () => {
                 keyboardType='visible-password'
                 secureTextEntry
             />
-            <TouchableOpacity >
-                <Text style={styles.signInBtn} onPress={() => handleSignIn()}>Sign in</Text>
-            </TouchableOpacity>
+            {isLoading
+                ? <ActivityIndicator />
+                : <TouchableOpacity >
+                    <Text
+                        style={styles.signInBtn}
+                        onPress={() =>
+                            handleAuthenticate()}>
+                        {isSignIn ? 'Sign In' : 'Register'}
+                    </Text>
+                </TouchableOpacity>
+            }
+
+            <View style={styles.registerContainer}>
+                <Text style={styles.registerText}>{isSignIn ? 'Don\'t have an account?' : 'Already have an account?'}</Text>
+                <Text
+                    style={[styles.registerText, styles.createText]}
+                    onPress={() => setIsSignIn(!isSignIn)}
+                >
+                    {isSignIn ? ' Register here.' : ' Sign in here'}
+                </Text>
+            </View>
         </View>
     )
 }
@@ -56,7 +110,6 @@ const styles = StyleSheet.create({
         fontSize: 70,
         color: 'white',
         marginBottom: 50,
-        // marginTop: 100
     },
     textInput: {
         color: 'white',
@@ -82,6 +135,36 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         overflow: 'hidden'
     },
+    registerContainer: {
+        // flexDirection: 'c',
+        marginTop: 30,
+        color: 'white',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    registerText: {
+        color: 'white'
+    },
+    createText: {
+        textDecorationLine: 'underline',
+        textDecorationStyle: 'solid',
+        textDecorationColor: 'white'
+    },
+    error: {
+        color: Colors.red,
+        textAlign: 'center'
+    },
+    errorContainer: {
+        // borderWidth: 1,
+        // borderColor: Colors.red,
+        padding: 7,
+        width: '90%',
+        borderRadius: 2,
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    }
 })
 
 export default Auth_Screen;

@@ -18,15 +18,18 @@ const Completed_Bets_Screen = props => {
 
     const dispatch = useDispatch()
 
-    const loadBets = useCallback(async () => {
+    const loadBets = useCallback( async () => {
         setIsRefreshing(true)
         try {
             await dispatch(fetchBets())
-        } catch(err){
+        }
+        catch (err) {
             console.error(err)
         }
         setIsRefreshing(false)
-    }, [dispatch])
+
+        return betsArr
+    })
 
     const betsArr = useSelector(state => state.bets.bets)
 

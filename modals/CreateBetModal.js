@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, CheckBox, FlatList, Text, Modal, Pressable, View, Platform, TextInput, Alert, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
-import Colors from '../../constants/colors'
+import Colors from '../constants/colors'
 import { useDispatch } from 'react-redux';
-import { createBet } from '../../store/actions/bets'
+import { createBet } from '../store/actions/bets'
 import { Feather } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button, Switch } from 'react-native-elements';
@@ -46,7 +46,12 @@ const CreateBetModal = props => {
             complete: betComplete
         }
 
-        dispatch(createBet(data))
+        try{
+            dispatch(createBet(data))
+        }
+        catch(err){
+            console.error(err)
+        }
 
         closeModal()
     }
