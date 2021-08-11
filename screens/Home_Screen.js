@@ -19,10 +19,10 @@ const Home_Screen = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    try{
+    try {
       dispatch(fetchBets())
-    } 
-    catch(err){
+    }
+    catch (err) {
       console.error(err)
     }
   }, [dispatch])
@@ -30,7 +30,7 @@ const Home_Screen = (props) => {
   return (
 
     <View style={styles.container}>
-      <NavBar />
+      <NavBar props={props}/>
       <View style={styles.toggleScreenContainer}>
         <Text style={swiperIndex === 0 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(0)}>COMPLETE</Text>
         <Text style={swiperIndex === 1 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(1)}>INCOMPLETE</Text>

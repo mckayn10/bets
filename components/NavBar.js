@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Colors from '../constants/colors'
+import OpenDrawerIcon from './OpenDrawerIcon';
 
-export default function NavBar() {
-
+export default function NavBar(props) {
     const allBetsArr = useSelector(state => state.bets.bets)
 
     let totalAmount = 0
@@ -18,6 +18,7 @@ export default function NavBar() {
 
     return (
         <View style={styles.navContainer}>
+            <OpenDrawerIcon props={props}/>
             <Text style={styles.totalText}>{totalAmount < 0 ? '-' : ''}${parseFloat(Math.abs(totalAmount)).toFixed(2)}</Text>
         </View>
     );
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        height: 110,
+        height: 140,
         backgroundColor: Colors.primaryColor,
         paddingTop: 20
 
