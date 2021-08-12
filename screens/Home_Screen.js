@@ -10,6 +10,7 @@ import CreateBetModal from '../modals/CreateBetModal';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
+import HeaderText from '../components/HeaderText';
 
 const Home_Screen = (props) => {
 
@@ -32,8 +33,8 @@ const Home_Screen = (props) => {
     <View style={styles.container}>
       <NavBar props={props}/>
       <View style={styles.toggleScreenContainer}>
-        <Text style={swiperIndex === 0 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(0)}>COMPLETE</Text>
-        <Text style={swiperIndex === 1 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(1)}>INCOMPLETE</Text>
+        <HeaderText style={swiperIndex === 0 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(0)}>Complete</HeaderText>
+        <HeaderText style={swiperIndex === 1 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(1)}>Pending</HeaderText>
       </View>
       <Swiper
         scrollEnabled={false}
@@ -109,8 +110,6 @@ const styles = StyleSheet.create({
     paddingBottom: 13,
     fontSize: 12,
     textAlign: 'center',
-    fontWeight: 'bold',
-
   }
 
 });

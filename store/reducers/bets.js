@@ -2,7 +2,8 @@ import {
     DELETE_BET,
     GET_BETS,
     UPDATE_BET,
-    CREATE_BET
+    CREATE_BET,
+    REMOVE_DATA
 } from '../actions/bets';
 
 const initialState = {
@@ -12,6 +13,9 @@ const initialState = {
 const betsReducer = (state = initialState, action) => {
     let updatedArr = [...state.bets]
     switch (action.type) {
+        case REMOVE_DATA: {
+            return initialState
+        }
         case GET_BETS:
             return {...state, bets: action.bets}
 

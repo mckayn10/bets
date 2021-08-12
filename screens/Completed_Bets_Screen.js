@@ -7,8 +7,6 @@ import BetCard from '../components/BetCard'
 import { MaterialIcons } from '@expo/vector-icons';
 import { fetchBets } from '../store/actions/bets';
 
-
-
 const Completed_Bets_Screen = props => {
     const [isRefreshing, setIsRefreshing] = useState(false)
 

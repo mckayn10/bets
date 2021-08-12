@@ -1,5 +1,6 @@
 import {
-    AUTHENTICATE
+    AUTHENTICATE,
+    LOGOUT
 } from '../actions/auth';
 
 const initialState = {
@@ -14,6 +15,9 @@ const authReducer = (state = initialState, action) => {
                 token: action.token,
                 userId: action.userId
             }
+        case LOGOUT: {
+            return initialState
+        }
 
         default:
             return state

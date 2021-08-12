@@ -1,8 +1,8 @@
 import React from 'react'
+import { ScrollView, View, Button, TouchableOpacity, Text } from 'react-native';
 import {
     createAppContainer,
     createSwitchNavigator,
-    DrawerItems,
     SafeAreaView
 } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
@@ -13,6 +13,8 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 import Colors from '../constants/colors'
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import CustomDrawerContent from '../components/CustomDrawerContent';
 
 
 const AuthNavigator = createStackNavigator({
@@ -29,17 +31,29 @@ const DrawerNavigator = createDrawerNavigator(
         Home: {
             navigationOptions: {
                 drawerIcon: () => (
-                    <Ionicons name="md-home" style={{ color: Colors.primaryColor }} size={20}/>
+                    <Ionicons name="md-home" color={Colors.primaryColor} size={20} />
                 ),
                 drawerLabel: "Home"
             },
             screen: Home_Screen
         },
         Profile: {
-            screen: Home_Screen,
-            navigationOptions: ({ navigation }) => ({
-                title: 'Profile',
-            })
+            navigationOptions: {
+                drawerIcon: () => (
+                    <Ionicons name="person" size={20} color={Colors.primaryColor} />
+                ),
+                drawerLabel: "Profile"
+            },
+            screen: Home_Screen
+        },
+        Settings: {
+            navigationOptions: {
+                drawerIcon: () => (
+                    <MaterialIcons name="settings" size={20} color={Colors.primaryColor} />
+                ),
+                drawerLabel: "Settings"
+            },
+            screen: Home_Screen
         },
 
     },
@@ -51,6 +65,9 @@ const DrawerNavigator = createDrawerNavigator(
         contentOptions: {
             activeBackgroundColor: Colors.backgroundColor,
             activeTintColor: Colors.primaryColor
+        },
+        contentComponent: props => {
+            return <CustomDrawerContent {...props}/>
         }
 
     }

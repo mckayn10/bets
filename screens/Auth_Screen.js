@@ -11,6 +11,7 @@ import Colors from '../constants/colors'
 import { useDispatch } from 'react-redux'
 import { signIn, signUp } from '../store/actions/auth'
 import { MaterialIcons } from '@expo/vector-icons';
+import HeaderText from '../components/HeaderText'
 
 
 const Auth_Screen = (props) => {
@@ -56,7 +57,7 @@ const Auth_Screen = (props) => {
                 </View>
                 : null
             }
-            <Text style={styles.pageTitle}>mybetz.</Text>
+            <HeaderText style={styles.pageTitle}>mybetz.</HeaderText >
             <TextInput
                 style={styles.textInput}
                 placeholder="email address"
@@ -88,12 +89,12 @@ const Auth_Screen = (props) => {
 
             <View style={styles.registerContainer}>
                 <Text style={styles.registerText}>{isSignIn ? 'Don\'t have an account?' : 'Already have an account?'}</Text>
-                <Text
+                <Text 
                     style={[styles.registerText, styles.createText]}
                     onPress={() => setIsSignIn(!isSignIn)}
                 >
                     {isSignIn ? ' Register here.' : ' Sign in here'}
-                </Text>
+                </Text >
             </View>
         </View>
     )
@@ -108,8 +109,8 @@ const styles = StyleSheet.create({
     },
     pageTitle: {
         fontSize: 70,
-        color: 'white',
         marginBottom: 50,
+        color: 'white'
     },
     textInput: {
         color: 'white',
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         borderColor: 'white',
         borderRadius: 17,
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     registerContainer: {
         // flexDirection: 'c',
@@ -155,8 +156,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     errorContainer: {
-        // borderWidth: 1,
-        // borderColor: Colors.red,
         padding: 7,
         width: '90%',
         borderRadius: 2,

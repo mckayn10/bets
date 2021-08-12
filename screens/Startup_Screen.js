@@ -3,6 +3,7 @@ import {
     View,
     ActivityIndicator,
     StyleSheet,
+    Text
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../constants/colors'
@@ -37,6 +38,7 @@ export default Startup_Screen = (props) => {
 
     return (
         <View style={styles.screen}>
+            <Text>Loading account...</Text>
             <ActivityIndicator size="large" color={Colors.primaryColor} />
         </View>
     )

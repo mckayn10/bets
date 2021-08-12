@@ -3,6 +3,7 @@ export const UPDATE_MODAL = 'UPDATE_MODAL';
 export const UPDATE_BET = 'UPDATE_BET';
 export const DELETE_BET = 'DELETE_BET';
 export const GET_BETS = 'GET_BETS';
+export const REMOVE_DATA = 'REMOVE_DATA'
 
 export const fetchBets = () => {
     return async (dispatch, getState) => {
@@ -128,5 +129,11 @@ export const deleteBet = (id) => {
             type: DELETE_BET,
             id: id
         })
+    }
+}
+
+export const removeData = () => {
+    return {
+        type: REMOVE_DATA
     }
 }
