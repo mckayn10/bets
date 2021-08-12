@@ -90,7 +90,6 @@ export const createBet = (betData) => {
 }
 
 export const updateBet = (betData) => {
-    console.log('status changed', betData)
     const { otherBettor, description, amount, wonBet, complete, date, statusChanged, dateComplete} = betData
     const dateCompleted = statusChanged && complete ? Date.now() : dateComplete
     

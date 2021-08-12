@@ -62,7 +62,6 @@ const ViewBetModal = props => {
             statusChanged: complete == betComplete ? false : true,
             dateComplete: dateCompleted
         }
-        console.log('data', data)
 
         closeModal()
         setTimeout(() => {
