@@ -15,7 +15,7 @@ import { KeyboardAvoidingView } from 'react-native';
 
 
 const ViewBetModal = props => {
-    const { description, amount, otherBettor, date, wonBet, complete, id } = props.betData
+    const { description, amount, otherBettor, date, wonBet, complete, id, dateCompleted } = props.betData
 
     const [editMode, setEditMode] = useState(false)
     const [nameOfBettor, setNameOfBettor] = useState('');
@@ -59,7 +59,10 @@ const ViewBetModal = props => {
             wonBet: betComplete ? betWon : false,
             id: id,
             date: date,
+            statusChanged: complete == betComplete ? false : true,
+            dateComplete: dateCompleted
         }
+        console.log('data', data)
 
         closeModal()
         setTimeout(() => {

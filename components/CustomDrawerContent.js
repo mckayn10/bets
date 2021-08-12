@@ -14,7 +14,6 @@ export default CustomDrawerContent = props => {
     const dispatch = useDispatch()
 
     const logoutUser = () => {
-        console.log('logout')
         dispatch(logout())
         dispatch(removeData())
         props.navigation.navigate('Auth')

@@ -20,6 +20,7 @@ const betsReducer = (state = initialState, action) => {
             return {...state, bets: action.bets}
 
         case CREATE_BET:
+            updatedArr.unshift(action.bet)
             return { ...state, bets: updatedArr }
 
         case DELETE_BET:

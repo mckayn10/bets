@@ -8,6 +8,7 @@ import {
 import Colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import ViewBetModal from '../modals/ViewBetModal';
+import HeaderText from './HeaderText';
 
 export default BetCard = (props) => {
     const [betModalVisible, setBetModalVisible] = useState(false)
@@ -32,7 +33,7 @@ export default BetCard = (props) => {
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>
                 <Text style={styles.date}>{date}</Text>
             </View>
-            <View>
+            <View style={styles.amountContainer}>
                 <Text
                     style={[
                         styles.amount,
@@ -83,7 +84,12 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     amount: {
-        fontSize: 17,
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginTop: 4
+    },
+    amountContainer: {
+        alignSelf: 'flex-start'
     },
     negative: {
         color: Colors.red

@@ -76,7 +76,7 @@ const Auth_Screen = (props) => {
                 secureTextEntry
             />
             {isLoading
-                ? <ActivityIndicator />
+                ? <ActivityIndicator style={{marginBottom: 12}}/>
                 : <TouchableOpacity >
                     <Text
                         style={styles.signInBtn}

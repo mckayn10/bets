@@ -90,8 +90,10 @@ export const createBet = (betData) => {
 }
 
 export const updateBet = (betData) => {
-    const { otherBettor, description, amount, wonBet, complete, date} = betData
-    const dateCompleted = complete ? Date.now() : 0
+    console.log('status changed', betData)
+    const { otherBettor, description, amount, wonBet, complete, date, statusChanged, dateComplete} = betData
+    const dateCompleted = statusChanged && complete ? Date.now() : dateComplete
+    
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
@@ -118,6 +120,7 @@ export const updateBet = (betData) => {
             throw new Error('error updating bet')
         }
         const resData = await response.json()
+        
         dispatch({
             type: UPDATE_BET,
             bet: betData
