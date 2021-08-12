@@ -85,6 +85,7 @@ export const signIn = (email, password) => {
 }
 
 export const logout = () => {
+    AsyncStorage.removeItem('userData')
     return {
         type: LOGOUT
     }

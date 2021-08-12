@@ -19,7 +19,7 @@ export default function NavBar(props) {
             totalAmount -= bet.amount
         }
     })
-    let num = parseFloat(Math.abs(5464.50)).toFixed(2)
+    let num = parseFloat(Math.abs(totalAmount)).toFixed(2)
     let formattedAmount = numberWithCommas(num)
 
     return (

@@ -25,10 +25,15 @@ export const fetchBets = () => {
                 description: resData[key].description,
                 complete: resData[key].complete,
                 wonBet: resData[key].wonBet,
+                dateCompleted: resData[key].dateCompleted
+                
             }
             loadedBets.push(bet)
-            
         }
+
+        loadedBets.sort(function(x, y){
+            return y.dateCompleted - x.dateCompleted;
+        })
 
         dispatch({
             type: GET_BETS,
@@ -42,6 +47,7 @@ export const fetchBets = () => {
 export const createBet = (betData) => {
     const { otherBettor, description, amount, wonBet, complete } = betData
     const date = new Date().toLocaleDateString()
+    const dateCompleted = complete ? Date.now() : 0
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
@@ -57,7 +63,8 @@ export const createBet = (betData) => {
                 date: date,
                 wonBet,
                 complete,
-                userId: userId
+                userId: userId,
+                dateCompleted: dateCompleted
             })
         })
 
@@ -75,6 +82,7 @@ export const createBet = (betData) => {
                 amount,
                 wonBet,
                 complete,
+                dateCompleted
             }
         })
 
@@ -83,7 +91,7 @@ export const createBet = (betData) => {
 
 export const updateBet = (betData) => {
     const { otherBettor, description, amount, wonBet, complete, date} = betData
-
+    const dateCompleted = complete ? Date.now() : 0
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
@@ -101,6 +109,9 @@ export const updateBet = (betData) => {
                 date,
                 wonBet,
                 complete,
+                userId,
+                dateCompleted
+
             })
         })
         if (!response.ok) {
@@ -117,8 +128,9 @@ export const updateBet = (betData) => {
 export const deleteBet = (id) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
+        const userId = getState().auth.userId
         const response = await fetch(
-            `https://mybets-f9188-default-rtdb.firebaseio.com/bets/${id}.json?auth=${token}`, {
+            `https://mybets-f9188-default-rtdb.firebaseio.com/bets/${userId}/${id}.json?auth=${token}`, {
             method: 'DELETE',
         })
         if (!response.ok) {

@@ -35,6 +35,7 @@ const CreateBetModal = props => {
             Alert.alert('Please fill out all text fields')
             return false
         }
+        
 
         const data = {
             id: 101,

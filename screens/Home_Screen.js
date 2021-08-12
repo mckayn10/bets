@@ -33,8 +33,8 @@ const Home_Screen = (props) => {
     <View style={styles.container}>
       <NavBar props={props}/>
       <View style={styles.toggleScreenContainer}>
-        <HeaderText style={swiperIndex === 0 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(0)}>Complete</HeaderText>
-        <HeaderText style={swiperIndex === 1 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(1)}>Pending</HeaderText>
+        <HeaderText style={swiperIndex === 0 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(0)}>COMPLETE</HeaderText>
+        <HeaderText style={swiperIndex === 1 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(1)}>PENDING</HeaderText>
       </View>
       <Swiper
         scrollEnabled={false}
@@ -73,11 +73,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: Colors.backgroundColor,
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: Colors.accentColor,
     borderTopWidth: 1,
     borderTopColor: Colors.backgroundColor,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.primaryColor
+    borderBottomColor: Colors.accentColor
   },
   modalContainer: {
     position: 'absolute',
