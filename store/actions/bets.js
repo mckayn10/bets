@@ -8,7 +8,7 @@ export const REMOVE_DATA = 'REMOVE_DATA'
 export const fetchBets = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
-        const response = await fetch(`https://mybets-f9188-default-rtdb.firebaseio.com/bets/${userId}/.json`)
+        const response = await fetch(`https://mybets-f9188-default-rtdb.firebaseio.com/people/${userId}/bets.json`)
 
         if (!response.ok) {
             throw new Error('error creating bet')
@@ -51,7 +51,7 @@ export const createBet = (betData) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
-        const response = await fetch(`https://mybets-f9188-default-rtdb.firebaseio.com/bets/${userId}.json?auth=${token}`, {
+        const response = await fetch(`https://mybets-f9188-default-rtdb.firebaseio.com/people/${userId}/bets.json?auth=${token}`, {
             method: 'POST',
             header: {
                 'Content-Type': 'application/json'
@@ -98,7 +98,7 @@ export const updateBet = (betData) => {
         const userId = getState().auth.userId
     
         const response = await fetch(
-            `https://mybets-f9188-default-rtdb.firebaseio.com/bets/${userId}/${betData.id}.json?auth=${token}`, {
+            `https://mybets-f9188-default-rtdb.firebaseio.com/people/${userId}/bets/${betData.id}.json?auth=${token}`, {
             method: 'PUT',
             header: {
                 'Content-Type': 'application/json'
@@ -132,7 +132,7 @@ export const deleteBet = (id) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
         const response = await fetch(
-            `https://mybets-f9188-default-rtdb.firebaseio.com/bets/${userId}/${id}.json?auth=${token}`, {
+            `https://mybets-f9188-default-rtdb.firebaseio.com/people/${userId}/bets/${id}.json?auth=${token}`, {
             method: 'DELETE',
         })
         if (!response.ok) {

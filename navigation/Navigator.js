@@ -1,27 +1,65 @@
 import React, { useState, useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Auth_Screen from "../screens/Auth_Screen";
 import Home_Screen from "../screens/Home_Screen";
 import Startup_Screen from '../screens/Startup_Screen'
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authenticate } from '../store/actions/auth';
+import CustomDrawerContent from '../components/CustomDrawerContent';
+import { Ionicons } from '@expo/vector-icons';
+import Colors from '../constants/colors'
 
 
 const HomeStackNavigator = () => {
-    const Stack = createNativeStackNavigator()
+    const Drawer = createDrawerNavigator()
 
     return (
-        <Stack.Navigator>
-            <Stack.Screen
+        <Drawer.Navigator
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+            screenOptions={{
+                drawerPosition: "right",
+                drawerType: 'front',
+                drawerActiveTintColor: Colors.primaryColor,
+                swipeEdgeWidth: 200,
+                drawerStyle: {
+                    width: 230
+                }
+            }}
+        >
+            <Drawer.Screen
                 name="Home"
                 component={Home_Screen}
                 options={{
-                    headerShown: false
+                    headerShown: false,
+                    drawerIcon: props => (
+                        <Ionicons name="home" size={24} color={Colors.primaryColor} />
+                    )
                 }}
             />
-        </Stack.Navigator>
+            <Drawer.Screen
+                name="Friends"
+                component={Home_Screen}
+                options={{
+                    headerShown: false,
+                    drawerIcon: props => (
+                        <Ionicons name="people" size={24} color={Colors.primaryColor} />
+                    )
+                }}
+            />
+            <Drawer.Screen
+                name="Profile Settings"
+                component={Home_Screen}
+                options={{
+                    headerShown: false,
+                    drawerIcon: props => (
+                        <Ionicons name="md-settings" size={24} color={Colors.primaryColor} />
+                    )
+                }}
+            />
+        </Drawer.Navigator>
     )
 }
 

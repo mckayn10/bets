@@ -6,6 +6,7 @@ import {
 const initialState = {
     userId: null,
     token: null,
+    userInfo: {}
 }
 
 const authReducer = (state = initialState, action) => {
@@ -13,7 +14,8 @@ const authReducer = (state = initialState, action) => {
         case AUTHENTICATE:
             return {
                 token: action.token,
-                userId: action.userId
+                userId: action.userId,
+                userInfo: action.userInfo
             }
         case LOGOUT: {
             return initialState

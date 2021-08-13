@@ -7,8 +7,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import HeaderText from '../components/HeaderText'
 
 
-function Auth_Screen (props) {
-    const [emailText, setUsernameText] = useState('');
+function Auth_Screen(props) {
+    const [emailText, setEmailText] = useState('');
+    const [firstNameText, setFirstNameText] = useState('')
+    const [lastNameText, setLastNameText] = useState('')
     const [passwordText, setPasswordText] = useState('');
     const [isSignIn, setIsSignIn] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
@@ -23,7 +25,14 @@ function Auth_Screen (props) {
         if (isSignIn) {
             action = signIn(emailText, passwordText)
         } else {
-            action = signUp(emailText, passwordText)
+            let userInfo = {
+                email: emailText,
+                password: passwordText,
+                firstName: firstNameText,
+                lastName: lastNameText,
+                username: firstNameText + '_' + lastNameText + '_' + Math.floor(Math.random() * 10000)
+            }
+            action = signUp(userInfo)
         }
 
         setError(null)
@@ -48,11 +57,33 @@ function Auth_Screen (props) {
                 : null
             }
             <HeaderText style={styles.pageTitle}>mybetz.</HeaderText >
+            {isSignIn
+                ? null
+                :
+                <View style={{width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="first name"
+                        placeholderTextColor='rgba(255, 255, 255, 0.5)'
+                        onChangeText={firstNameText => setFirstNameText(firstNameText)}
+                        defaultValue={firstNameText}
+                        keyboardType='email-address'
+                    />
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="last name"
+                        placeholderTextColor='rgba(255, 255, 255, 0.5)'
+                        onChangeText={lastNameText => setLastNameText(lastNameText)}
+                        defaultValue={lastNameText}
+                        keyboardType='email-address'
+                    />
+                </View>
+            }
             <TextInput
                 style={styles.textInput}
                 placeholder="email address"
                 placeholderTextColor='rgba(255, 255, 255, 0.5)'
-                onChangeText={emailText => setUsernameText(emailText)}
+                onChangeText={emailText => setEmailText(emailText)}
                 defaultValue={emailText}
                 keyboardType='email-address'
             />

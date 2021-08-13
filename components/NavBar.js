@@ -6,10 +6,13 @@ import HeaderText from './HeaderText';
 import { logout } from '../store/actions/auth';
 import { removeData } from '../store/actions/bets';
 import { useDispatch } from 'react-redux';
+import OpenDrawerIcon from './OpenDrawerIcon';
 
 export default function NavBar({props}) {
 
     const dispatch = useDispatch()
+    // use this for profile page. User info
+    const userData = useSelector(state => state.auth.userInfo)
 
     const allBetsArr = useSelector(state => state.bets.bets)
     function numberWithCommas(x) {
@@ -33,7 +36,8 @@ export default function NavBar({props}) {
 
     return (
         <View style={styles.navContainer}>
-            <HeaderText style={{ position: 'absolute', right: 10, top: 50, color: 'white' }} onPress={() => logoutUser()}>Logout</HeaderText>
+            <OpenDrawerIcon {...props}/>
+            {/* <HeaderText style={{ position: 'absolute', right: 10, top: 50, color: 'white' }} onPress={() => logoutUser()}>Logout</HeaderText> */}
             <HeaderText style={styles.totalText}>{totalAmount < 0 ? '-' : ''}${formattedAmount}</HeaderText>
         </View>
     );
