@@ -6,10 +6,10 @@ import betsReducer from './store/reducers/bets';
 import authReducer from './store/reducers/auth';
 import ReduxThunk from 'redux-thunk'
 import { StatusBar } from 'expo-status-bar';
-import MainNavigator from './navigation/Navigator'
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font'
-import { useFonts } from 'expo-font';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AppNavigator from './navigation/Navigator';
 
 const rootReducer = combineReducers({
   bets: betsReducer,
@@ -40,17 +40,19 @@ export default function App() {
   if (!fontLoaded) {
     return (
       <AppLoading
-      startAsync={fetchFonts}
-      onFinish={() => setFontLoaded(true)}
-      onError={(err) => console.log(err)}
-    />
+        startAsync={fetchFonts}
+        onFinish={() => setFontLoaded(true)}
+        onError={(err) => console.log(err)}
+      />
     )
   }
+
+  const Stack = createNativeStackNavigator()
 
   return (
     <Provider store={store}>
       <StatusBar style='auto' />
-      <MainNavigator />
+      <AppNavigator />
     </Provider>
 
   );

@@ -1,12 +1,5 @@
-import React, { Component, useState } from 'react'
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    ActivityIndicator
-} from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import Colors from '../constants/colors'
 import { useDispatch } from 'react-redux'
 import { signIn, signUp } from '../store/actions/auth'
@@ -37,14 +30,11 @@ const Auth_Screen = (props) => {
         setIsLoading(true)
         try {
             await dispatch(action)
-            props.navigation.navigate('Home')
         }
         catch (err) {
             setError(err.message)
             setIsLoading(false)
         }
-
-
 
     }
 
@@ -52,7 +42,7 @@ const Auth_Screen = (props) => {
         <View style={styles.container}>
             {error
                 ? <View style={styles.errorContainer}>
-                    <MaterialIcons style={{marginRight: 5}} name="error-outline" size={17} color={Colors.red} />
+                    <MaterialIcons style={{ marginRight: 5 }} name="error-outline" size={17} color={Colors.red} />
                     <Text style={styles.error}>{error}</Text>
                 </View>
                 : null
@@ -76,7 +66,7 @@ const Auth_Screen = (props) => {
                 secureTextEntry
             />
             {isLoading
-                ? <ActivityIndicator style={{marginBottom: 12}}/>
+                ? <ActivityIndicator style={{ marginBottom: 12 }} />
                 : <TouchableOpacity >
                     <Text
                         style={styles.signInBtn}
@@ -89,7 +79,7 @@ const Auth_Screen = (props) => {
 
             <View style={styles.registerContainer}>
                 <Text style={styles.registerText}>{isSignIn ? 'Don\'t have an account?' : 'Already have an account?'}</Text>
-                <Text 
+                <Text
                     style={[styles.registerText, styles.createText]}
                     onPress={() => setIsSignIn(!isSignIn)}
                 >

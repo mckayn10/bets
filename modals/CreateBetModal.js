@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, CheckBox, FlatList, Text, Modal, Pressable, View, Platform, TextInput, Alert, ScrollView } from 'react-native'
-import { useSelector } from 'react-redux'
+import { StyleSheet, Text, Modal, Pressable, View, Platform, Alert, ScrollView } from 'react-native'
 import Colors from '../constants/colors'
 import { useDispatch } from 'react-redux';
 import { createBet } from '../store/actions/bets'
@@ -35,7 +33,7 @@ const CreateBetModal = props => {
             Alert.alert('Please fill out all text fields')
             return false
         }
-        
+
 
         const data = {
             id: 101,
@@ -47,10 +45,10 @@ const CreateBetModal = props => {
             complete: betComplete
         }
 
-        try{
+        try {
             dispatch(createBet(data))
         }
-        catch(err){
+        catch (err) {
             console.error(err)
         }
 

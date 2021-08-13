@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, Alert, Modable, Pressable, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import NavBar from '../components/NavBar';
 import Completed_Bets_Screen from './Completed_Bets_Screen';
 import Incomplete_Bets_Screen from './Incomplete_Bets_Screen';
@@ -7,7 +7,6 @@ import Colors from '../constants/colors'
 import { AntDesign } from '@expo/vector-icons';
 import Swiper from 'react-native-swiper/src'
 import CreateBetModal from '../modals/CreateBetModal';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import HeaderText from '../components/HeaderText';
@@ -31,7 +30,7 @@ const Home_Screen = (props) => {
   return (
 
     <View style={styles.container}>
-      <NavBar props={props}/>
+      <NavBar props={props} />
       <View style={styles.toggleScreenContainer}>
         <HeaderText style={swiperIndex === 0 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(0)}>COMPLETE</HeaderText>
         <HeaderText style={swiperIndex === 1 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(1)}>PENDING</HeaderText>

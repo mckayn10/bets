@@ -1,91 +1,90 @@
-// import React from 'react'
-// import { ScrollView, View, Button, TouchableOpacity, Text } from 'react-native';
-import {
-    createAppContainer,
-    createSwitchNavigator,
-    // SafeAreaView
-} from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
-// import { createStackNavigator } from "react-navigation-stack";
+import React, { useState, useEffect } from 'react'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Auth_Screen from "../screens/Auth_Screen";
 import Home_Screen from "../screens/Home_Screen";
-import Startup_Screen from "../screens/Startup_Screen";
-// import { createDrawerNavigator } from "react-navigation-drawer";
-// import Colors from '../constants/colors'
-// import { NavigationContainer } from '@react-navigation/native';
-// import { Ionicons } from '@expo/vector-icons';
-// import { MaterialIcons } from '@expo/vector-icons';
-// import CustomDrawerContent from '../components/CustomDrawerContent';
+import Startup_Screen from '../screens/Startup_Screen'
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authenticate } from '../store/actions/auth';
 
 
-// const AuthNavigator = createStackNavigator({
-//     Auth: {
-//         screen: Auth_Screen,
-//         navigationOptions: {
-//             headerShown: false
-//         },
-//     }
-// })
+const HomeStackNavigator = () => {
+    const Stack = createNativeStackNavigator()
 
-// const DrawerNavigator = createDrawerNavigator(
-//     {
-//         Home: {
-//             navigationOptions: {
-//                 drawerIcon: () => (
-//                     <Ionicons name="md-home" color={Colors.primaryColor} size={20} />
-//                 ),
-//                 drawerLabel: "Home"
-//             },
-//             screen: Home_Screen
-//         },
-//         Profile: {
-//             navigationOptions: {
-//                 drawerIcon: () => (
-//                     <Ionicons name="person" size={20} color={Colors.primaryColor} />
-//                 ),
-//                 drawerLabel: "Profile"
-//             },
-//             screen: Home_Screen
-//         },
-//         Settings: {
-//             navigationOptions: {
-//                 drawerIcon: () => (
-//                     <MaterialIcons name="settings" size={20} color={Colors.primaryColor} />
-//                 ),
-//                 drawerLabel: "Settings"
-//             },
-//             screen: Home_Screen
-//         },
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Home"
+                component={Home_Screen}
+                options={{
+                    headerShown: false
+                }}
+            />
+        </Stack.Navigator>
+    )
+}
 
-//     },
-//     {
-//         drawerWidth: 250,
-//         drawerPosition: 'right',
-//         drawerBackgroundColor: 'white',
-//         edgeWidth: 200,
-//         contentOptions: {
-//             activeBackgroundColor: Colors.backgroundColor,
-//             activeTintColor: Colors.primaryColor
-//         },
-//         contentComponent: props => {
-//             return <CustomDrawerContent {...props} />
-//         }
+const AppNavigator = () => {
+    const [isLoading, setIsLoading] = useState(true)
 
-//     }
-// )
+    const Stack = createNativeStackNavigator()
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.auth);
 
-const MainNavigator = createSwitchNavigator({
-    Startup: {
-        screen: Startup_Screen
-    },
-    Auth: {
-        screen: Auth_Screen,
-        navigationOptions: {
-            headerShown: false
+    useEffect(() => {
+
+        const tryLogin = async () => {
+            const userData = await AsyncStorage.getItem('userData')
+            if (!userData) {
+                setIsLoading(false)
+                return;
+            }
+
+            const transformedData = JSON.parse(userData)
+            const { token, userId, expiryDate } = transformedData
+            const expirationDate = new Date(expiryDate)
+
+            if (expirationDate <= new Date() || !token || !userId) {
+                setIsLoading(false)
+                return;
+            }
+
+            dispatch(authenticate(userId, token))
+            setIsLoading(false)
+
         }
-    },
-    Home: Home_Screen
-    
-})
 
-export default createAppContainer(MainNavigator)
+        tryLogin()
+    }, [dispatch])
+
+    if (isLoading) {
+        return (<Startup_Screen />)
+    }
+
+
+    return (
+        <NavigationContainer>
+            <Stack.Navigator>
+                {(user.token == null)
+                    ? <Stack.Screen
+                        name="Auth"
+                        component={Auth_Screen}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    : <Stack.Screen
+                        name="HomeStack"
+                        component={HomeStackNavigator}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                }
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
+};
+
+export default AppNavigator
