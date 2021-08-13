@@ -3,15 +3,16 @@
     "name": "bets",
     "slug": "bets",
     "privacy": "public",
+    "sdkVersion": "42.0.0",
     "platforms": [
       "ios",
       "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/mybetz-logo.png",
+    "icon": "./assets/betz-logo.png",
     "splash": {
-      "image": "./assets/mybetz-logo.png",
+      "image": "./assets/betz-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#04d19b"
     },
@@ -27,6 +28,8 @@
       "buildNumber": "1.0.0"
     },
     "android": {
+      "package": "com.nilssonapps.mybets",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

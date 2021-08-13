@@ -54,8 +54,8 @@ const CreateBetModal = props => {
         }
 
         closeModal()
-        let index = betComplete ? 0 : 1
-        props.swiperIndex(index)
+        let showComplete = betComplete ? true : false
+        props.showComplete(showComplete)
     }
 
     const closeModal = () => {

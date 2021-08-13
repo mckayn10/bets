@@ -5,16 +5,15 @@ import Completed_Bets_Screen from './Completed_Bets_Screen';
 import Incomplete_Bets_Screen from './Incomplete_Bets_Screen';
 import Colors from '../constants/colors'
 import { AntDesign } from '@expo/vector-icons';
-import Swiper from 'react-native-swiper/src'
 import CreateBetModal from '../modals/CreateBetModal';
 import { useDispatch } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import HeaderText from '../components/HeaderText';
 
-function Home_Screen (props) {
+function Home_Screen(props) {
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [swiperIndex, setSwiperIndex] = useState(0);
+  const [showComplete, setShowComplete] = useState(true);
 
   const dispatch = useDispatch()
 
@@ -32,22 +31,17 @@ function Home_Screen (props) {
     <View style={styles.container}>
       <NavBar props={props} />
       <View style={styles.toggleScreenContainer}>
-        <HeaderText style={swiperIndex === 0 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(0)}>COMPLETE</HeaderText>
-        <HeaderText style={swiperIndex === 1 ? styles.activeToggleText : styles.toggleText} onPress={() => setSwiperIndex(1)}>PENDING</HeaderText>
+        <HeaderText style={showComplete  ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(true)}>COMPLETE</HeaderText>
+        <HeaderText style={!showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(false)}>PENDING</HeaderText>
       </View>
-      <Swiper
-        scrollEnabled={false}
-        index={swiperIndex}
-        loop={false}
-        showsPagination={false}
-      >
-        <Completed_Bets_Screen />
-        <Incomplete_Bets_Screen />
-      </Swiper>
+      {showComplete
+        ? <Completed_Bets_Screen />
+        : <Incomplete_Bets_Screen />
+      }
       <CreateBetModal
         toggleModal={() => setModalVisible(!modalVisible)}
         modalVisible={modalVisible}
-        swiperIndex={(index) => setSwiperIndex(index)}
+        showComplete={(showComplete) => setShowComplete(showComplete)}
       />
       <View
         style={styles.btnContainer}
