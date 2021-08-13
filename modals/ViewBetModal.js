@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: -20,
         width: '100%',
-        height: Platform.OS === 'ios' ? '72%' : '95%',
+        height: Platform.OS === 'ios' ? '72%' : '86%',
         backgroundColor: 'white',
         alignSelf: 'center',
         borderTopLeftRadius: 20,

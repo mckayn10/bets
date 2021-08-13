@@ -49,10 +49,13 @@ const CreateBetModal = props => {
             dispatch(createBet(data))
         }
         catch (err) {
+            Alert.alert('Error creating new bet. ' + err)
             console.error(err)
         }
 
         closeModal()
+        let index = betComplete ? 0 : 1
+        props.swiperIndex(index)
     }
 
     const closeModal = () => {

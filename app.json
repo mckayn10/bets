@@ -2,6 +2,11 @@
   "expo": {
     "name": "bets",
     "slug": "bets",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

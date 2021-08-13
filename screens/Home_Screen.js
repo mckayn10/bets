@@ -47,6 +47,7 @@ function Home_Screen (props) {
       <CreateBetModal
         toggleModal={() => setModalVisible(!modalVisible)}
         modalVisible={modalVisible}
+        swiperIndex={(index) => setSwiperIndex(index)}
       />
       <View
         style={styles.btnContainer}
