@@ -39,7 +39,7 @@ const ViewBetModal = props => {
             setBetComplete(false)
             setBetWon(false)
         }
-    }, [])
+    }, [amount, complete, description, otherBettor, wonBet])
 
     const dispatch = useDispatch()
 
@@ -326,15 +326,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         width: '100%'
     },
-    questionText: {
-        fontSize: 14
-    },
     detailRow: {
         flexDirection: 'row',
         padding: 10,
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        // alignItem: 'center'
     },
     editDetailRow: {
         padding: 0,

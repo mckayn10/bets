@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import HeaderText from '../components/HeaderText';
 
-const Home_Screen = (props) => {
+function Home_Screen (props) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [swiperIndex, setSwiperIndex] = useState(0);
@@ -70,19 +70,11 @@ const styles = StyleSheet.create({
   toggleScreenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.backgroundColor,
     backgroundColor: Colors.accentColor,
     borderTopWidth: 1,
     borderTopColor: Colors.backgroundColor,
     borderBottomWidth: 1,
     borderBottomColor: Colors.accentColor
-  },
-  modalContainer: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)'
   },
   btnContainer: {
     position: 'absolute',

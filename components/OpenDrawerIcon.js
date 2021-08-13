@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-export default OpenDrawerIcon = ({props}) => {
+export default function OpenDrawerIcon({props}) {
 
     const openDrawer = () => {
         props.props.navigation.openDrawer()

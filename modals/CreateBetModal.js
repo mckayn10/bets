@@ -194,15 +194,8 @@ const styles = StyleSheet.create({
     createBtn: {
         backgroundColor: Colors.primaryColor
     },
-    checkbox: {
-        alignSelf: 'center',
-        padding: 20
-    },
     icon: {
         marginRight: 10
-    },
-    label: {
-        fontSize: 16
     },
     betStatusContainer: {
         flexDirection: 'row',

@@ -7,7 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import HeaderText from '../components/HeaderText'
 
 
-const Auth_Screen = (props) => {
+function Auth_Screen (props) {
     const [emailText, setUsernameText] = useState('');
     const [passwordText, setPasswordText] = useState('');
     const [isSignIn, setIsSignIn] = useState(true)

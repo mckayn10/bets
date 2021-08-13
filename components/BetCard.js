@@ -4,7 +4,7 @@ import Colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import ViewBetModal from '../modals/ViewBetModal';
 
-export default BetCard = (props) => {
+export default function BetCard(props) {
     const [betModalVisible, setBetModalVisible] = useState(false)
     const { description, amount, otherBettor, date, wonBet, complete } = props.bet
 

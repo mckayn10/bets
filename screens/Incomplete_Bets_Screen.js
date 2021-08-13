@@ -8,7 +8,7 @@ import { fetchBets } from '../store/actions/bets';
 
 
 
-const Incomplete_Bets_Screen = props => {
+function Incomplete_Bets_Screen(props) {
     const [isRefreshing, setIsRefreshing] = useState(false)
 
     useEffect(() => {

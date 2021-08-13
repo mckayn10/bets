@@ -6,7 +6,7 @@ import BetCard from '../components/BetCard'
 import { MaterialIcons } from '@expo/vector-icons';
 import { fetchBets } from '../store/actions/bets';
 
-const Completed_Bets_Screen = props => {
+function Completed_Bets_Screen(props) {
     const [isRefreshing, setIsRefreshing] = useState(false)
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const Completed_Bets_Screen = props => {
 
     const dispatch = useDispatch()
 
-    const loadBets = useCallback( async () => {
+    const loadBets = async () => {
         setIsRefreshing(true)
         try {
             await dispatch(fetchBets())
@@ -26,7 +26,7 @@ const Completed_Bets_Screen = props => {
         setIsRefreshing(false)
 
         return betsArr
-    })
+    }
 
     const betsArr = useSelector(state => state.bets.bets)
 
