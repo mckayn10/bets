@@ -9,11 +9,11 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/mybetz-logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/mybetz-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#04d19b"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
