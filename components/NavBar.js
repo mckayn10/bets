@@ -11,8 +11,6 @@ import OpenDrawerIcon from './OpenDrawerIcon';
 export default function NavBar({props}) {
 
     const dispatch = useDispatch()
-    // use this for profile page. User info
-    const userData = useSelector(state => state.auth.userInfo)
 
     const allBetsArr = useSelector(state => state.bets.bets)
     function numberWithCommas(x) {

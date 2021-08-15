@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { TouchableOpacity, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -11,10 +12,12 @@ import { authenticate } from '../store/actions/auth';
 import CustomDrawerContent from '../components/CustomDrawerContent';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/colors'
+import Profile_Screen from '../screens/Profile_Screen';
 
+const Stack = createNativeStackNavigator()
+const Drawer = createDrawerNavigator()
 
-const HomeStackNavigator = () => {
-    const Drawer = createDrawerNavigator()
+const HomeDrawerNavigator = () => {
 
     return (
         <Drawer.Navigator
@@ -51,7 +54,7 @@ const HomeStackNavigator = () => {
             />
             <Drawer.Screen
                 name="Profile Settings"
-                component={Home_Screen}
+                component={ProfileNavigator}
                 options={{
                     headerShown: false,
                     drawerIcon: props => (
@@ -63,10 +66,28 @@ const HomeStackNavigator = () => {
     )
 }
 
+const ProfileNavigator = (props) => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Profile"
+                component={Profile_Screen}
+                options={{
+                    headerStyle: {
+                        backgroundColor: Colors.primaryColor,
+                    },
+                    headerTitleStyle: {
+                        color: 'white'
+                    },
+                }}
+            />
+        </Stack.Navigator>
+    )
+}
+
 const AppNavigator = () => {
     const [isLoading, setIsLoading] = useState(true)
 
-    const Stack = createNativeStackNavigator()
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth);
 
@@ -80,7 +101,7 @@ const AppNavigator = () => {
             }
 
             const transformedData = JSON.parse(userData)
-            const { token, userId, expiryDate } = transformedData
+            const { token, userId, expiryDate, person } = transformedData
             const expirationDate = new Date(expiryDate)
 
             if (expirationDate <= new Date() || !token || !userId) {
@@ -88,7 +109,7 @@ const AppNavigator = () => {
                 return;
             }
 
-            dispatch(authenticate(userId, token))
+            dispatch(authenticate(userId, token, person))
             setIsLoading(false)
 
         }
@@ -114,7 +135,7 @@ const AppNavigator = () => {
                     />
                     : <Stack.Screen
                         name="HomeStack"
-                        component={HomeStackNavigator}
+                        component={HomeDrawerNavigator}
                         options={{
                             headerShown: false
                         }}

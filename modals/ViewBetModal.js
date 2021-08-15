@@ -248,7 +248,7 @@ const ViewBetModal = props => {
                                     <Feather name="check-circle" size={24} color='white' />
                                 }
                                 iconRight
-                                title="Save Updates  "
+                                title="Save Changes  "
                                 type="solid"
                                 buttonStyle={styles.updateButton}
                                 onPress={() => handleUpdateBet()}

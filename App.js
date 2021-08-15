@@ -32,8 +32,6 @@ export default function App() {
       'ethnocentric': require('./assets/fonts/ethnocentric.regular.ttf'),
       'russo': require('./assets/fonts/RussoOne-Regular.ttf')
 
-
-
     })
   }
 

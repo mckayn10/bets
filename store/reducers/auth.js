@@ -1,12 +1,13 @@
 import {
     AUTHENTICATE,
-    LOGOUT
+    LOGOUT,
+    UPDATE_USER
 } from '../actions/auth';
 
 const initialState = {
     userId: null,
     token: null,
-    userInfo: {}
+    userInfo: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -20,11 +21,13 @@ const authReducer = (state = initialState, action) => {
         case LOGOUT: {
             return initialState
         }
+        case UPDATE_USER: {
+            return {...state, userInfo: action.userData}
+        }
 
         default:
             return state
     }
-
 }
 
 export default authReducer;
