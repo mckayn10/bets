@@ -15,7 +15,7 @@ import { KeyboardAvoidingView } from 'react-native';
 
 
 const ViewBetModal = props => {
-    const { description, amount, otherBettor, date, wonBet, complete, id, dateCompleted } = props.betData
+    const { description, amount, other_bettors, date, won_bet, is_complete, id, date_complete } = props.betData
 
     const [editMode, setEditMode] = useState(false)
     const [nameOfBettor, setNameOfBettor] = useState('');
@@ -26,11 +26,11 @@ const ViewBetModal = props => {
     const [toggleModal, setToggleModal] = useState(props.modalVisible)
 
     useEffect(() => {
-        setNameOfBettor(otherBettor)
+        setNameOfBettor(other_bettors)
         setBetAmount(amount)
         setBetDescription(description)
-        setBetWon(wonBet)
-        setBetComplete(complete)
+        setBetWon(won_bet)
+        setBetComplete(is_complete)
         return () => {
             setEditMode(false)
             setNameOfBettor('')
@@ -39,7 +39,7 @@ const ViewBetModal = props => {
             setBetComplete(false)
             setBetWon(false)
         }
-    }, [amount, complete, description, otherBettor, wonBet])
+    }, [amount, is_complete, description, other_bettors, won_bet])
 
     const dispatch = useDispatch()
 
@@ -52,20 +52,20 @@ const ViewBetModal = props => {
 
     const handleUpdateBet = async () => {
         const data = {
-            otherBettor: nameOfBettor,
+            other_bettors: nameOfBettor,
             amount: parseInt(betAmount),
             description: betDescription,
-            complete: betComplete,
-            wonBet: betComplete ? betWon : false,
+            is_complete: betComplete,
+            won_bet: betComplete ? betWon : false,
             id: id,
             date: date,
-            statusChanged: complete == betComplete ? false : true,
-            dateComplete: dateCompleted
+            date_complete: date_complete
         }
+        const statusChanged = is_complete == betComplete ? false : true
 
         closeModal()
         setTimeout(() => {
-            dispatch(updateBet(data))
+            dispatch(updateBet(data, statusChanged))
         }, 500)
 
     }
@@ -141,12 +141,12 @@ const ViewBetModal = props => {
                     <View style={editMode ? styles.editDetailRow : styles.detailRow}>
                         <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bettor(s): </Text>
                         {!editMode
-                            ? <Text style={styles.betText}>{otherBettor}</Text>
+                            ? <Text style={styles.betText}>{other_bettors}</Text>
                             : <Input
                                 style={styles.input}
                                 leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
                                 onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
-                                defaultValue={otherBettor}
+                                defaultValue={other_bettors}
                             />
                         }
                     </View>
@@ -183,19 +183,19 @@ const ViewBetModal = props => {
                         ? <View>
                             <View style={[styles.detailRow, styles.betStatusContainer]}>
                                 <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Status: </Text>
-                                <Text style={[styles.coloredCompleteText, styles.statusText]}>{complete ? 'Complete' : 'Incomplete'}</Text>
+                                <Text style={[styles.coloredCompleteText, styles.statusText]}>{is_complete ? 'is_complete' : 'Incomplete'}</Text>
                             </View>
-                            {complete
+                            {is_complete
                                 ? <View style={[styles.detailRow, styles.betStatusContainer]}>
                                     <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Bet Won: </Text>
-                                    <Text style={[styles.coloredWonText, styles.statusText]}>{wonBet ? 'Yes' : 'Nope'}</Text>
+                                    <Text style={[styles.coloredWonText, styles.statusText]}>{won_bet ? 'Yes' : 'Nope'}</Text>
                                 </View>
                                 : null
                             }
                         </View>
                         : <View>
                             <View style={[styles.detailRow, styles.betStatusContainer]}>
-                                <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Is this bet complete? </Text>
+                                <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Is this bet is_complete? </Text>
                                 <Switch
                                     value={betComplete}
                                     color={Colors.primaryColor}

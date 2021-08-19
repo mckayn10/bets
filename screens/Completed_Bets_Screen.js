@@ -32,13 +32,13 @@ function Completed_Bets_Screen(props) {
 
     let count = 0
     betsArr.forEach(bet => {
-        if (bet.complete) {
+        if (bet.is_complete) {
             count++
         }
     })
 
     const renderCompletedBet = betData => {
-        if (betData.item.complete) {
+        if (betData.item.is_complete) {
             return (
                 <BetCard
                     title={betData.item.description}
@@ -61,7 +61,7 @@ function Completed_Bets_Screen(props) {
                     keyExtractor={(bet, index) => index.toString()}
                 />
                 : <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>No complete bets to display</Text>
+                    <Text style={styles.emptyText}>No is_complete bets to display</Text>
                     <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.accentColor} />
                 </View>
             }

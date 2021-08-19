@@ -1,5 +1,6 @@
 import {
     AUTHENTICATE,
+    GET_USER,
     LOGOUT,
     UPDATE_USER
 } from '../actions/auth';
@@ -16,13 +17,15 @@ const authReducer = (state = initialState, action) => {
             return {
                 token: action.token,
                 userId: action.userId,
-                userInfo: action.userInfo
             }
         case LOGOUT: {
             return initialState
         }
         case UPDATE_USER: {
             return {...state, userInfo: action.userData}
+        }
+        case GET_USER: {
+            return {...state, userInfo: action.user}
         }
 
         default:

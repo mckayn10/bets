@@ -31,13 +31,13 @@ function Incomplete_Bets_Screen(props) {
 
     let count = 0
     betsArr.forEach(bet => {
-        if (!bet.complete) {
+        if (!bet.is_complete) {
             count++
         }
     })
 
     const renderIncompleteBet = betData => {
-        if (!betData.item.complete) {
+        if (!betData.item.is_complete) {
             return (
                 <BetCard
                     title={betData.item.description}

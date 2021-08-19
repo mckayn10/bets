@@ -17,7 +17,26 @@ const betsReducer = (state = initialState, action) => {
             return initialState
         }
         case GET_BETS:
-            return {...state, bets: action.bets}
+            const loadedBets = [];
+            for (const key in action.bets) {
+                let bet = {
+                    id: key,
+                    other_bettors: action.bets[key].other_bettors,
+                    amount: action.bets[key].amount,
+                    date: action.bets[key].date,
+                    description: action.bets[key].description,
+                    is_complete: action.bets[key].is_complete,
+                    won_bet: action.bets[key].won_bet,
+                    date_complete: action.bets[key].date_complete
+
+                }
+                loadedBets.push(bet)
+            }
+
+            loadedBets.sort(function (x, y) {
+                return y.date_complete - x.date_complete;
+            })
+            return { ...state, bets: loadedBets }
 
         case CREATE_BET:
             updatedArr.unshift(action.bet)
@@ -30,17 +49,17 @@ const betsReducer = (state = initialState, action) => {
                 }
             })
             return { ...state, bets: updatedArr }
-            
+
         case UPDATE_BET:
             const newData = action.bet
             updatedArr.forEach((bet, index) => {
-                let placeToTop = bet.complete != newData.complete ? true : false
+                let placeToTop = bet.is_complete != newData.is_complete ? true : false
                 if (bet.id === newData.id) {
                     bet.amount = newData.amount
-                    bet.otherBettor = newData.otherBettor
+                    bet.other_bettors = newData.other_bettors
                     bet.description = newData.description
-                    bet.complete = newData.complete
-                    bet.wonBet = newData.wonBet
+                    bet.is_complete = newData.is_complete
+                    bet.won_bet = newData.won_bet
                     bet.date = newData.date
 
 

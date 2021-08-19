@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 import NavBar from '../components/NavBar';
 import Completed_Bets_Screen from './Completed_Bets_Screen';
 import Incomplete_Bets_Screen from './Incomplete_Bets_Screen';
 import Colors from '../constants/colors'
 import { AntDesign } from '@expo/vector-icons';
 import CreateBetModal from '../modals/CreateBetModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
+import { getUser } from '../store/actions/auth';
 import HeaderText from '../components/HeaderText';
+import db from '../firebase/config'
 
 function Home_Screen(props) {
 
@@ -17,9 +19,11 @@ function Home_Screen(props) {
 
   const dispatch = useDispatch()
 
+
   useEffect(() => {
     try {
       dispatch(fetchBets())
+      dispatch(getUser())
     }
     catch (err) {
       console.error(err)
@@ -31,7 +35,7 @@ function Home_Screen(props) {
     <View style={styles.container}>
       <NavBar props={props} />
       <View style={styles.toggleScreenContainer}>
-        <HeaderText style={showComplete  ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(true)}>COMPLETE</HeaderText>
+        <HeaderText style={showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(true)}>COMPLETE</HeaderText>
         <HeaderText style={!showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(false)}>PENDING</HeaderText>
       </View>
       {showComplete
@@ -43,6 +47,8 @@ function Home_Screen(props) {
         modalVisible={modalVisible}
         showComplete={(showComplete) => setShowComplete(showComplete)}
       />
+
+
       <View
         style={styles.btnContainer}
       >

@@ -19,9 +19,9 @@ export default function NavBar({props}) {
 
     let totalAmount = 0
     allBetsArr.forEach(bet => {
-        if (bet.complete && bet.wonBet) {
+        if (bet.is_complete && bet.won_bet) {
             totalAmount += bet.amount
-        } else if (bet.complete && !bet.wonBet) {
+        } else if (bet.is_complete && !bet.won_bet) {
             totalAmount -= bet.amount
         }
     })
@@ -35,7 +35,6 @@ export default function NavBar({props}) {
     return (
         <View style={styles.navContainer}>
             <OpenDrawerIcon {...props}/>
-            {/* <HeaderText style={{ position: 'absolute', right: 10, top: 50, color: 'white' }} onPress={() => logoutUser()}>Logout</HeaderText> */}
             <HeaderText style={styles.totalText}>{totalAmount < 0 ? '-' : ''}${formattedAmount}</HeaderText>
         </View>
     );

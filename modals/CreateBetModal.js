@@ -34,15 +34,12 @@ const CreateBetModal = props => {
             return false
         }
 
-
         const data = {
-            id: 101,
             description: description,
             amount: parseInt(betAmount),
-            otherBettor: nameOfBettor,
-            date: '05/10/2021',
-            wonBet: betWon,
-            complete: betComplete
+            other_bettors: nameOfBettor,
+            won_bet: betWon,
+            is_complete: betComplete
         }
 
         try {

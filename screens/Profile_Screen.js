@@ -17,7 +17,6 @@ export default function Profile_Screen(props) {
     const [lastNameText, setLastNameText] = useState('')
     const [emailText, setEmailText] = useState('')
     const [usernameText, setUsernameText] = useState('')
-    const [count, setCount] = useState(0)
 
     useEffect(() => {
         setFirstNameText(userData.firstName)
@@ -25,7 +24,7 @@ export default function Profile_Screen(props) {
         setUsernameText(userData.username)
         setEmailText(userData.email)
 
-    }, [userData.firstName, userData.lastName, userData.username, userData.email])
+    }, [])
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -56,8 +55,6 @@ export default function Profile_Screen(props) {
             lastName: lastNameText,
             username: usernameText,
             email: emailText,
-            infoId: userData.infoId,
-            id: userData.id
         }
 
         try {
@@ -67,6 +64,7 @@ export default function Profile_Screen(props) {
             Alert.alert('Error updating profile. ' + err)
             console.error(err)
         }
+        handleGoBack()
     }
 
     const handleGoBack = () => {

@@ -6,7 +6,7 @@ import ViewBetModal from '../modals/ViewBetModal';
 
 export default function BetCard(props) {
     const [betModalVisible, setBetModalVisible] = useState(false)
-    const { description, amount, otherBettor, date, wonBet, complete } = props.bet
+    const { description, amount, other_bettors, date, won_bet, is_complete } = props.bet
 
     const updateBetModalStatus = () => {
         const modalStatus = betModalVisible
@@ -22,7 +22,7 @@ export default function BetCard(props) {
             <View style={styles.descriptionContainer}>
                 <View style={styles.personContainer}>
                     <Ionicons name="person-circle-outline" size={24} color="black" />
-                    <Text style={styles.name}>{otherBettor}</Text>
+                    <Text style={styles.name}>{other_bettors}</Text>
                 </View>
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>
                 <Text style={styles.date}>{date}</Text>
@@ -31,10 +31,10 @@ export default function BetCard(props) {
                 <Text
                     style={[
                         styles.amount,
-                        complete ? (!wonBet ? styles.negative : styles.positive) : ''
+                        is_complete ? (!won_bet ? styles.negative : styles.positive) : ''
                     ]}
                 >
-                    {complete ? (!wonBet ? '-' : '+') : ''}${parseFloat(Math.abs(amount)).toFixed(2)}
+                    {is_complete ? (!won_bet ? '-' : '+') : ''}${parseFloat(Math.abs(amount)).toFixed(2)}
                 </Text>
             </View>
             {betModalVisible

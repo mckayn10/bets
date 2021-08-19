@@ -28,8 +28,8 @@ function Auth_Screen(props) {
             let userInfo = {
                 email: emailText,
                 password: passwordText,
-                firstName: firstNameText,
-                lastName: lastNameText,
+                first_name: firstNameText,
+                last_name: lastNameText,
                 username: firstNameText + '_' + lastNameText + '_' + Math.floor(Math.random() * 10000)
             }
             action = signUp(userInfo)
