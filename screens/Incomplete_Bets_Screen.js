@@ -43,6 +43,7 @@ function Incomplete_Bets_Screen(props) {
                 <BetCard
                     title={betData.item.description}
                     bet={betData.item}
+                    permissions={true}
                 />
             );
         } else {

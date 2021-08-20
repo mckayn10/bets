@@ -1,3 +1,5 @@
+import db from "../../firebase/config";
+
 export const CREATE_BET = 'CREATE_BET';
 export const UPDATE_MODAL = 'UPDATE_MODAL';
 export const UPDATE_BET = 'UPDATE_BET';
@@ -8,21 +10,23 @@ export const REMOVE_DATA = 'REMOVE_DATA'
 const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 
 
+
 export const fetchBets = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
-        const response = await fetch(`${url}/bets/${userId}.json`)
 
-        if (!response.ok) {
-            throw new Error('error creating bet')
-        }
-        const resData = await response.json()
+        let result = []
+        db.ref("bets")
+            .orderByChild("user_id")
+            .equalTo(userId)
+            .on("value", function (snapshot) {
+                result = snapshot.val()
+            });
 
         dispatch({
             type: GET_BETS,
-            bets: resData
+            bets: result
         })
-
     }
 }
 
@@ -38,7 +42,7 @@ export const createBet = (betData) => {
         betData.is_double_or_nothing = false
         betData.is_verified = false
 
-        const response = await fetch(`${url}/bets/${userId}.json?auth=${token}`, {
+        const response = await fetch(`${url}/bets.json?auth=${token}`, {
             method: 'POST',
             header: {
                 'Content-Type': 'application/json'
@@ -67,21 +71,20 @@ export const updateBet = (betData, statusChanged) => {
         betData.date_complete = statusChanged && betData.is_complete ? Date.now() : betData.date_complete
         betData.user_id = userId
 
-        const response = await fetch(`${url}/bets/${userId}/${betData.id}.json?auth=${token}`, {
-            method: 'PATCH',
-            header: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(betData)
+        db.ref('bets/' + betData.id).set(betData, (err) => {
+            if (err) {
+                console.err('Error updating bet')
+            } else {
+                console.log('Successfully updated bet')
+            }
         })
-        if (!response.ok) {
-            throw new Error('error updating bet')
-        }
-        
+
         dispatch({
             type: UPDATE_BET,
             bet: betData
         })
+
+
     }
 }
 
@@ -89,16 +92,14 @@ export const deleteBet = (betId) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
-        const response = await fetch(`${url}/bets/${userId}/${betId}.json?auth=${token}`, {
-            method: 'DELETE',
-        })
-        if (!response.ok) {
-            throw new Error('error deleting bet')
-        }
+
+        db.ref('bets/' + betId).remove()
         dispatch({
             type: DELETE_BET,
             id: betId
         })
+
+
     }
 }
 

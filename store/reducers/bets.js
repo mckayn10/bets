@@ -1,3 +1,4 @@
+import { ActionSheetIOS } from 'react-native';
 import {
     DELETE_BET,
     GET_BETS,
@@ -27,7 +28,8 @@ const betsReducer = (state = initialState, action) => {
                     description: action.bets[key].description,
                     is_complete: action.bets[key].is_complete,
                     won_bet: action.bets[key].won_bet,
-                    date_complete: action.bets[key].date_complete
+                    date_complete: action.bets[key].date_complete,
+                    user_id: action.bets[key].user_id
 
                 }
                 loadedBets.push(bet)

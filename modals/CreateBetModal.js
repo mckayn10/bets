@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, Modal, Pressable, View, Platform, Alert, ScrollView } from 'react-native'
+import { StyleSheet, Text, Modal, Pressable, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '../constants/colors'
 import { useDispatch } from 'react-redux';
 import { createBet } from '../store/actions/bets'
@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button, Switch } from 'react-native-elements';
 import { MaterialIcons } from '@expo/vector-icons';
+import MySearchableDropdown from '../components/SearchableDropdown';
 
 
 const CreateBetModal = props => {
@@ -16,6 +17,7 @@ const CreateBetModal = props => {
     const [description, setDescription] = useState('');
     const [betComplete, setBetComplete] = useState(false);
     const [betWon, setBetWon] = useState(false);
+    const [otherBettorInfo, setOtherBetterInfo] = useState('')
 
     useEffect(() => {
         setBetWon(false)
@@ -64,6 +66,11 @@ const CreateBetModal = props => {
         setBetWon(false)
     }
 
+    const handleSetUser = (person) => {
+        setNameOfBettor(person.name)
+        setOtherBetterInfo(person)
+    }
+
     return (
         <Modal
             transparent={true}
@@ -81,7 +88,10 @@ const CreateBetModal = props => {
                         <Text style={styles.closeIcon}>Cancel</Text>
                     </Pressable>
                 </View>
-                <ScrollView style={styles.inputContainer}>
+                <SafeAreaView style={{zIndex: 1}}>
+                    <MySearchableDropdown setUser={(person) => handleSetUser(person)}/>
+                </SafeAreaView>
+                <View style={styles.inputContainer}>
                     <Input
                         style={styles.input}
                         placeholder='John Doe'
@@ -141,7 +151,7 @@ const CreateBetModal = props => {
                             onPress={() => createNewBet()}
                         />
                     </View>
-                </ScrollView>
+                </View>
             </View>
 
         </Modal>

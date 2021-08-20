@@ -57,7 +57,12 @@ function Friends_Screen(props) {
         setSearchText(text)
         const query = text.toLowerCase()
 
-        const data = dummyFriends.filter(user => {
+        if(!query){
+            setFriends(friendsList)
+            return;
+        }
+
+        const data = friendsList.filter(user => {
             const userString = (user.firstName + ' ' + user.lastName + ' ' + user.username).toLowerCase()
 
             return userString.includes(query)
