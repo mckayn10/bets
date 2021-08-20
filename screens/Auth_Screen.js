@@ -28,8 +28,8 @@ function Auth_Screen(props) {
             let userInfo = {
                 email: emailText,
                 password: passwordText,
-                first_name: firstNameText,
-                last_name: lastNameText,
+                firstName: firstNameText,
+                lastName: lastNameText,
                 username: firstNameText + '_' + lastNameText + '_' + Math.floor(Math.random() * 10000)
             }
             action = signUp(userInfo)
@@ -67,7 +67,6 @@ function Auth_Screen(props) {
                         placeholderTextColor='rgba(255, 255, 255, 0.5)'
                         onChangeText={firstNameText => setFirstNameText(firstNameText)}
                         defaultValue={firstNameText}
-                        keyboardType='email-address'
                     />
                     <TextInput
                         style={styles.textInput}
@@ -75,7 +74,6 @@ function Auth_Screen(props) {
                         placeholderTextColor='rgba(255, 255, 255, 0.5)'
                         onChangeText={lastNameText => setLastNameText(lastNameText)}
                         defaultValue={lastNameText}
-                        keyboardType='email-address'
                     />
                 </View>
             }
@@ -86,6 +84,7 @@ function Auth_Screen(props) {
                 onChangeText={emailText => setEmailText(emailText)}
                 defaultValue={emailText}
                 keyboardType='email-address'
+                autoCapitalize='none'
             />
             <TextInput
                 style={styles.textInput}
@@ -94,6 +93,7 @@ function Auth_Screen(props) {
                 onChangeText={passwordText => setPasswordText(passwordText)}
                 defaultValue={passwordText}
                 keyboardType='visible-password'
+                autoCapitalize='none'
                 secureTextEntry
             />
             {isLoading

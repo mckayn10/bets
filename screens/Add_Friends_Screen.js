@@ -1,27 +1,30 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity } from 'react-native'
 import Colors from '../constants/colors'
-import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import dummyFriends from '../data/dummyFriends'
 import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FriendCard from '../components/FriendCard';
 import { SearchBar } from 'react-native-elements';
-import { AntDesign } from '@expo/vector-icons';
-import { useSelector } from 'react-redux'
+import {fetchAllPeople} from '../store/actions/friends'
 
 
 function Friends_Screen(props) {
-    const friendsList = useSelector(state => state.people.friends)
-
     const [searchText, setSearchText] = useState()
-    const [friends, setFriends] = useState([])
+    const [people, setPeople] = useState([])
 
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        setFriends(friendsList)
+        try {
+            dispatch(fetchAllPeople())
+        }
+        catch (err){
+            console.error(err)
+        }
     }, [])
-
-    console.log('friends list', friendsList)
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -32,45 +35,40 @@ function Friends_Screen(props) {
                             name="back"
                             size={24}
                             color="white"
-                            style={{ color: 'white', marginBottom: 3, padding: 0 }}
+                            style={{ marginBottom: 3, padding: 0 }}
                             onPress={() => props.navigation.goBack()}
                         />
 
                     </TouchableOpacity>
                 )
-            },
-            headerRight: () => {
-                return (
-                    <TouchableOpacity {...props}>
-                        <MaterialIcons
-                            name="add-circle-outline"
-                            size={28} color="black"
-                            style={{ color: 'white', marginBottom: 3, padding: 0 }}
-                            onPress={() => props.navigation.navigate('Add Friends')}
-                        />
-                    </TouchableOpacity>
-                )
-            },
+            }
         })
+    }, [])
 
-    }, [props.navigation])
+    const allPeople = useSelector(state => state.people.people)
 
     const handleSearch = (text) => {
         setSearchText(text)
         const query = text.toLowerCase()
 
-        const data = dummyFriends.filter(user => {
+        if(!query){
+            setPeople([])
+            return;
+        }
+
+
+        const data = allPeople.filter(user => {
             const userString = (user.firstName + ' ' + user.lastName + ' ' + user.username).toLowerCase()
 
             return userString.includes(query)
         })
 
-        setFriends(data)
+        setPeople(data)
     }
 
     const renderFriendsList = friend => {
         return (
-            <FriendCard person={friend.item} {...props} />
+            <FriendCard person={friend.item} {...props}/>
         );
     }
 
@@ -78,22 +76,23 @@ function Friends_Screen(props) {
         <SafeAreaView style={styles.container}>
             <SearchBar
                 value={searchText}
-                placeholder='Search friends..'
+                placeholder='Search people..'
                 onChangeText={(text) => handleSearch(text)}
                 inputContainerStyle={styles.searchBar}
                 containerStyle={{ backgroundColor: Colors.backgroundColor }}
                 inputStyle={{ fontSize: 16 }}
                 lightTheme={true}
+
             />
-            {friends.length > 0
+            {people.length > 0
                 ? <FlatList
-                    data={friends}
+                    data={people}
                     renderItem={renderFriendsList}
                     keyExtractor={(friend, index) => index.toString()}
                 />
                 : <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>No friends were found</Text>
-                    <Entypo name="emoji-sad" size={120} color={Colors.grayDark} style={styles.icon} />
+                    <Text style={styles.emptyText}>No results matching your search</Text>
+                    <MaterialCommunityIcons name="account-search-outline" size={120} color={Colors.grayDark} style={styles.icon} />
                 </View>
             }
         </SafeAreaView>
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
     emptyText: {
         fontSize: 18,
         textAlign: 'center',
-        margin: 10,
+        marginTop: 30,
         padding: 5,
         opacity: .3
     },
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     searchBar: {
-        backgroundColor: 'white',
+        backgroundColor: Colors.grayLight,
         borderColor: 'white',
         borderRadius: 20,
         margin: 5,
@@ -132,7 +131,6 @@ const styles = StyleSheet.create({
         width: '90%',
         alignSelf: 'center',
         borderWidth: 1,
-        backgroundColor: Colors.grayLight
     }
 })
 

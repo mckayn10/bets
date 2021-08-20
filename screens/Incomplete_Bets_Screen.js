@@ -62,7 +62,7 @@ function Incomplete_Bets_Screen(props) {
                 :
                 <View style={styles.emptyContainer}>
                     <Text style={styles.emptyText}>No pending bets to display</Text>
-                    <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.accentColor} />
+                    <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.grayDark} />
                 </View>
             }
         </SafeAreaView>

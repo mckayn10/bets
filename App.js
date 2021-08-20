@@ -10,10 +10,12 @@ import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AppNavigator from './navigation/Navigator';
+import peopleReducer from './store/reducers/friends';
 
 const rootReducer = combineReducers({
   bets: betsReducer,
-  auth: authReducer
+  auth: authReducer,
+  people: peopleReducer
 })
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 

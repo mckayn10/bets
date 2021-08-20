@@ -9,6 +9,7 @@ import CreateBetModal from '../modals/CreateBetModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import { getUser } from '../store/actions/auth';
+import { fetchAllFriends } from '../store/actions/friends';
 import HeaderText from '../components/HeaderText';
 import db from '../firebase/config'
 
@@ -24,6 +25,8 @@ function Home_Screen(props) {
     try {
       dispatch(fetchBets())
       dispatch(getUser())
+      dispatch(fetchAllFriends())
+      
     }
     catch (err) {
       console.error(err)
@@ -71,11 +74,11 @@ const styles = StyleSheet.create({
   toggleScreenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.accentColor,
+    backgroundColor: Colors.grayDark,
     borderTopWidth: 1,
     borderTopColor: Colors.backgroundColor,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.accentColor
+    borderBottomColor: Colors.grayDark
   },
   btnContainer: {
     position: 'absolute',

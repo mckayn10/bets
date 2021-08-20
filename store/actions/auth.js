@@ -20,6 +20,8 @@ export const authenticate = (userId, token) => {
 }
 
 const createPerson = async (userId, token, userData) => {
+    userData.id = userId
+    delete  userData.password
     db.ref('people/' + userId).set(userData)
         .then(res => {
             return true

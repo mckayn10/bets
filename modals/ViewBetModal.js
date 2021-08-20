@@ -14,6 +14,7 @@ import Modal from 'react-native-modal'
 import { KeyboardAvoidingView } from 'react-native';
 
 
+
 const ViewBetModal = props => {
     const { description, amount, other_bettors, date, won_bet, is_complete, id, date_complete } = props.betData
 

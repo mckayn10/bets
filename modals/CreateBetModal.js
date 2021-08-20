@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderWidth: 1,
-        borderColor: Colors.accentColor,
+        borderColor: Colors.grayDark,
         shadowColor: 'black',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.1,

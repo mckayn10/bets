@@ -14,6 +14,8 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/colors'
 import Profile_Screen from '../screens/Profile_Screen';
 import Friends_Screen from '../screens/Friends_Screen';
+import Add_Friends_Screen from '../screens/Add_Friends_Screen'
+import Person_Profile_Screen from '../screens/Person_Profile_Screen';
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -88,10 +90,38 @@ const ProfileNavigator = (props) => {
 
 const FriendsNavigator = (props) => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerTintColor: '#fff',
+            }}
+        >
             <Stack.Screen
                 name="My Friends"
                 component={Friends_Screen}
+                options={{
+                    headerStyle: {
+                        backgroundColor: Colors.primaryColor,
+                    },
+                    headerTitleStyle: {
+                        color: 'white'
+                    },
+                }}
+            />
+            <Stack.Screen
+                name="Add Friends"
+                component={Add_Friends_Screen}
+                options={{
+                    headerStyle: {
+                        backgroundColor: Colors.primaryColor,
+                    },
+                    headerTitleStyle: {
+                        color: 'white'
+                    },
+                }}
+            />
+                        <Stack.Screen
+                name="Person"
+                component={Person_Profile_Screen}
                 options={{
                     headerStyle: {
                         backgroundColor: Colors.primaryColor,

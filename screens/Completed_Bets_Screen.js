@@ -61,8 +61,8 @@ function Completed_Bets_Screen(props) {
                     keyExtractor={(bet, index) => index.toString()}
                 />
                 : <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>No is_complete bets to display</Text>
-                    <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.accentColor} />
+                    <Text style={styles.emptyText}>No complete bets to display</Text>
+                    <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.grayDark} />
                 </View>
             }
         </SafeAreaView>
