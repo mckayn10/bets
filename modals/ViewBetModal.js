@@ -27,9 +27,6 @@ const ViewBetModal = props => {
     const [toggleModal, setToggleModal] = useState(props.modalVisible)
     const [hasPermission, setHasPermissions] = useState(props.permissions)
 
-    console.log(hasPermission)
-
-
     useEffect(() => {
         setNameOfBettor(other_bettors)
         setBetAmount(amount)

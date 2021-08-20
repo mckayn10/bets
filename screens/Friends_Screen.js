@@ -21,8 +21,6 @@ function Friends_Screen(props) {
         setFriends(friendsList)
     }, [])
 
-    console.log('friends list', friendsList)
-
     useLayoutEffect(() => {
         props.navigation.setOptions({
             headerLeft: () => {

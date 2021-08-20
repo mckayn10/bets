@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
 import { Button } from 'react-native-elements'
 import Colors from '../constants/colors'
 import { MaterialIcons } from '@expo/vector-icons';
@@ -9,12 +9,11 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FriendCard from '../components/FriendCard';
 import { SearchBar } from 'react-native-elements';
-import { fetchFriendsBets } from '../store/actions/friends'
 import HeaderText from '../components/HeaderText';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { addFriend } from '../store/actions/friends';
+import { addFriend, removeFriend } from '../store/actions/friends';
 import Completed_Bets_Screen from './Completed_Bets_Screen';
 import { formatBetArrayOfObjects } from '../constants/utils';
 
@@ -64,9 +63,7 @@ function Person_Profile_Screen(props) {
         const response = await fetch(`${url}/bets/${id}.json`)
 
         const resData = await response.json()
-
         const formattedData = formatBetArrayOfObjects(resData)
-        console.log('formatted', formattedData)
 
         setBets(formattedData)
     }
@@ -78,11 +75,33 @@ function Person_Profile_Screen(props) {
     }
 
     const handleRemoveFriend = () => {
-        console.log('remove')
-
+        try {
+            dispatch(removeFriend(id))
+        }
+        catch (err) {
+            console.err(err)
+        }
         setIsFriend(false)
 
     }
+
+    const showConfirmDialog = () => {
+        return Alert.alert(
+            "Are your sure you want to remove this friend?",
+            "",
+            [
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        handleRemoveFriend(id)
+                    },
+                },
+                {
+                    text: "No",
+                },
+            ]
+        );
+    };
 
 
     return (
@@ -104,7 +123,7 @@ function Person_Profile_Screen(props) {
                             type="outline"
                             buttonStyle={styles.isFriendBtn}
                             titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
-                            onPress={() => handleRemoveFriend()}
+                            onPress={() => showConfirmDialog()}
                         />
                         : <Button
                             icon={<Ionicons name="person-add" size={13} color='white' />}

@@ -1,7 +1,8 @@
 import {
     GET_PEOPLE,
     ADD_FRIEND,
-    GET_FRIENDS
+    GET_FRIENDS,
+    REMOVE_FRIEND
 } from '../actions/friends';
 
 const initialState = {
@@ -41,6 +42,13 @@ const peopleReducer = (state = initialState, action) => {
                 loadedFriends.push(friend)
             }
             return { ...state, friends: loadedFriends }
+        case REMOVE_FRIEND:
+            friendsArr.forEach((friend, index) => {
+                if (friend.id === action.id) {
+                    friendsArr.splice(index, 1)
+                }
+            })
+            return { ...state, bets: friendsArr }
         default:
             return state
     }
