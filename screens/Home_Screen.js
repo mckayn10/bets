@@ -20,6 +20,8 @@ function Home_Screen(props) {
 
   const dispatch = useDispatch()
 
+  const bets = useSelector(state => state.bets.bets)
+
 
   useEffect(() => {
     try {
@@ -42,8 +44,8 @@ function Home_Screen(props) {
         <HeaderText style={!showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(false)}>PENDING</HeaderText>
       </View>
       {showComplete
-        ? <Completed_Bets_Screen />
-        : <Incomplete_Bets_Screen />
+        ? <Completed_Bets_Screen bets={bets} permissions={true}/>
+        : <Incomplete_Bets_Screen bets={bets} permissions={true}/>
       }
       <CreateBetModal
         toggleModal={() => setModalVisible(!modalVisible)}

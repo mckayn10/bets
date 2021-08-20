@@ -9,28 +9,36 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FriendCard from '../components/FriendCard';
 import { SearchBar } from 'react-native-elements';
-import { fetchAllPeople } from '../store/actions/friends'
+import { fetchFriendsBets } from '../store/actions/friends'
 import HeaderText from '../components/HeaderText';
-import { Header } from 'react-native/Libraries/NewAppScreen';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { addFriend } from '../store/actions/friends'; 
+import { addFriend } from '../store/actions/friends';
+import Completed_Bets_Screen from './Completed_Bets_Screen';
+import { formatBetArrayOfObjects } from '../constants/utils';
 
 function Person_Profile_Screen(props) {
     const person = props.route.params.person
     const { firstName, lastName, email, username, id } = person
     const [showBetsfeed, setShowBetsFeed] = useState(true)
     const [isFriend, setIsFriend] = useState()
+    const [bets, setBets] = useState([])
 
     const userFriends = useSelector(state => state.people.friends)
-    if(userFriends.some(person => person.id == id)){
-        console.log('is friend')
-    } else {
-        console.log('not a friend')
-    }
-
     const dispatch = useDispatch()
+    const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
+
+
+    useEffect(() => {
+        if (userFriends.some(person => person.id == id)) {
+            setIsFriend(true)
+        } else {
+            setIsFriend(false)
+        }
+        fetchBets()
+    }, [])
+
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -51,6 +59,17 @@ function Person_Profile_Screen(props) {
             }
         })
     }, [])
+
+    const fetchBets = async () => {
+        const response = await fetch(`${url}/bets/${id}.json`)
+
+        const resData = await response.json()
+
+        const formattedData = formatBetArrayOfObjects(resData)
+        console.log('formatted', formattedData)
+
+        setBets(formattedData)
+    }
 
     const handleAddFriend = () => {
         dispatch(addFriend(person))
@@ -80,7 +99,7 @@ function Person_Profile_Screen(props) {
                 <View style={styles.friendsContainer}>
                     {isFriend
                         ? <Button
-                            icon={ <FontAwesome5 name="user-check" size={12} color={Colors.primaryColor} /> }
+                            icon={<FontAwesome5 name="user-check" size={12} color={Colors.primaryColor} />}
                             title='Friends'
                             type="outline"
                             buttonStyle={styles.isFriendBtn}
@@ -112,6 +131,13 @@ function Person_Profile_Screen(props) {
                 <Text style={showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(true)}>Bets Feed</Text>
                 <Text style={!showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(false)}>Between You</Text>
             </View>
+            {showBetsfeed
+                ? <Completed_Bets_Screen
+                    bets={bets}
+                    permissions={false}
+                />
+                : <View><Text>NOTHING HERE</Text></View>
+            }
         </SafeAreaView>
     )
 
@@ -177,7 +203,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderBottomWidth: 1,
         borderBottomColor: Colors.grayDark,
-        padding: 3
+        padding: 1
     },
     toggleBtn: {
         borderWidth: 1,

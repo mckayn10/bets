@@ -42,6 +42,7 @@ export default function BetCard(props) {
                     toggleModal={() => setBetModalVisible(!betModalVisible)}
                     modalVisible={betModalVisible}
                     betData={props.bet}
+                    permissions={props.permissions}
                 />
                 : null
             }

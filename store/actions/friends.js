@@ -63,32 +63,6 @@ export const addFriend = (friend) => {
     }
 }
 
-export const updateBet = (betData, statusChanged) => {
-    return async (dispatch, getState) => {
-        const token = getState().auth.token
-        const userId = getState().auth.userId
-
-        betData.date_complete = statusChanged && betData.is_complete ? Date.now() : betData.date_complete
-        betData.user_id = userId
-
-        const response = await fetch(`${url}/bets/${userId}/${betData.id}.json?auth=${token}`, {
-            method: 'PATCH',
-            header: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(betData)
-        })
-        if (!response.ok) {
-            throw new Error('error updating bet')
-        }
-
-        dispatch({
-            type: UPDATE_BET,
-            bet: betData
-        })
-    }
-}
-
 export const deleteBet = (betId) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token

@@ -25,13 +25,12 @@ function Completed_Bets_Screen(props) {
         }
         setIsRefreshing(false)
 
-        return betsArr
+        return props.bets
     }
 
-    const betsArr = useSelector(state => state.bets.bets)
 
     let count = 0
-    betsArr.forEach(bet => {
+    props.bets.forEach(bet => {
         if (bet.is_complete) {
             count++
         }
@@ -43,6 +42,7 @@ function Completed_Bets_Screen(props) {
                 <BetCard
                     title={betData.item.description}
                     bet={betData.item}
+                    permissions={props.permissions}
                 />
             );
         } else {
@@ -56,7 +56,7 @@ function Completed_Bets_Screen(props) {
                 ? <FlatList
                     onRefresh={loadBets}
                     refreshing={isRefreshing}
-                    data={betsArr}
+                    data={props.bets}
                     renderItem={renderCompletedBet}
                     keyExtractor={(bet, index) => index.toString()}
                 />

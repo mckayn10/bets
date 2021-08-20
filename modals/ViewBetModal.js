@@ -25,6 +25,10 @@ const ViewBetModal = props => {
     const [betComplete, setBetComplete] = useState(false);
     const [betWon, setBetWon] = useState(false);
     const [toggleModal, setToggleModal] = useState(props.modalVisible)
+    const [hasPermission, setHasPermissions] = useState(props.permissions)
+
+    console.log(hasPermission)
+
 
     useEffect(() => {
         setNameOfBettor(other_bettors)
@@ -106,26 +110,37 @@ const ViewBetModal = props => {
 
 
         >
-            <KeyboardAvoidingView style={styles.container} behavior='position' contentContainerStyle={styles.avoidKeyboardContainer}>
+            <KeyboardAvoidingView
+                style={[styles.container, {
+                    height: hasPermission ? (Platform.OS === 'ios' ? '72%' : '86%') : '60%' ,
+                }]}
+                behavior='position'
+                contentContainerStyle={styles.avoidKeyboardContainer}>
                 <View style={styles.titleContainer}>
-                    {editMode
-                        ? <TouchableOpacity
-                            style={[styles.titleIcon, styles.leftIcon]}
-                            onPress={() => setEditMode(!editMode)}
-                        >
-                            <AntDesign name="back" size={25} color="white" />
-                        </TouchableOpacity>
-                        : <TouchableOpacity
-                            style={[styles.titleIcon, styles.leftIcon]}
-                            onPress={() => setEditMode(!editMode)}
-                        >
-                            <FontAwesome
-                                name="edit"
-                                size={25}
-                                color="white"
-                            />
-                        </TouchableOpacity>
+                    {hasPermission
+                        ? <View>
+                            {editMode
+                                ? <TouchableOpacity
+                                    style={[styles.titleIcon, styles.leftIcon]}
+                                    onPress={() => setEditMode(!editMode)}
+                                >
+                                    <AntDesign name="back" size={25} color="white" />
+                                </TouchableOpacity>
+                                : <TouchableOpacity
+                                    style={[styles.titleIcon, styles.leftIcon]}
+                                    onPress={() => setEditMode(!editMode)}
+                                >
+                                    <FontAwesome
+                                        name="edit"
+                                        size={25}
+                                        color="white"
+                                    />
+                                </TouchableOpacity>
+                            }
+                        </View>
+                        : null
                     }
+
                     <Text style={styles.pageTitle}>Bet Details</Text>
                     <TouchableOpacity
                         style={styles.titleIcon}
@@ -184,7 +199,7 @@ const ViewBetModal = props => {
                         ? <View>
                             <View style={[styles.detailRow, styles.betStatusContainer]}>
                                 <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Status: </Text>
-                                <Text style={[styles.coloredCompleteText, styles.statusText]}>{is_complete ? 'is_complete' : 'Incomplete'}</Text>
+                                <Text style={[styles.coloredCompleteText, styles.statusText]}>{is_complete ? 'Complete' : 'Pending'}</Text>
                             </View>
                             {is_complete
                                 ? <View style={[styles.detailRow, styles.betStatusContainer]}>
@@ -196,7 +211,7 @@ const ViewBetModal = props => {
                         </View>
                         : <View>
                             <View style={[styles.detailRow, styles.betStatusContainer]}>
-                                <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Is this bet is_complete? </Text>
+                                <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Is this bet complete? </Text>
                                 <Switch
                                     value={betComplete}
                                     color={Colors.primaryColor}
@@ -217,45 +232,50 @@ const ViewBetModal = props => {
 
                         </View>
                     }
-
-                    {!editMode
-                        ?
-                        <View>
-                            <View style={styles.btnContainer}>
-                                <Button
-                                    iconRight
-                                    title="Edit"
-                                    type="solid"
-                                    buttonStyle={styles.updateButton}
-                                    onPress={() => setEditMode(!editMode)}
-                                />
-                            </View>
-                            <View style={styles.btnContainer}>
-                                <Button
-                                    icon={
-                                        <AntDesign name="delete" size={24} color="white" />
-                                    }
-                                    iconRight
-                                    title="Delete Bet  "
-                                    type="solid"
-                                    buttonStyle={styles.deleteButton}
-                                    onPress={() => showConfirmDialog()}
-                                />
-                            </View>
+                    {hasPermission
+                        ? <View>
+                            {!editMode
+                                ?
+                                <View>
+                                    <View style={styles.btnContainer}>
+                                        <Button
+                                            iconRight
+                                            title="Edit"
+                                            type="solid"
+                                            buttonStyle={styles.updateButton}
+                                            onPress={() => setEditMode(!editMode)}
+                                        />
+                                    </View>
+                                    <View style={styles.btnContainer}>
+                                        <Button
+                                            icon={
+                                                <AntDesign name="delete" size={24} color="white" />
+                                            }
+                                            iconRight
+                                            title="Delete Bet  "
+                                            type="solid"
+                                            buttonStyle={styles.deleteButton}
+                                            onPress={() => showConfirmDialog()}
+                                        />
+                                    </View>
+                                </View>
+                                : <View style={styles.btnContainer}>
+                                    <Button
+                                        icon={
+                                            <Feather name="check-circle" size={24} color='white' />
+                                        }
+                                        iconRight
+                                        title="Save Changes  "
+                                        type="solid"
+                                        buttonStyle={styles.updateButton}
+                                        onPress={() => handleUpdateBet()}
+                                    />
+                                </View>
+                            }
                         </View>
-                        : <View style={styles.btnContainer}>
-                            <Button
-                                icon={
-                                    <Feather name="check-circle" size={24} color='white' />
-                                }
-                                iconRight
-                                title="Save Changes  "
-                                type="solid"
-                                buttonStyle={styles.updateButton}
-                                onPress={() => handleUpdateBet()}
-                            />
-                        </View>
+                        : null
                     }
+
                 </View>
             </KeyboardAvoidingView>
 
@@ -269,7 +289,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: -20,
         width: '100%',
-        height: Platform.OS === 'ios' ? '72%' : '86%',
         backgroundColor: 'white',
         alignSelf: 'center',
         borderTopLeftRadius: 20,

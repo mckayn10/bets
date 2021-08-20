@@ -17,6 +17,8 @@ function Incomplete_Bets_Screen(props) {
 
     const dispatch = useDispatch()
 
+    const betsArr = props.bets
+    
     const loadBets = useCallback(async () => {
         setIsRefreshing(true)
         try {
@@ -27,7 +29,6 @@ function Incomplete_Bets_Screen(props) {
         setIsRefreshing(false)
     }, [dispatch])
 
-    const betsArr = useSelector(state => state.bets.bets)
 
     let count = 0
     betsArr.forEach(bet => {
