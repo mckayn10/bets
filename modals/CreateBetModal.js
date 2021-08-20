@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === 'ios' ? 35 : 0
     },
     inputContainer: {
-        padding: 20,
+        padding: 10,
     },
     input: {
         marginTop: 3,
