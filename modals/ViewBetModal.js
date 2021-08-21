@@ -16,7 +16,7 @@ import { KeyboardAvoidingView } from 'react-native';
 
 
 const ViewBetModal = props => {
-    const { description, amount, other_bettors, date, won_bet, is_complete, id, date_complete } = props.betData
+    const { description, amount, other_bettor, date, won_bet, is_complete, id, date_complete } = props.betData
 
     const [editMode, setEditMode] = useState(false)
     const [nameOfBettor, setNameOfBettor] = useState('');
@@ -28,7 +28,7 @@ const ViewBetModal = props => {
     const [hasPermission, setHasPermissions] = useState(props.permissions)
 
     useEffect(() => {
-        setNameOfBettor(other_bettors)
+        setNameOfBettor(other_bettor.firstName + other_bettor.lastName)
         setBetAmount(amount)
         setBetDescription(description)
         setBetWon(won_bet)
@@ -41,7 +41,7 @@ const ViewBetModal = props => {
             setBetComplete(false)
             setBetWon(false)
         }
-    }, [amount, is_complete, description, other_bettors, won_bet])
+    }, [amount, is_complete, description, other_bettor, won_bet])
 
     const dispatch = useDispatch()
 
@@ -54,7 +54,7 @@ const ViewBetModal = props => {
 
     const handleUpdateBet = async () => {
         const data = {
-            other_bettors: nameOfBettor,
+            other_bettor: other_bettor,
             amount: parseInt(betAmount),
             description: betDescription,
             is_complete: betComplete,
@@ -68,7 +68,7 @@ const ViewBetModal = props => {
         closeModal()
         setTimeout(() => {
             dispatch(updateBet(data, statusChanged))
-        }, 500)
+        }, 750)
 
     }
 
@@ -76,7 +76,7 @@ const ViewBetModal = props => {
         closeModal()
         setTimeout(() => {
             dispatch(deleteBet(id))
-        }, 500)
+        }, 750)
 
 
     }
@@ -154,12 +154,12 @@ const ViewBetModal = props => {
                     <View style={editMode ? styles.editDetailRow : styles.detailRow}>
                         <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bettor(s): </Text>
                         {!editMode
-                            ? <Text style={styles.betText}>{other_bettors}</Text>
+                            ? <Text style={styles.betText}>{other_bettor.firstName + ' ' + other_bettor.lastName}</Text>
                             : <Input
                                 style={styles.input}
                                 leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
                                 onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
-                                defaultValue={other_bettors}
+                                defaultValue={other_bettor.firstName + ' ' + other_bettor.lastName}
                             />
                         }
                     </View>

@@ -3,7 +3,7 @@ export const formatBetArrayOfObjects = (betsArr) => {
     for (const key in betsArr) {
         let bet = {
             id: key,
-            other_bettors: betsArr[key].other_bettors,
+            other_bettor: betsArr[key].other_bettor,
             amount: betsArr[key].amount,
             date: betsArr[key].date,
             description: betsArr[key].description,

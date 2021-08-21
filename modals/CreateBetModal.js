@@ -36,12 +36,28 @@ const CreateBetModal = props => {
             return false
         }
 
+        const defaultOtherBettor = {
+            id: 0,
+            username: 'null',
+            firstName: nameOfBettor,
+            lastName: '- not verifed',
+            email: 'null',
+            did_accept: false
+        }
+
+        const otherBettorData = otherBettorInfo
+        if(otherBettorInfo){
+            otherBettorData.did_accept = false
+        }
+
         const data = {
             description: description,
             amount: parseInt(betAmount),
-            other_bettors: nameOfBettor,
+            other_bettor: otherBettorData ? otherBettorData : defaultOtherBettor,
             won_bet: betWon,
-            is_complete: betComplete
+            is_complete: betComplete,
+            is_verified: otherBettorData ? true : false,
+            is_accepted: false
         }
 
         try {
@@ -64,11 +80,22 @@ const CreateBetModal = props => {
         setDescription('')
         setBetComplete(false)
         setBetWon(false)
+        setOtherBetterInfo('')
     }
 
     const handleSetUser = (person) => {
-        setNameOfBettor(person.name)
+        setNameOfBettor(person.firstName + " " + person.lastName)
         setOtherBetterInfo(person)
+    }
+
+    const clearInput = () => {
+        if (otherBettorInfo) {
+            setTimeout(() => {
+                setOtherBetterInfo('')
+                setNameOfBettor('')
+            }, 50)
+        }
+
     }
 
     return (
@@ -88,19 +115,25 @@ const CreateBetModal = props => {
                         <Text style={styles.closeIcon}>Cancel</Text>
                     </Pressable>
                 </View>
-                <SafeAreaView style={{zIndex: 1}}>
-                    <MySearchableDropdown setUser={(person) => handleSetUser(person)}/>
+                <SafeAreaView style={{ zIndex: 1 }}>
+                    <MySearchableDropdown setUser={(person) => handleSetUser(person)} />
                 </SafeAreaView>
                 <View style={styles.inputContainer}>
                     <Input
-                        style={styles.input}
-                        placeholder='John Doe'
+                        onKeyPress={({ nativeEvent }) => {
+                            if (nativeEvent.key === 'Backspace') {
+                                clearInput()
+                            }
+                        }}
+                        style={otherBettorInfo ? [styles.input, {color: Colors.primaryColor}] : styles.input}
+                        placeholder='or enter a custom name here'
                         leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
                         label="Name of the other bettor"
                         labelStyle={{ color: 'gray' }}
                         onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
                         defaultValue={nameOfBettor}
                         autoFocus={true}
+
                     />
                     <Input
                         style={styles.input}

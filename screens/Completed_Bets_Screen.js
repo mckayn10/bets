@@ -15,19 +15,16 @@ function Completed_Bets_Screen(props) {
 
     const dispatch = useDispatch()
 
-    const loadBets = async () => {
+    const loadBets = () => {
         setIsRefreshing(true)
         try {
-            await dispatch(fetchBets())
+            dispatch(fetchBets())
         }
         catch (err) {
             console.error(err)
         }
         setIsRefreshing(false)
-
-        return props.bets
     }
-
 
     let count = 0
     props.bets.forEach(bet => {
@@ -40,7 +37,6 @@ function Completed_Bets_Screen(props) {
         if (betData.item.is_complete) {
             return (
                 <BetCard
-                    title={betData.item.description}
                     bet={betData.item}
                     permissions={props.permissions}
                 />
@@ -61,7 +57,7 @@ function Completed_Bets_Screen(props) {
                     keyExtractor={(bet, index) => index.toString()}
                 />
                 : <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>No complete bets to display</Text>
+                    <Text style={styles.emptyText}>{props.permissions ? 'No complete bets to display' : 'No bets to display'}</Text>
                     <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.grayDark} />
                 </View>
             }

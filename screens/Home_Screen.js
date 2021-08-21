@@ -28,12 +28,11 @@ function Home_Screen(props) {
       dispatch(fetchBets())
       dispatch(getUser())
       dispatch(fetchAllFriends())
-      
     }
     catch (err) {
       console.error(err)
     }
-  }, [dispatch])
+  }, [])
 
   return (
 

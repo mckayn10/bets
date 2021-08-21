@@ -7,25 +7,17 @@ import Colors from '../constants/colors';
 export default MySearchableDropdown = (props) => {
     const friendsList = useSelector(state => state.people.friends)
 
-    friendsList.forEach(friend => {
-        friend.name = friend.firstName + ' ' + friend.lastName
-    })
-
     return (
             <SearchableDropdown
-                onTextChange={text => console.log(text)}
+                onTextChange={text => text}
                 onItemSelect={item => props.setUser(item)}
-                containerStyle={{ padding: 15}}
+                containerStyle={{ padding: 10}}
                 textInputStyle={{
-                    padding: 15,
-                    borderWidth: 1,
-                    borderColor: Colors.grayLight,
-                    backgroundColor: Colors.backgroundColor,
-                    borderRadius: 5,
+                    fontSize: 13
                 }}
                 itemStyle={{
-                    paddingTop: 20,
-                    paddingBottom: 20,
+                    paddingTop: 17,
+                    paddingBottom: 17,
                     padding: 10,
                     backgroundColor: 'white',
                     borderColor: Colors.grayLight,
@@ -39,7 +31,7 @@ export default MySearchableDropdown = (props) => {
                 itemsContainerStyle={{
                     maxHeight: '100%',
                     position: 'absolute',
-                    top: 72,
+                    top: 67,
                     width: '100%',
                     alignSelf: 'center',
                     borderRadius: 5,
@@ -50,7 +42,7 @@ export default MySearchableDropdown = (props) => {
 
                 }}
                 items={friendsList}
-                placeholder="Search friends..."
+                placeholder="Search for a friend to send them a bet.."
                 placeholderTextColor='gray'
 
             />

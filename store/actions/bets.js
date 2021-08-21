@@ -15,18 +15,14 @@ export const fetchBets = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
 
-        let result = []
-        db.ref("bets")
-            .orderByChild("user_id")
-            .equalTo(userId)
-            .on("value", function (snapshot) {
-                result = snapshot.val()
-            });
+        db.ref("bets").orderByChild("user_id").equalTo(userId).on("value", function (snapshot) {
+            let result = snapshot.val()
+            dispatch({
+                type: GET_BETS,
+                bets: result
+            })
 
-        dispatch({
-            type: GET_BETS,
-            bets: result
-        })
+        });
     }
 }
 
@@ -40,7 +36,6 @@ export const createBet = (betData) => {
         betData.date = new Date().toLocaleDateString()
         betData.user_id = userId
         betData.is_double_or_nothing = false
-        betData.is_verified = false
 
         const response = await fetch(`${url}/bets.json?auth=${token}`, {
             method: 'POST',
@@ -55,6 +50,7 @@ export const createBet = (betData) => {
         }
         const resData = await response.json()
         betData.id = resData.name
+
         dispatch({
             type: CREATE_BET,
             bet: betData
@@ -71,7 +67,7 @@ export const updateBet = (betData, statusChanged) => {
         betData.date_complete = statusChanged && betData.is_complete ? Date.now() : betData.date_complete
         betData.user_id = userId
 
-        db.ref('bets/' + betData.id).set(betData, (err) => {
+        db.ref('bets/' + betData.id).update(betData, (err) => {
             if (err) {
                 console.err('Error updating bet')
             } else {

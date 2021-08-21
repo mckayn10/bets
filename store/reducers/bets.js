@@ -19,18 +19,21 @@ const betsReducer = (state = initialState, action) => {
         }
         case GET_BETS:
             const loadedBets = [];
+
             for (const key in action.bets) {
                 let bet = {
                     id: key,
-                    other_bettors: action.bets[key].other_bettors,
+                    other_bettor: action.bets[key].other_bettor,
                     amount: action.bets[key].amount,
                     date: action.bets[key].date,
                     description: action.bets[key].description,
                     is_complete: action.bets[key].is_complete,
+                    is_double_or_nothing: action.bets[key].is_double_or_nothing,
+                    is_verified: action.bets[key].is_verified,
+                    is_accepted: action.bets[key].is_accepted,
                     won_bet: action.bets[key].won_bet,
                     date_complete: action.bets[key].date_complete,
-                    user_id: action.bets[key].user_id
-
+                    user_id: action.bets[key].user_id,
                 }
                 loadedBets.push(bet)
             }
@@ -41,7 +44,6 @@ const betsReducer = (state = initialState, action) => {
             return { ...state, bets: loadedBets }
 
         case CREATE_BET:
-            updatedArr.unshift(action.bet)
             return { ...state, bets: updatedArr }
 
         case DELETE_BET:
@@ -58,7 +60,7 @@ const betsReducer = (state = initialState, action) => {
                 let placeToTop = bet.is_complete != newData.is_complete ? true : false
                 if (bet.id === newData.id) {
                     bet.amount = newData.amount
-                    bet.other_bettors = newData.other_bettors
+                    bet.other_bettor = newData.other_bettor
                     bet.description = newData.description
                     bet.is_complete = newData.is_complete
                     bet.won_bet = newData.won_bet

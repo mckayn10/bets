@@ -10,25 +10,23 @@ import { fetchBets } from '../store/actions/bets';
 
 function Incomplete_Bets_Screen(props) {
     const [isRefreshing, setIsRefreshing] = useState(false)
+    const betsArr = props.bets
 
     useEffect(() => {
         setIsRefreshing(false)
     }, [])
 
     const dispatch = useDispatch()
-
-    const betsArr = props.bets
     
-    const loadBets = useCallback(async () => {
+    const loadBets = () => {
         setIsRefreshing(true)
         try {
-            await dispatch(fetchBets())
+            dispatch(fetchBets())
         } catch(err){
             console.error(err)
         }
         setIsRefreshing(false)
-    }, [dispatch])
-
+    }
 
     let count = 0
     betsArr.forEach(bet => {
@@ -41,7 +39,6 @@ function Incomplete_Bets_Screen(props) {
         if (!betData.item.is_complete) {
             return (
                 <BetCard
-                    title={betData.item.description}
                     bet={betData.item}
                     permissions={true}
                 />

@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { addFriend, removeFriend } from '../store/actions/friends';
 import Completed_Bets_Screen from './Completed_Bets_Screen';
 import { formatBetArrayOfObjects } from '../constants/utils';
+import db from '../firebase/config';
 
 function Person_Profile_Screen(props) {
     const person = props.route.params.person
@@ -60,12 +61,14 @@ function Person_Profile_Screen(props) {
     }, [])
 
     const fetchBets = async () => {
-        const response = await fetch(`${url}/bets/${id}.json`)
+        db.ref("bets").orderByChild("user_id").equalTo(id).on("value", function (snapshot) {
+            let result = snapshot.val()
+            
+            const formattedData = formatBetArrayOfObjects(result)
+            setBets(formattedData)
+        });
 
-        const resData = await response.json()
-        const formattedData = formatBetArrayOfObjects(resData)
 
-        setBets(formattedData)
     }
 
     const handleAddFriend = () => {
