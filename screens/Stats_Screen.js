@@ -32,10 +32,8 @@ function Stats_Screen(props) {
         bets.forEach(bet => {
             if (completedCriteria(bet) && bet.won_bet) {
                 amountWon += bet.amount
-                console.log('won', amountWon)
             } else if(completedCriteria(bet) && !bet.won_bet) {
                 amountLost += bet.amount
-                console.log('lost', amountLost)
             }
         })
         return amountWon - amountLost
@@ -88,7 +86,7 @@ function Stats_Screen(props) {
 
     const winPercentage = !wonBetsCount() / completedBetsCount() ? 0 : parseFloat((wonBetsCount() / completedBetsCount()) * 100).toFixed(2)
     const lostPercentage = !lostBetsCount() / completedBetsCount() ? 0 : parseFloat((lostBetsCount() / completedBetsCount()) * 100).toFixed(2)
-    const perBetAvg = !averageWinningsPerBet() ? 0 : averageWinningsPerBet()
+    const perBetAvg = !averageWinningsPerBet() ? 0 : parseFloat(Math.abs(averageWinningsPerBet())).toFixed(2)
 
 
     return (

@@ -3,21 +3,23 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import Colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { formatTimeSince } from '../constants/utils';
 
 export default function NotificationCard(props) {
     const { to, from, message, data, type, date } = props.noti
 
     const openNotification = () => {
-        console.log('open')
     }
     const closeNotification = () => {
-        console.log('close')
     }
+
+    var aDay = 24 * 60 * 60 * 1000;
+    let timeSince = formatTimeSince(new Date(date-aDay))
 
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Ionicons name="ios-person-circle-outline" size={50} color="black" />
+                <Ionicons name="ios-person-circle-outline" size={60} color="black" />
                 <Text style={styles.title}>
                     {from.firstName}
                     <Text style={{ fontWeight: '300' }}> has sent you a {type === 'bet' ? 'bet offer' : 'friend request'}</Text>
@@ -46,7 +48,7 @@ export default function NotificationCard(props) {
                     />
                 </View>
             }
-            <Text style={styles.date}>{date}</Text>
+            <Text style={styles.date}>{timeSince} ago</Text>
 
         </View>
     );
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     },
     date: {
         position: 'absolute',
-        bottom: 10,
+        bottom: 15,
         left: 15,
         color: 'gray',
         fontSize: 10

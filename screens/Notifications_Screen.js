@@ -33,13 +33,13 @@ export default function Notifications_Screen(props) {
     return (
         <SafeAreaView style={styles.screen}>
 
-            {dummyNoti.length > 0
+            {notifications.length > 0
                 ? <FlatList
                     data={notifications}
                     renderItem={renderCompletedBet}
                     keyExtractor={(bet, index) => index.toString()}
                 />
-                : <View>
+                : <View style={{justifyContent: 'center', flex: 1}}>
                     <HeaderText style={styles.emptyTextHeader}>No Notifications</HeaderText>
                     <HeaderText style={styles.emptyText}>We'll notify you of anything important here!</HeaderText>
                 </View>

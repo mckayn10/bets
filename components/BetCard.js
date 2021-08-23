@@ -53,7 +53,7 @@ export default function BetCard(props) {
 
     return (
         <TouchableOpacity
-            style={styles.container}
+            style={!is_accepted && is_verified ? [styles.container, {opacity: .5}] : styles.container}
             onPress={() => updateBetModalStatus()}
         >
             <View style={styles.descriptionContainer}>

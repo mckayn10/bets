@@ -13,10 +13,13 @@ import Stats_Screen from '../screens/Stats_Screen';
 import Stats_Navigator from './Stats_Navigator';
 import Settings_Screen from '../screens/Settings_Screen';
 import Settings_Navigator from './Settings_Navigator';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
 export default function Tab_Navigator() {
+    let notifications = useSelector(state => state.notifications.notifications)
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -89,11 +92,11 @@ export default function Tab_Navigator() {
                 options={{
                     headerShown: false,
                     tabBarShowLabel: false,
-                    tabBarBadge: 3,
+                    tabBarBadge: notifications.length > 0 ? notifications.length : null,
                     tabBarBadgeStyle: {
                         fontSize: 12,
                         marginTop: 10
-                    },
+                    }
                 }}
             />
             <Tab.Screen
