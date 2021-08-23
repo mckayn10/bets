@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, Modal, Pressable, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '../constants/colors'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createBet } from '../store/actions/bets'
 import { Feather } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -18,6 +18,8 @@ const CreateBetModal = props => {
     const [betComplete, setBetComplete] = useState(false);
     const [betWon, setBetWon] = useState(false);
     const [otherBettorInfo, setOtherBetterInfo] = useState('')
+
+    const creator = useSelector(state => state.auth.userInfo)
 
     useEffect(() => {
         setBetWon(false)
@@ -40,13 +42,13 @@ const CreateBetModal = props => {
             id: 0,
             username: 'null',
             firstName: nameOfBettor,
-            lastName: '- not verifed',
+            lastName: '',
             email: 'null',
             did_accept: false
         }
 
         const otherBettorData = otherBettorInfo
-        if(otherBettorInfo){
+        if (otherBettorInfo) {
             otherBettorData.did_accept = false
         }
 
@@ -54,14 +56,16 @@ const CreateBetModal = props => {
             description: description,
             amount: parseInt(betAmount),
             other_bettor: otherBettorData ? otherBettorData : defaultOtherBettor,
+            creator: creator,
             won_bet: betWon,
             is_complete: betComplete,
             is_verified: otherBettorData ? true : false,
             is_accepted: false
         }
+        let sendBetNotification = otherBettorData ? true : false
 
         try {
-            dispatch(createBet(data))
+            dispatch(createBet(data, sendBetNotification))
         }
         catch (err) {
             Alert.alert('Error creating new bet. ' + err)
@@ -116,7 +120,7 @@ const CreateBetModal = props => {
                     </Pressable>
                 </View>
                 <SafeAreaView style={{ zIndex: 1 }}>
-                    <MySearchableDropdown setUser={(person) => handleSetUser(person)} />
+                    <MySearchableDropdown setUser={(person) => handleSetUser(person)}/>
                 </SafeAreaView>
                 <View style={styles.inputContainer}>
                     <Input
@@ -125,14 +129,13 @@ const CreateBetModal = props => {
                                 clearInput()
                             }
                         }}
-                        style={otherBettorInfo ? [styles.input, {color: Colors.primaryColor}] : styles.input}
+                        style={otherBettorInfo ? [styles.input, { color: Colors.primaryColor }] : styles.input}
                         placeholder='or enter a custom name here'
                         leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
                         label="Name of the other bettor"
                         labelStyle={{ color: 'gray' }}
                         onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
                         defaultValue={nameOfBettor}
-                        autoFocus={true}
 
                     />
                     <Input
@@ -147,8 +150,8 @@ const CreateBetModal = props => {
                     />
                     <Input
                         style={styles.input}
-                        placeholder='My favorite team beat your favorite team'
-                        leftIcon={<MaterialIcons name="text-snippet" size={20} color={Colors.primaryColor} />}
+                        placeholder='description'
+                        leftIcon={<MaterialIcons name="text-snippet" size={20} color={Colors.primaryColor} style={{marginRight: 2}} />}
                         label="Short description of bet"
                         labelStyle={{ color: 'gray' }}
                         onChangeText={description => setDescription(description)}
@@ -171,19 +174,18 @@ const CreateBetModal = props => {
                                 onValueChange={() => setBetWon(!betWon)}
                             />
                         </View> : null}
-
-                    <View style={styles.btnContainer}>
-                        <Button
-                            icon={
-                                <Feather name="check-circle" size={24} color='white' />
-                            }
-                            iconRight
-                            title="Create Bet  "
-                            type="solid"
-                            buttonStyle={styles.createBtn}
-                            onPress={() => createNewBet()}
-                        />
-                    </View>
+                </View>
+                <View style={styles.btnContainer}>
+                    <Button
+                        icon={
+                            <Feather name="check-circle" size={24} color='white' />
+                        }
+                        iconRight
+                        title="Create Bet  "
+                        type="solid"
+                        buttonStyle={styles.createBtn}
+                        onPress={() => createNewBet()}
+                    />
                 </View>
             </View>
 
@@ -201,17 +203,11 @@ const styles = StyleSheet.create({
 
     },
     titleContainer: {
-        backgroundColor: 'white',
+        backgroundColor: Colors.primaryColor,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderWidth: 1,
         borderColor: Colors.grayDark,
-        shadowColor: 'black',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 1,
-        elevation: 1,
         paddingTop: Platform.OS === 'ios' ? 35 : 0
     },
     inputContainer: {
@@ -227,12 +223,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingLeft: 15,
         fontWeight: 'bold',
+        color: 'white'
     },
     closeIcon: {
         fontSize: 18,
         margin: 10,
         alignSelf: 'flex-end',
-        color: Colors.primaryColor
+        color: 'white'
     },
     createBtn: {
         backgroundColor: Colors.primaryColor
@@ -250,7 +247,11 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     btnContainer: {
-        marginTop: 30
+        position: 'absolute',
+        bottom: 70,
+        alignSelf: 'center',
+        width: '90%'
+
     }
 })
 

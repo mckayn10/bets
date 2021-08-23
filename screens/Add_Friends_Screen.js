@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FriendCard from '../components/FriendCard';
 import { SearchBar } from 'react-native-elements';
 import {fetchAllPeople} from '../store/actions/friends'
+import { Ionicons } from '@expo/vector-icons';
 
 
 function Friends_Screen(props) {
@@ -31,8 +32,8 @@ function Friends_Screen(props) {
             headerLeft: () => {
                 return (
                     <TouchableOpacity {...props}>
-                        <AntDesign
-                            name="back"
+                        <Ionicons
+                            name="backspace-outline"
                             size={24}
                             color="white"
                             style={{ marginBottom: 3, padding: 0 }}

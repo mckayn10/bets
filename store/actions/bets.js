@@ -1,4 +1,6 @@
 import db from "../../firebase/config";
+import { useDispatch } from "react-redux";
+import { sendBetOffer } from "./notifications";
 
 export const CREATE_BET = 'CREATE_BET';
 export const UPDATE_MODAL = 'UPDATE_MODAL';
@@ -15,27 +17,41 @@ export const fetchBets = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
 
-        db.ref("bets").orderByChild("user_id").equalTo(userId).on("value", function (snapshot) {
-            let result = snapshot.val()
-            dispatch({
-                type: GET_BETS,
-                bets: result
-            })
+        let result1 = []
+        let result2 = []
+        let allResults = []
+        db.ref("bets").orderByChild("creator_id").equalTo(userId).on("value", function (snapshot) {
+            result1 = snapshot.val()
+            db.ref("bets").orderByChild("other_id").equalTo(userId).on("value", function (snapshot) {
+                result2 = snapshot.val()
+                allResults = {
+                    ...result1,
+                    ...result2
+                }
 
+                dispatch({
+                    type: GET_BETS,
+                    bets: allResults
+                })
+            });
         });
+
+
+
     }
 }
 
 
-export const createBet = (betData) => {
+export const createBet = (betData, sendBetNotification) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
 
         betData.date_complete = betData.is_complete ? Date.now() : 0
         betData.date = new Date().toLocaleDateString()
-        betData.user_id = userId
+        betData.creator_id = userId
         betData.is_double_or_nothing = false
+        betData.other_id = betData.other_bettor.id
 
         const response = await fetch(`${url}/bets.json?auth=${token}`, {
             method: 'POST',
@@ -51,6 +67,10 @@ export const createBet = (betData) => {
         const resData = await response.json()
         betData.id = resData.name
 
+        if (sendBetNotification) {
+            sendBetOffer(betData)
+        }
+
         dispatch({
             type: CREATE_BET,
             bet: betData
@@ -65,7 +85,6 @@ export const updateBet = (betData, statusChanged) => {
         const userId = getState().auth.userId
 
         betData.date_complete = statusChanged && betData.is_complete ? Date.now() : betData.date_complete
-        betData.user_id = userId
 
         db.ref('bets/' + betData.id).update(betData, (err) => {
             if (err) {

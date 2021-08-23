@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import NavBar from '../components/NavBar';
 import Completed_Bets_Screen from './Completed_Bets_Screen';
 import Incomplete_Bets_Screen from './Incomplete_Bets_Screen';
@@ -10,7 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import { getUser } from '../store/actions/auth';
 import { fetchAllFriends } from '../store/actions/friends';
+import { fetchNotifications } from '../store/actions/notifications';
 import HeaderText from '../components/HeaderText';
+import { Ionicons } from '@expo/vector-icons';
 import db from '../firebase/config'
 
 function Home_Screen(props) {
@@ -28,6 +30,7 @@ function Home_Screen(props) {
       dispatch(fetchBets())
       dispatch(getUser())
       dispatch(fetchAllFriends())
+      dispatch(fetchNotifications())
     }
     catch (err) {
       console.error(err)
@@ -52,17 +55,16 @@ function Home_Screen(props) {
         showComplete={(showComplete) => setShowComplete(showComplete)}
       />
 
-
-      <View
+      <TouchableOpacity
         style={styles.btnContainer}
       >
-        <AntDesign
-          name="pluscircle"
-          size={45}
-          color={Colors.primaryColor}
+        <Ionicons
+          name="create-outline"
+          size={26}
+          color='white'
           onPress={() => setModalVisible(true)}
         />
-      </View>
+      </TouchableOpacity>
     </View>
 
   );
@@ -85,10 +87,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    bottom: 50,
-    backgroundColor: 'white',
+    top: 45,
+    right: 15,
     borderRadius: 50,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   toggleText: {
     flex: 1,

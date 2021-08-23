@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import Colors from '../constants/colors'
 import HeaderText from './HeaderText';
@@ -7,6 +7,7 @@ import { logout } from '../store/actions/auth';
 import { removeData } from '../store/actions/bets';
 import { useDispatch } from 'react-redux';
 import OpenDrawerIcon from './OpenDrawerIcon';
+import NotificationsIcon from './NotificationsIcon'
 
 export default function NavBar({props}) {
 
@@ -19,24 +20,21 @@ export default function NavBar({props}) {
 
     let totalAmount = 0
     allBetsArr.forEach(bet => {
-        if (bet.is_complete && bet.won_bet) {
+        const {is_accepted, is_complete, is_verified} = bet
+        let completedCriteria = is_complete && !is_verified || is_complete && is_accepted
+        if (completedCriteria && bet.won_bet) {
             totalAmount += bet.amount
-        } else if (bet.is_complete && !bet.won_bet) {
+        } else if (completedCriteria && !bet.won_bet) {
             totalAmount -= bet.amount
         }
     })
     let num = parseFloat(Math.abs(totalAmount)).toFixed(2)
     let formattedAmount = numberWithCommas(num)
-    const logoutUser = () => {
-        dispatch(logout())
-        dispatch(removeData())
-    }
 
     return (
-        <View style={styles.navContainer}>
-            <OpenDrawerIcon {...props}/>
+        <SafeAreaView style={styles.navContainer}>
             <HeaderText style={styles.totalText}>{totalAmount < 0 ? '-' : ''}${formattedAmount}</HeaderText>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -53,7 +51,7 @@ const styles = StyleSheet.create({
     totalText: {
         fontSize: 40,
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
 
 });

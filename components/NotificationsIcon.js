@@ -1,20 +1,21 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 
-export default function OpenDrawerIcon(props) {
+export default function NotificationsIcon(props) {
 
-    const openDrawer = () => {
-        props.navigation.openDrawer()
+    
+    const goToNotifications = () => {
+        props.navigation.navigate('Notifications')
     }
 
     return (
         <TouchableOpacity
             style={styles.menuIconContainer}
-            onPress={() => openDrawer()}
+            onPress={() => goToNotifications()}
         >
-            <AntDesign style={styles.menuIcon} name="menuunfold" size={22} color="white" />
+            <Ionicons style={styles.menuIcon} name="notifications" size={22} color="white" />
         </TouchableOpacity>
     );
 }
@@ -22,8 +23,8 @@ export default function OpenDrawerIcon(props) {
 const styles = StyleSheet.create({
     menuIconContainer: {
         position: 'absolute',
-        left: 5,
-        top: 51,
+        right: 5,
+        top: 50,
         width: 50,
         height: 40,
     },

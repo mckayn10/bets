@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity } from 'react-native'
-import Colors from '../constants/colors'
+import Colors from '../constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import dummyFriends from '../data/dummyFriends'
 import { Entypo } from '@expo/vector-icons';
@@ -8,10 +8,11 @@ import FriendCard from '../components/FriendCard';
 import { SearchBar } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 import { useSelector } from 'react-redux'
+import { Ionicons } from '@expo/vector-icons';
 
 
 function Friends_Screen(props) {
-    const friendsList = useSelector(state => state.people.friends)
+    let friendsList = useSelector(state => state.people.friends)
 
     const [searchText, setSearchText] = useState()
     const [friends, setFriends] = useState([])
@@ -19,29 +20,18 @@ function Friends_Screen(props) {
 
     useEffect(() => {
         setFriends(friendsList)
-    }, [])
+        return () => {
+            friendsList = []
+        }
+    }, [friendsList])
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
-            headerLeft: () => {
-                return (
-                    <TouchableOpacity {...props}>
-                        <AntDesign
-                            name="back"
-                            size={24}
-                            color="white"
-                            style={{ color: 'white', marginBottom: 3, padding: 0 }}
-                            onPress={() => props.navigation.goBack()}
-                        />
-
-                    </TouchableOpacity>
-                )
-            },
             headerRight: () => {
                 return (
                     <TouchableOpacity {...props}>
                         <MaterialIcons
-                            name="add-circle-outline"
+                            name="person-add-alt-1"
                             size={28} color="black"
                             style={{ color: 'white', marginBottom: 3, padding: 0 }}
                             onPress={() => props.navigation.navigate('Add Friends')}
@@ -133,7 +123,6 @@ const styles = StyleSheet.create({
         padding: 10,
         height: 40,
         width: '90%',
-        alignSelf: 'center',
         borderWidth: 1,
         backgroundColor: Colors.grayLight
     }

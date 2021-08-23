@@ -12,6 +12,7 @@ export default function FriendCard(props) {
             onPress={() => props.navigation.navigate('Person',
                 {
                     person: props.person,
+                    isUser: false
                 }
             )
             }
@@ -41,12 +42,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderBottomWidth: 1,
         borderBottomColor: Colors.grayLight
-        // borderRadius: 10,
-        // shadowColor: '#d9d9d9',
-        // shadowOffset: { width: 0, height: 2 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 2,
-        // elevation: 1,
     },
     descriptionContainer: {
         flexDirection: 'row',

@@ -12,11 +12,13 @@ import { updateBet } from '../store/actions/bets';
 import { deleteBet } from '../store/actions/bets';
 import Modal from 'react-native-modal'
 import { KeyboardAvoidingView } from 'react-native';
+import { set } from 'react-native-reanimated';
+import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 
 
 const ViewBetModal = props => {
-    const { description, amount, other_bettor, date, won_bet, is_complete, id, date_complete } = props.betData
+    const { description, amount, other_bettor, date, won_bet, is_complete, id, date_complete, is_verified, is_accepted } = props.betData
 
     const [editMode, setEditMode] = useState(false)
     const [nameOfBettor, setNameOfBettor] = useState('');
@@ -26,13 +28,24 @@ const ViewBetModal = props => {
     const [betWon, setBetWon] = useState(false);
     const [toggleModal, setToggleModal] = useState(props.modalVisible)
     const [hasPermission, setHasPermissions] = useState(props.permissions)
+    let betStatusText = ''
+    if (is_verified && !is_accepted) {
+        betStatusText = 'Pending acceptance'
+    } else if (is_verified && is_accepted && is_complete || !is_verified && is_complete) {
+        betStatusText = 'Complete'
+    } else {
+        betStatusText = 'Pending'
+    }
 
     useEffect(() => {
-        setNameOfBettor(other_bettor.firstName + other_bettor.lastName)
+        setNameOfBettor(other_bettor.firstName)
         setBetAmount(amount)
         setBetDescription(description)
         setBetWon(won_bet)
         setBetComplete(is_complete)
+        if (is_verified) {
+            setHasPermissions(false)
+        }
         return () => {
             setEditMode(false)
             setNameOfBettor('')
@@ -41,7 +54,7 @@ const ViewBetModal = props => {
             setBetComplete(false)
             setBetWon(false)
         }
-    }, [amount, is_complete, description, other_bettor, won_bet])
+    }, [])
 
     const dispatch = useDispatch()
 
@@ -53,22 +66,20 @@ const ViewBetModal = props => {
     }
 
     const handleUpdateBet = async () => {
-        const data = {
-            other_bettor: other_bettor,
-            amount: parseInt(betAmount),
-            description: betDescription,
-            is_complete: betComplete,
-            won_bet: betComplete ? betWon : false,
-            id: id,
-            date: date,
-            date_complete: date_complete
-        }
+
+        const betData = props.betData
+        betData.other_bettor.firstName = nameOfBettor
+        betData.amount = parseInt(betAmount)
+        betData.is_complete = betComplete
+        betData.won_bet = betWon
+        betData.description = betDescription
+
         const statusChanged = is_complete == betComplete ? false : true
 
         closeModal()
         setTimeout(() => {
-            dispatch(updateBet(data, statusChanged))
-        }, 750)
+            dispatch(updateBet(betData, statusChanged))
+        }, 500)
 
     }
 
@@ -76,7 +87,7 @@ const ViewBetModal = props => {
         closeModal()
         setTimeout(() => {
             dispatch(deleteBet(id))
-        }, 750)
+        }, 500)
 
 
     }
@@ -104,12 +115,13 @@ const ViewBetModal = props => {
             onSwipeComplete={() => closeModal()}
             swipeDirection='down'
             onBackdropPress={() => closeModal()}
-
-
+            style={{ width: '98%', alignSelf: 'center' }}
         >
             <KeyboardAvoidingView
                 style={[styles.container, {
-                    height: hasPermission ? (Platform.OS === 'ios' ? '72%' : '86%') : '60%' ,
+                    height: hasPermission ? (Platform.OS === 'ios' ? '75%' : '86%') : '75%',
+                    width: '100%',
+                    margin: 0
                 }]}
                 behavior='position'
                 contentContainerStyle={styles.avoidKeyboardContainer}>
@@ -121,7 +133,11 @@ const ViewBetModal = props => {
                                     style={[styles.titleIcon, styles.leftIcon]}
                                     onPress={() => setEditMode(!editMode)}
                                 >
-                                    <AntDesign name="back" size={25} color="white" />
+                                    <AntDesign
+                                        name="back"
+                                        size={25}
+                                        color="white"
+                                    />
                                 </TouchableOpacity>
                                 : <TouchableOpacity
                                     style={[styles.titleIcon, styles.leftIcon]}
@@ -129,8 +145,9 @@ const ViewBetModal = props => {
                                 >
                                     <FontAwesome
                                         name="edit"
-                                        size={25}
+                                        size={27}
                                         color="white"
+                                        style={{ paddingTop: 2 }}
                                     />
                                 </TouchableOpacity>
                             }
@@ -138,7 +155,7 @@ const ViewBetModal = props => {
                         : null
                     }
 
-                    <Text style={styles.pageTitle}>Bet Details</Text>
+                    <Text style={!hasPermission ? [styles.pageTitle, {marginLeft: 18}] : styles.pageTitle}>Bet Details</Text>
                     <TouchableOpacity
                         style={styles.titleIcon}
                         onPress={() => closeModal()}
@@ -152,7 +169,7 @@ const ViewBetModal = props => {
                 </View>
                 <View style={styles.detailsContainer}>
                     <View style={editMode ? styles.editDetailRow : styles.detailRow}>
-                        <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bettor(s): </Text>
+                        <Text style={[styles.betText, { fontWeight: 'bold' }]}>Other Bettor: </Text>
                         {!editMode
                             ? <Text style={styles.betText}>{other_bettor.firstName + ' ' + other_bettor.lastName}</Text>
                             : <Input
@@ -180,7 +197,7 @@ const ViewBetModal = props => {
                     </View>
                     <View behavior='position'>
                         <View style={editMode ? styles.editDetailRow : styles.detailRow}>
-                            <Text style={[styles.betText, { fontWeight: 'bold' }]} >Description: </Text>
+                            <Text style={[styles.betText, { fontWeight: 'bold', width: '100%' }]} >Description: </Text>
                             {!editMode
                                 ? <Text style={styles.betText} numberOfLines={4}>{description}</Text>
                                 : <Input
@@ -196,7 +213,7 @@ const ViewBetModal = props => {
                         ? <View>
                             <View style={[styles.detailRow, styles.betStatusContainer]}>
                                 <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Status: </Text>
-                                <Text style={[styles.coloredCompleteText, styles.statusText]}>{is_complete ? 'Complete' : 'Pending'}</Text>
+                                <Text style={[styles.coloredCompleteText, styles.statusText]}>{betStatusText}</Text>
                             </View>
                             {is_complete
                                 ? <View style={[styles.detailRow, styles.betStatusContainer]}>
@@ -233,7 +250,7 @@ const ViewBetModal = props => {
                         ? <View>
                             {!editMode
                                 ?
-                                <View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                                     <View style={styles.btnContainer}>
                                         <Button
                                             iconRight
@@ -245,11 +262,7 @@ const ViewBetModal = props => {
                                     </View>
                                     <View style={styles.btnContainer}>
                                         <Button
-                                            icon={
-                                                <AntDesign name="delete" size={24} color="white" />
-                                            }
-                                            iconRight
-                                            title="Delete Bet  "
+                                            title="Delete Bet"
                                             type="solid"
                                             buttonStyle={styles.deleteButton}
                                             onPress={() => showConfirmDialog()}
@@ -264,7 +277,7 @@ const ViewBetModal = props => {
                                         iconRight
                                         title="Save Changes  "
                                         type="solid"
-                                        buttonStyle={styles.updateButton}
+                                        buttonStyle={[styles.updateButton, {width: '90%', alignSelf: 'center'}]}
                                         onPress={() => handleUpdateBet()}
                                     />
                                 </View>
@@ -293,16 +306,11 @@ const styles = StyleSheet.create({
 
     },
     titleContainer: {
+        width: '100%',
         backgroundColor: Colors.primaryColor,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        shadowColor: 'black',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 1,
-        elevation: 1,
-        paddingTop: 0,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20
     },
@@ -318,14 +326,13 @@ const styles = StyleSheet.create({
     },
     pageTitle: {
         fontSize: 20,
-        textAlign: 'center',
-        paddingLeft: 15,
-        color: 'white'
+        color: 'white',
+        alignSelf: 'center',
     },
     titleIcon: {
         margin: 15,
         alignSelf: 'flex-end',
-        color: 'white'
+        color: 'white',
     },
     icon: {
         marginRight: 10
@@ -341,13 +348,13 @@ const styles = StyleSheet.create({
     betText: {
         paddingBottom: 4,
         fontSize: 14,
-        width: '100%'
     },
     detailRow: {
         flexDirection: 'row',
         padding: 10,
         justifyContent: 'space-between',
         flexWrap: 'wrap',
+
     },
     editDetailRow: {
         padding: 0,
@@ -361,12 +368,16 @@ const styles = StyleSheet.create({
     statusText: {
         paddingBottom: 10,
         fontSize: 14,
+
     },
     updateButton: {
-        backgroundColor: Colors.primaryColor
+        backgroundColor: Colors.primaryColor,
+        width: 150
     },
     deleteButton: {
-        backgroundColor: Colors.red
+        backgroundColor: Colors.red,
+        width: 150
+
     },
     avoidKeyboardContainer: {
         width: '100%',

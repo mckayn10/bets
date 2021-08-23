@@ -6,60 +6,31 @@ import BetCard from '../components/BetCard'
 import { MaterialIcons } from '@expo/vector-icons';
 import { fetchBets } from '../store/actions/bets';
 
-function Completed_Bets_Screen(props) {
-    const [isRefreshing, setIsRefreshing] = useState(false)
-
-    useEffect(() => {
-        setIsRefreshing(false)
-    }, [])
-
-    const dispatch = useDispatch()
-
-    const loadBets = () => {
-        setIsRefreshing(true)
-        try {
-            dispatch(fetchBets())
-        }
-        catch (err) {
-            console.error(err)
-        }
-        setIsRefreshing(false)
-    }
+function All_Bets_Screen(props) {
 
     let count = 0
     props.bets.forEach(bet => {
-        const {is_accepted, is_complete, is_verified} = bet
-        let completedCriteria = is_complete && !is_verified || is_complete && is_accepted
-
-        if (completedCriteria) {
-            count++
-        }
+        count++
     })
 
-    const renderCompletedBet = betData => {
-        const {is_accepted, is_complete, is_verified} = betData.item
-        let completedCriteria = is_complete && !is_verified || is_complete && is_accepted
+    const renderAllUserBets = betData => {
+        return (
+            <BetCard
+                personId={props.personId}
+                bet={betData.item}
+                permissions={props.permissions}
+                invertName={true}
+            />
+        );
 
-        if (completedCriteria) {
-            return (
-                <BetCard
-                    bet={betData.item}
-                    permissions={props.permissions}
-                />
-            );
-        } else {
-            return
-        }
     }
 
     return (
         <SafeAreaView style={styles.container}>
             {count > 0
                 ? <FlatList
-                    onRefresh={loadBets}
-                    refreshing={isRefreshing}
                     data={props.bets}
-                    renderItem={renderCompletedBet}
+                    renderItem={renderAllUserBets}
                     keyExtractor={(bet, index) => index.toString()}
                 />
                 : <View style={styles.emptyContainer}>
@@ -97,4 +68,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Completed_Bets_Screen;
+export default All_Bets_Screen;

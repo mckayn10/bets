@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import betsReducer from './store/reducers/bets';
 import authReducer from './store/reducers/auth';
+import notificationsReducer from './store/reducers/notifications';
 import ReduxThunk from 'redux-thunk'
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
@@ -15,7 +16,8 @@ import peopleReducer from './store/reducers/friends';
 const rootReducer = combineReducers({
   bets: betsReducer,
   auth: authReducer,
-  people: peopleReducer
+  people: peopleReducer,
+  notifications: notificationsReducer
 })
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 

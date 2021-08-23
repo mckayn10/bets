@@ -8,40 +8,29 @@ import { fetchBets } from '../store/actions/bets';
 
 
 
-function Incomplete_Bets_Screen(props) {
-    const [isRefreshing, setIsRefreshing] = useState(false)
+function Shared_Bets_Screen(props) {
     const betsArr = props.bets
 
-    useEffect(() => {
-        setIsRefreshing(false)
-    }, [])
+    let userId = useSelector(state => state.auth.userId)
 
-    const dispatch = useDispatch()
-    
-    const loadBets = () => {
-        setIsRefreshing(true)
-        try {
-            dispatch(fetchBets())
-        } catch(err){
-            console.error(err)
-        }
-        setIsRefreshing(false)
+    const checkIfShared = (bet) => {
+        let meetsCriteria = bet.other_id === props.personId && bet.creator_id === userId || bet.other_id === userId && bet.creator_id === props.personId
+        return meetsCriteria
     }
 
     let count = 0
     betsArr.forEach(bet => {
-        const {is_accepted, is_complete, is_verified} = bet
-        let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
-        if (isPending) {
+        let isShared = checkIfShared(bet)
+        if (isShared) {
             count++
         }
     })
 
-    const renderIncompleteBet = betData => {
-        const {is_accepted, is_complete, is_verified} = betData.item
-        let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
+
+    const renderSharedBets = betData => {
+        let isShared = checkIfShared(betData.item)
         
-        if (isPending) {
+        if (isShared) {
             return (
                 <BetCard
                     bet={betData.item}
@@ -55,15 +44,13 @@ function Incomplete_Bets_Screen(props) {
         <SafeAreaView style={styles.container}>
             {count > 0
                 ? <FlatList
-                    onRefresh={loadBets}
-                    refreshing={isRefreshing}
                     data={betsArr}
-                    renderItem={renderIncompleteBet}
+                    renderItem={renderSharedBets}
                     keyExtractor={(bet, index) => index.toString()}
                 />
                 :
                 <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>No pending bets to display</Text>
+                    <Text style={styles.emptyText}>No shared bets to display</Text>
                     <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.grayDark} />
                 </View>
             }
@@ -97,4 +84,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Incomplete_Bets_Screen;
+export default Shared_Bets_Screen;

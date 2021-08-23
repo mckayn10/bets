@@ -3,32 +3,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
 import { Button } from 'react-native-elements'
 import Colors from '../constants/colors'
-import { MaterialIcons } from '@expo/vector-icons';
-import dummyFriends from '../data/dummyFriends'
-import { Entypo } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import FriendCard from '../components/FriendCard';
-import { SearchBar } from 'react-native-elements';
 import HeaderText from '../components/HeaderText';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { addFriend, removeFriend } from '../store/actions/friends';
-import Completed_Bets_Screen from './Completed_Bets_Screen';
+import { MaterialIcons } from '@expo/vector-icons';
+import { addFriend, fetchAllPersonsFriends, removeFriend } from '../store/actions/friends';
 import { formatBetArrayOfObjects } from '../constants/utils';
 import db from '../firebase/config';
+import Shared_Bets_Screen from './Shared_Bets_Screen';
+import All_Bets_Screen from './All_Bets_Screen';
 
 function Person_Profile_Screen(props) {
-    const person = props.route.params.person
-    const { firstName, lastName, email, username, id } = person
     const [showBetsfeed, setShowBetsFeed] = useState(true)
     const [isFriend, setIsFriend] = useState()
-    const [bets, setBets] = useState([])
+    const [personsBets, setPersonsBets] = useState([])
+    const [mergedBets, setMergedBets] = useState([])
 
+    const person = props.route.params.person
+    const isUser = props.route.params.isUser
+    const { firstName, lastName, email, username, id } = person
     const userFriends = useSelector(state => state.people.friends)
-    const dispatch = useDispatch()
+    const userBets = useSelector(state => state.bets.bets)
     const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (userFriends.some(person => person.id == id)) {
@@ -36,40 +35,67 @@ function Person_Profile_Screen(props) {
         } else {
             setIsFriend(false)
         }
-        fetchBets()
+        fetchPersonsBets()
     }, [])
-
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
             title: `${firstName} ${lastName}`,
-            headerLeft: () => {
+            headerRight: () => {
                 return (
-                    <TouchableOpacity {...props}>
-                        <AntDesign
-                            name="back"
-                            size={24}
-                            color="white"
-                            style={{ marginBottom: 3, padding: 0 }}
-                            onPress={() => props.navigation.goBack()}
-                        />
+                    isUser
+                        ? <TouchableOpacity {...props}>
+                            <MaterialIcons
+                                name="edit"
+                                size={24}
+                                color="white"
+                                style={{ marginBottom: 3, padding: 0 }}
+                                onPress={() => props.navigation.navigate('Edit Profile')}
+                            />
 
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                        : <TouchableOpacity {...props}>
+                            <Ionicons
+                                name="stats-chart"
+                                size={22} color="black"
+                                style={{ color: 'white', marginBottom: 3, padding: 0 }}
+                                onPress={() => props.navigation.navigate('Stats Screen',
+                                    {
+                                        person: person,
+                                        bets: personsBets
+                                    }
+                                )
+                                }
+                            />
+                        </TouchableOpacity>
+
                 )
             }
         })
     }, [])
 
-    const fetchBets = async () => {
-        db.ref("bets").orderByChild("user_id").equalTo(id).on("value", function (snapshot) {
-            let result = snapshot.val()
-            
-            const formattedData = formatBetArrayOfObjects(result)
-            setBets(formattedData)
+    // Get all of the person's/friend's bets
+    const fetchPersonsBets = async () => {
+        let result1 = []
+        let result2 = []
+        let allResults = []
+        db.ref("bets").orderByChild("creator_id").equalTo(id).on("value", function (snapshot) {
+            result1 = snapshot.val()
+            db.ref("bets").orderByChild("other_id").equalTo(id).on("value", function (snapshot) {
+                result2 = snapshot.val()
+                allResults = {
+                    ...result1,
+                    ...result2
+                }
+                let formattedArr = formatBetArrayOfObjects(allResults)
+                setPersonsBets(formattedArr)
+                let mergedBets = personsBets.concat(userBets)
+                setMergedBets(mergedBets)
+            });
         });
-
-
     }
+
+
 
     const handleAddFriend = () => {
         dispatch(addFriend(person))
@@ -147,19 +173,27 @@ function Person_Profile_Screen(props) {
                         titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
                     />
                 </View>
-                <HeaderText style={styles.sendBetBtn}>Send Bet Offer</HeaderText>
+                <HeaderText style={styles.sendBetBtn}>{isUser ? 'Create New Bet' : 'Send Bet Offer'}</HeaderText>
             </View>
             <View style={styles.toggleButtonsContainer}>
                 <Text style={showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(true)}>Bets Feed</Text>
                 <Text style={!showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(false)}>Between You</Text>
             </View>
             {showBetsfeed
-                ? <Completed_Bets_Screen
-                    bets={bets}
+                ? <All_Bets_Screen
+                    personId={id}
+                    bets={personsBets}
                     permissions={false}
                 />
-                : <View><Text>NOTHING HERE</Text></View>
+                : <Shared_Bets_Screen
+                    personId={id}
+                    bets={mergedBets}
+                    permissions={false}
+                />
             }
+
+
+
         </SafeAreaView>
     )
 

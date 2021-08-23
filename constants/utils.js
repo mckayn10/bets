@@ -8,11 +8,14 @@ export const formatBetArrayOfObjects = (betsArr) => {
             date: betsArr[key].date,
             description: betsArr[key].description,
             is_complete: betsArr[key].is_complete,
-            won_bet: betsArr[key].won_bet,
-            date_complete: betsArr[key].date_complete,
             is_double_or_nothing: betsArr[key].is_double_or_nothing,
             is_verified: betsArr[key].is_verified,
-            user_id: betsArr[key].user_id
+            is_accepted: betsArr[key].is_accepted,
+            won_bet: betsArr[key].won_bet,
+            date_complete: betsArr[key].date_complete,
+            creator_id: betsArr[key].creator_id,
+            creator: betsArr[key].creator,
+            other_id: betsArr[key].other_id
         }
         newBetsArr.push(bet)
     }
@@ -21,4 +24,31 @@ export const formatBetArrayOfObjects = (betsArr) => {
     })
 
     return newBetsArr
+}
+
+export const formatNotificationsArrayOfObjects = (notisArr) => {
+    const newNotisArr = [];
+    for (const key in notisArr) {
+        let noti = {
+            id: key,
+            data: notisArr[key].data,
+            date: Date(notisArr[key].date),
+            from: notisArr[key].from,
+            to: notisArr[key].to,
+            type: notisArr[key].type,
+
+        }
+        newNotisArr.unshift(noti)
+    }
+
+    return newNotisArr
+}
+
+
+export const completedCriteria = (bet) => {   
+    return bet.is_complete && !bet.is_verified || bet.is_complete && bet.is_accepted
+}
+
+export const pendingCriteria = (bet) => {   
+    return !bet.is_complete && !bet.is_verified || bet.is_verified && !bet.is_accepted || bet.is_accepted && !bet.is_complete
 }
