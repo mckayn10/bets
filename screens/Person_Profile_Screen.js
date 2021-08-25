@@ -19,8 +19,9 @@ function Person_Profile_Screen(props) {
     const [showBetsfeed, setShowBetsFeed] = useState(true)
     const [isFriend, setIsFriend] = useState()
     const [personsBets, setPersonsBets] = useState([])
-    const [mergedBets, setMergedBets] = useState([])
+    const [sharedBets, setSharedBets] = useState([])
     const [requestPending, setRequestPending] = useState(false)
+    const [numFriends, setNumFriends] = useState(0)
 
     const person = props.route.params.person
     const isUser = props.route.params.isUser
@@ -30,6 +31,7 @@ function Person_Profile_Screen(props) {
     const user = useSelector(state => state.auth.userInfo)
     const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 
+    console.log('persons', personsBets)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -39,6 +41,7 @@ function Person_Profile_Screen(props) {
             setIsFriend(false)
         }
         fetchPersonsBets()
+        getNumFriends()
     }, [])
 
     useLayoutEffect(() => {
@@ -62,13 +65,7 @@ function Person_Profile_Screen(props) {
                                 name="stats-chart"
                                 size={22} color="black"
                                 style={{ color: 'white', marginBottom: 3, padding: 0 }}
-                                onPress={() => props.navigation.navigate('Stats Screen',
-                                    {
-                                        person: person,
-                                        bets: personsBets
-                                    }
-                                )
-                                }
+                                onPress={() => handleGoToStats()}
                             />
                         </TouchableOpacity>
 
@@ -78,54 +75,60 @@ function Person_Profile_Screen(props) {
     }, [])
 
     // Get all of the person's/friend's bets
-    const fetchPersonsBets = async () => {
+    const fetchPersonsBets = () => {
         const betsRef = db.collection('bets')
-        betsRef.where("creator_id", "==", id).where("other_id", "==", id).get()
+        let betsArr = []
+
+        betsRef.where("creator_id", "==", id).get()
             .then((querySnapshot) => {
-                let personsBets = []
                 querySnapshot.forEach((doc) => {
                     let bet = doc.data()
                     bet.id = doc.id
-                    personsBets.unshift(bet)
+                    betsArr.push(bet)
                 });
-                setMergedBets(personsBets)
+                betsRef.where("other_id", "==", id).where("is_accepted", "==", true)
+                    .onSnapshot(querySnapshot => {
+                        querySnapshot.forEach((doc) => {
+                            let bet = doc.data()
+                            bet.id = doc.id
+                            betsArr.push(bet)
+                        });
+
+                        setPersonsBets(betsArr)
+                        getSharedBets(betsArr)
+                    })
             })
-            .catch((error) => {
-                console.error("Error getting documents: ", error);
-            });
+    }
 
+    const getNumFriends = () => {
+        db.collection('friends').doc(id).collection('friendsList').get()
+            .then(querySnapshot => {
+                let count = 0
+                querySnapshot.forEach(doc => {
+                    count++
+                })
+                setNumFriends(count)
+            })
+    }
 
-        // let result1 = []
-        // let result2 = []
-        // let allResults = []
-        // db.ref("bets").orderByChild("creator_id").equalTo(id).on("value", function (snapshot) {
-        //     result1 = snapshot.val()
-        //     db.ref("bets").orderByChild("other_id").equalTo(id).on("value", function (snapshot) {
-        //         result2 = snapshot.val()
-        //         allResults = {
-        //             ...result1,
-        //             ...result2
-        //         }
-        //         let formattedArr = formatBetArrayOfObjects(allResults)
-        //         setPersonsBets(formattedArr)
-        //         let mergedBets = personsBets.concat(userBets)
-        // setMergedBets(mergedBets)
-        //     });
-        // });
+    const getSharedBets = (betsArr) => {
+        let sharedArr = []
+        betsArr.forEach(bet => {
+            if (bet.other_id === user.id || bet.creator_id === user.id) {
+                sharedArr.unshift(bet)
+            }
+        })
+        setSharedBets(sharedArr)
     }
 
 
-
     const handleAddFriend = () => {
-
-
         try {
             sendFriendRequest(user, person)
         }
         catch (err) {
             console.error(err)
         }
-
         setRequestPending(true)
     }
 
@@ -137,7 +140,6 @@ function Person_Profile_Screen(props) {
             console.error('error saving')
         }
         setIsFriend(false)
-
     }
 
     const showConfirmDialog = () => {
@@ -157,6 +159,24 @@ function Person_Profile_Screen(props) {
             ]
         );
     };
+
+    const handleSendBetOffer = () => {
+        props.navigation.navigate('Create Bet', { person: person })
+    }
+
+    const handleCreateBetOffer = () => {
+        props.navigation.navigate('Create Bet')
+    }
+
+    const handleGoToStats = () => {
+        console.log('stats', personsBets)
+        props.navigation.navigate('Stats Screen',
+            {
+                person: person,
+                bets: personsBets
+            }
+        )
+    }
 
     const friendBtn = () => {
         if (isFriend) {
@@ -217,27 +237,37 @@ function Person_Profile_Screen(props) {
                         icon={
                             <FontAwesome5 name="user-friends" size={12} color={Colors.primaryColor} />
                         }
-                        title="25 friends"
+                        title={numFriends + ' ' + (numFriends === 1 ? 'friend' : 'friends')}
                         type="outline"
                         buttonStyle={styles.isFriendBtn}
                         titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
                     />
                 </View>
-                <HeaderText style={styles.sendBetBtn}>{isUser ? 'Create New Bet' : 'Send Bet Offer'}</HeaderText>
+                <TouchableOpacity
+                    onPress={() => isUser ? handleCreateBetOffer() : handleSendBetOffer()}
+                    style={styles.sendBetBtn}
+                >
+                    <HeaderText style={styles.sendBetBtn}>{isUser ? 'Create New Bet' : 'Send Bet Offer'}</HeaderText>
+                </TouchableOpacity>
             </View>
             <View style={styles.toggleButtonsContainer}>
                 <Text style={showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(true)}>Bets Feed</Text>
-                <Text style={!showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(false)}>Between You</Text>
+                {isUser
+                    ? null
+                    : <Text style={!showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(false)}>Between You</Text>
+                }
+
             </View>
+
             {showBetsfeed
                 ? <All_Bets_Screen
                     personId={id}
                     bets={personsBets}
-                    permissions={false}
+                    permissions={isUser ? true : false}
                 />
                 : <Shared_Bets_Screen
                     personId={id}
-                    bets={mergedBets}
+                    bets={sharedBets}
                     permissions={false}
                 />
             }
@@ -305,11 +335,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
-        backgroundColor: Colors.grayDark,
+        backgroundColor: Colors.backgroundColor,
         borderRadius: 5,
         borderBottomWidth: 1,
         borderBottomColor: Colors.grayDark,
-        padding: 1
+        // padding: 1
     },
     toggleBtn: {
         borderWidth: 1,
@@ -318,7 +348,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 8,
         fontWeight: 'bold',
-        color: 'white'
+        color: 'white',
+        backgroundColor: Colors.grayDark,
+
     },
     activeToggleBtn: {
         borderWidth: 1,
@@ -336,8 +368,7 @@ const styles = StyleSheet.create({
         width: '100%',
         alignSelf: 'center',
         textAlign: 'center',
-        marginBottom: 15,
-        padding: 10,
+        padding: 6,
         borderRadius: 5,
         overflow: 'hidden',
         fontSize: 18,

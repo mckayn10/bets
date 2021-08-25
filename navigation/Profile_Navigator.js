@@ -4,6 +4,7 @@ import Profile_Screen from '../screens/Profile_Screen';
 import Colors from '../constants/colors'
 import { useSelector } from 'react-redux';
 import Person_Profile_Screen from '../screens/Person_Profile_Screen';
+import Create_Bet_Screen from '../screens/Create_Bet_Screen';
 
 const Stack = createNativeStackNavigator()
 
@@ -19,15 +20,26 @@ const Profile_Navigator = (props) => {
                 }
             }}
         >
-            <Stack.Screen
-                name="Personal Profile"
-                component={Person_Profile_Screen}
-                initialParams={{ person: user, isUser: true }}
-            />
-            <Stack.Screen
-                name="Edit Profile"
-                component={Profile_Screen}
-            />
+            <Stack.Group>
+                <Stack.Screen
+                    name="Personal Profile"
+                    component={Person_Profile_Screen}
+                    initialParams={{ person: user, isUser: true }}
+                />
+                <Stack.Screen
+                    name="Edit Profile"
+                    component={Profile_Screen}
+                />
+            </Stack.Group>
+            <Stack.Group
+                screenOptions={{
+                    presentation: 'modal'
+                }}>
+                <Stack.Screen
+                    name="Create Bet"
+                    component={Create_Bet_Screen}
+                />
+            </Stack.Group>
         </Stack.Navigator>
     )
 }

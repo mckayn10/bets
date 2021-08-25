@@ -32,7 +32,6 @@ export default BetReview = (props) => {
     }, [])
 
     const handleAccepted = () => {
-        console.log('accepted')
 
         let statusChanged = completedCriteria(bet)
         bet.is_accepted = true

@@ -5,6 +5,7 @@ import Friends_Screen from '../screens/Friends_Screen';
 import Add_Friends_Screen from '../screens/Add_Friends_Screen'
 import Person_Profile_Screen from '../screens/Person_Profile_Screen';
 import Stats_Screen from '../screens/Stats_Screen';
+import Create_Bet_Screen from '../screens/Create_Bet_Screen';
 
 const Stack = createNativeStackNavigator()
 
@@ -18,46 +19,58 @@ const Friends_Navigator = (props) => {
                 }
             }}
         >
-            <Stack.Screen
-                name="My Friends"
-                component={Friends_Screen}
-                options={{
-                    headerStyle: {
-                        backgroundColor: Colors.primaryColor,
-                    },
-                    headerTitleStyle: {
-                        color: 'white'
-                    },
-                }}
-            />
-            <Stack.Screen
-                name="Add Friends"
-                component={Add_Friends_Screen}
-                options={{
-                    headerStyle: {
-                        backgroundColor: Colors.primaryColor,
-                    },
-                    headerTitleStyle: {
-                        color: 'white'
-                    },
-                }}
-            />
-            <Stack.Screen
-                name="Person"
-                component={Person_Profile_Screen}
-            />
-            <Stack.Screen
-                name="Stats Screen"
-                component={Stats_Screen}
-                options={{
-                    headerStyle: {
-                        backgroundColor: Colors.primaryColor,
-                    },
-                    headerTitleStyle: {
-                        color: 'white'
-                    },
-                }}
-            />
+            <Stack.Group>
+
+                <Stack.Screen
+                    name="My Friends"
+                    component={Friends_Screen}
+                    options={{
+                        headerStyle: {
+                            backgroundColor: Colors.primaryColor,
+                        },
+                        headerTitleStyle: {
+                            color: 'white'
+                        },
+                    }}
+                />
+                <Stack.Screen
+                    name="Add Friends"
+                    component={Add_Friends_Screen}
+                    options={{
+                        headerStyle: {
+                            backgroundColor: Colors.primaryColor,
+                        },
+                        headerTitleStyle: {
+                            color: 'white'
+                        },
+                    }}
+                />
+                <Stack.Screen
+                    name="Person"
+                    component={Person_Profile_Screen}
+                />
+                <Stack.Screen
+                    name="Stats Screen"
+                    component={Stats_Screen}
+                    options={{
+                        headerStyle: {
+                            backgroundColor: Colors.primaryColor,
+                        },
+                        headerTitleStyle: {
+                            color: 'white'
+                        },
+                    }}
+                />
+            </Stack.Group>
+            <Stack.Group
+                screenOptions={{
+                    presentation: 'modal'
+                }}>
+                <Stack.Screen
+                    name="Create Bet"
+                    component={Create_Bet_Screen}
+                />
+            </Stack.Group>
         </Stack.Navigator>
     )
 }

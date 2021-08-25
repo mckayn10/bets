@@ -27,7 +27,6 @@ export const fetchBets = () => {
                     bet.id = doc.id
                     betsArr.unshift(bet)
                 });
-                console.log('first length', betsArr.length)
                 betsRef.where("other_id", "==", userId).where("is_accepted", "==", true)
                     .onSnapshot(querySnapshot => {
                         querySnapshot.forEach((doc) => {
@@ -35,7 +34,6 @@ export const fetchBets = () => {
                             bet.id = doc.id
                             betsArr.unshift(bet)
                         });
-                        console.log('second length', betsArr.length)
 
                         dispatch({ type: GET_BETS, bets: betsArr })
                     })

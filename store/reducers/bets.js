@@ -18,7 +18,6 @@ const betsReducer = (state = initialState, action) => {
             return initialState
         }
         case GET_BETS:
-            console.log('length', action.bets.length)
             return {...state, bets: action.bets}
 
         case CREATE_BET:
