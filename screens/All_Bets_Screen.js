@@ -51,9 +51,7 @@ const styles = StyleSheet.create({
     },
     emptyContainer: {
         flex: 1,
-        position: 'absolute',
-        top: 50,
-        alignSelf: 'center',
+        justifyContent: 'center',
         backgroundColor: Colors.backgroundColor
     },
     emptyText: {

@@ -68,7 +68,7 @@ function Friends_Screen(props) {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <SearchBar
                 value={searchText}
                 placeholder='Search friends..'
@@ -89,7 +89,7 @@ function Friends_Screen(props) {
                     <Entypo name="emoji-sad" size={120} color={Colors.grayDark} style={styles.icon} />
                 </View>
             }
-        </SafeAreaView>
+        </View>
     )
 
 }
@@ -97,8 +97,13 @@ function Friends_Screen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: Colors.backgroundColor,
     },
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },  
     emptyText: {
         fontSize: 18,
         textAlign: 'center',
@@ -112,7 +117,6 @@ const styles = StyleSheet.create({
     friendRow: {
         padding: 15,
         borderTopWidth: 5,
-        borderTopColor: 'red',
         color: 'black',
     },
     searchBar: {
@@ -122,7 +126,8 @@ const styles = StyleSheet.create({
         margin: 5,
         padding: 10,
         height: 40,
-        width: '90%',
+        width: '100%',
+        alignSelf: 'center',
         borderWidth: 1,
         backgroundColor: Colors.grayLight
     }

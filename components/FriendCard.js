@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 export default function FriendCard(props) {
     const { firstName, lastName, email, username, id } = props.person
@@ -26,6 +27,7 @@ export default function FriendCard(props) {
                     <Text style={styles.username}>@{username}</Text>
                 </View>
             </View>
+            <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
         </TouchableOpacity>
     );
 }
@@ -35,9 +37,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 5,
+        // marginTop: 5,
         height: 70,
-        width: '95%',
+        width: '100%',
         alignSelf: 'center',
         backgroundColor: 'white',
         borderBottomWidth: 1,
@@ -61,6 +63,10 @@ const styles = StyleSheet.create({
     friendStatus: {
         marginRight: 15,
         padding: 5
+    },
+    arrow: {
+        position: 'absolute',
+        right: 10
     }
 
 });

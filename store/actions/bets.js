@@ -1,4 +1,5 @@
-import db from "../../firebase/config";
+// import db from "../../firebase/config";
+import db from "../../firebase/firestore";
 import { useDispatch } from "react-redux";
 import { sendBetOffer } from "./notifications";
 
@@ -10,34 +11,35 @@ export const GET_BETS = 'GET_BETS';
 export const REMOVE_DATA = 'REMOVE_DATA'
 
 const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
+const betsRef = db.collection('bets')
 
 
 
 export const fetchBets = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
+        let betsArr = []
 
-        let result1 = []
-        let result2 = []
-        let allResults = []
-        db.ref("bets").orderByChild("creator_id").equalTo(userId).on("value", function (snapshot) {
-            result1 = snapshot.val()
-            db.ref("bets").orderByChild("other_id").equalTo(userId).on("value", function (snapshot) {
-                result2 = snapshot.val()
-                allResults = {
-                    ...result1,
-                    ...result2
-                }
+        betsRef.where("creator_id", "==", userId).get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    let bet = doc.data()
+                    bet.id = doc.id
+                    betsArr.unshift(bet)
+                });
+                console.log('first length', betsArr.length)
+                betsRef.where("other_id", "==", userId).where("is_accepted", "==", true)
+                    .onSnapshot(querySnapshot => {
+                        querySnapshot.forEach((doc) => {
+                            let bet = doc.data()
+                            bet.id = doc.id
+                            betsArr.unshift(bet)
+                        });
+                        console.log('second length', betsArr.length)
 
-                dispatch({
-                    type: GET_BETS,
-                    bets: allResults
-                })
-            });
-        });
-
-
-
+                        dispatch({ type: GET_BETS, bets: betsArr })
+                    })
+            })
     }
 }
 
@@ -53,29 +55,22 @@ export const createBet = (betData, sendBetNotification) => {
         betData.is_double_or_nothing = false
         betData.other_id = betData.other_bettor.id
 
-        const response = await fetch(`${url}/bets.json?auth=${token}`, {
-            method: 'POST',
-            header: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(betData)
-        })
+        betsRef.add(betData)
+            .then((docRef) => {
+                betData.id = docRef.id
 
-        if (!response.ok) {
-            throw new Error('error creating bet')
-        }
-        const resData = await response.json()
-        betData.id = resData.name
+                if (sendBetNotification) {
+                    sendBetOffer(betData)
+                }
 
-        if (sendBetNotification) {
-            sendBetOffer(betData)
-        }
-
-        dispatch({
-            type: CREATE_BET,
-            bet: betData
-        })
-
+                dispatch({
+                    type: CREATE_BET,
+                    bet: betData
+                })
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });
     }
 }
 
@@ -86,20 +81,18 @@ export const updateBet = (betData, statusChanged) => {
 
         betData.date_complete = statusChanged && betData.is_complete ? Date.now() : betData.date_complete
 
-        db.ref('bets/' + betData.id).update(betData, (err) => {
-            if (err) {
-                console.err('Error updating bet')
-            } else {
-                console.log('Successfully updated bet')
-            }
-        })
-
-        dispatch({
-            type: UPDATE_BET,
-            bet: betData
-        })
-
-
+        betsRef.doc(betData.id).update(betData)
+            .then(() => {
+                console.log("Document successfully updated!");
+                dispatch({
+                    type: UPDATE_BET,
+                    bet: betData
+                })
+            })
+            .catch((error) => {
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });
     }
 }
 
@@ -108,13 +101,16 @@ export const deleteBet = (betId) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
 
-        db.ref('bets/' + betId).remove()
-        dispatch({
-            type: DELETE_BET,
-            id: betId
-        })
-
-
+        betsRef.doc(betId).delete()
+            .then(() => {
+                console.log("Document successfully deleted!");
+                dispatch({
+                    type: DELETE_BET,
+                    id: betId
+                })
+            }).catch((error) => {
+                console.error("Error removing document: ", error);
+            });
     }
 }
 

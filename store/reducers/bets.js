@@ -1,4 +1,3 @@
-import { ActionSheetIOS } from 'react-native';
 import { formatBetArrayOfObjects } from '../../constants/utils';
 import {
     DELETE_BET,
@@ -19,11 +18,10 @@ const betsReducer = (state = initialState, action) => {
             return initialState
         }
         case GET_BETS:
-            const loadedBets = formatBetArrayOfObjects(action.bets)
-            return { ...state, bets: loadedBets }
+            console.log('length', action.bets.length)
+            return {...state, bets: action.bets}
 
         case CREATE_BET:
-            updatedArr.unshift(action.bet)
             return { ...state, bets: updatedArr }
 
         case DELETE_BET:
@@ -35,25 +33,26 @@ const betsReducer = (state = initialState, action) => {
             return { ...state, bets: updatedArr }
 
         case UPDATE_BET:
-            const newData = action.bet
-            updatedArr.forEach((bet, index) => {
-                let placeToTop = bet.is_complete != newData.is_complete ? true : false
-                if (bet.id === newData.id) {
-                    bet.amount = newData.amount
-                    bet.other_bettor = newData.other_bettor
-                    bet.description = newData.description
-                    bet.is_complete = newData.is_complete
-                    bet.won_bet = newData.won_bet
-                    bet.date = newData.date
+
+            // const newData = action.bet
+            // updatedArr.forEach((bet, index) => {
+            //     let placeToTop = bet.is_complete != newData.is_complete ? true : false
+            //     if (bet.id === newData.id) {
+            //         bet.amount = newData.amount
+            //         bet.other_bettor = newData.other_bettor
+            //         bet.description = newData.description
+            //         bet.is_complete = newData.is_complete
+            //         bet.won_bet = newData.won_bet
+            //         bet.date = newData.date
 
 
-                    if (placeToTop) {
-                        updatedArr.splice(index, 1)
-                        updatedArr.unshift(bet)
-                    }
-                }
+            //         if (placeToTop) {
+            //             updatedArr.splice(index, 1)
+            //             updatedArr.unshift(bet)
+            //         }
+            //     }
 
-            })
+            // })
 
             return { ...state, bets: updatedArr }
         default:

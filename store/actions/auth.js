@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import db from '../../firebase/config';
-
+// import db from '../../firebase/config';
+import db from '../../firebase/firestore';
 export const SIGN_UP = 'SIGN_UP'
 export const SIGN_IN = 'SIGN_IN'
 export const AUTHENTICATE = 'AUTHENTICATE'
@@ -9,6 +9,7 @@ export const UPDATE_USER = 'UPDATE_USER'
 export const GET_USER = 'GET_USER'
 
 const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
+var peopleRef = db.collection("people");
 
 
 export const authenticate = (userId, token) => {
@@ -21,43 +22,39 @@ export const authenticate = (userId, token) => {
 
 const createPerson = async (userId, token, userData) => {
     userData.id = userId
-    delete  userData.password
-    db.ref('people/' + userId).set(userData)
-        .then(res => {
-            return true
+    delete userData.password
+
+    peopleRef.doc(userId).set(userData)
+        .then(() => {
+            console.log("Document successfully written!");
         })
-        .catch(err => {
-            throw new Error('Error saving new user to database. ' + err)
-        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
 }
 
 export const getUser = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
-        const response = await fetch(`${url}/people/${userId}.json`)
 
-        if (!response.ok) {
-            throw new Error('error getting user')
-        }
-        const resData = await response.json()
-        let person = {
-            email: resData.email,
-            firstName: resData.firstName,
-            lastName: resData.lastName,
-            username: resData.username,
-            id: resData.id
-        }
+        peopleRef.doc(userId).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    dispatch({ type: GET_USER, user: doc.data() })
+                } else {
+                    console.log("Person document does not exist");
+                }
+            })
+            .catch((error) => {
+                console.log("Error getting User:", error);
+            });
 
-        dispatch({
-            type: GET_USER,
-            user: person
-        })
     }
 }
 
 export const signUp = (userInfo) => {
     return async dispatch => {
-        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBZ9IxUy8gB79DYcixiUnvymEmxGrPppsQ',
+        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDg8XxgR1uPzhTmEZI3X7h8gmg3r_dVJvI',
             {
                 method: 'POST',
                 headers: {
@@ -95,7 +92,7 @@ export const signUp = (userInfo) => {
 
 export const signIn = (email, password) => {
     return async dispatch => {
-        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBZ9IxUy8gB79DYcixiUnvymEmxGrPppsQ',
+        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDg8XxgR1uPzhTmEZI3X7h8gmg3r_dVJvI',
             {
                 method: 'POST',
                 headers: {
@@ -134,23 +131,14 @@ export const updateUser = (userData) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
+        userData.id = userId
 
-        const response = await fetch(`${url}/people/${userId}.json?auth=${token}`, {
-            method: 'PATCH',
-            header: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        })
-        if (!response.ok) {
-            throw new Error('error updating user')
-        }
-        const resData = await response.json()
-
-        dispatch({
-            type: UPDATE_USER,
-            userData: resData
-        })
+        personRef.doc(userId).set(userData, { merge: true })
+            .then(() => {
+                dispatch({ type: UPDATE_USER, userData: userData })
+            }).catch((error) => {
+                console.error("Error writing document: ", error);
+            });
     }
 }
 

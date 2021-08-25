@@ -1,19 +1,32 @@
 import {
+    DELETE_NOTIFICATION,
     GET_NOTIFICATIONS,
+   GET_PENDING_REQUESTS,
 } from '../actions/notifications';
 
 import { formatNotificationsArrayOfObjects } from '../../constants/utils';
 
 const initialState = {
     notifications: [],
+    pendingRequests: []
 }
 
 const notificationsReducer = (state = initialState, action) => {
-    let notisArr = state.notifications
+    let notisArr = [...state.notifications]
     switch (action.type) {
         case GET_NOTIFICATIONS:
-            const notifications = formatNotificationsArrayOfObjects(action.notis)
-            return { ...state, notifications: notifications }
+            return { ...state, notifications: action.notis }
+        case DELETE_NOTIFICATION: {
+            notisArr.forEach((noti, index) => {
+                if (noti.id === action.id) {
+                    notisArr.splice(index, 1)
+                }
+            })
+            return {...state, notifications: notisArr}
+        }
+        case GET_PENDING_REQUESTS: {
+            return { ...state, pendingRequests: action.pendingRequests }
+        }
         default:
             return state
     }

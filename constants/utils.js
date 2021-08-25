@@ -36,6 +36,7 @@ export const formatNotificationsArrayOfObjects = (notisArr) => {
             from: notisArr[key].from,
             to: notisArr[key].to,
             type: notisArr[key].type,
+            pending: notisArr[key].pending
 
         }
         newNotisArr.unshift(noti)

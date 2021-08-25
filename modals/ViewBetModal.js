@@ -381,6 +381,7 @@ const styles = StyleSheet.create({
     },
     avoidKeyboardContainer: {
         width: '100%',
+        height: '100%',
         backgroundColor: 'white',
         // alignSelf: 'center',
         borderTopLeftRadius: 20,

@@ -26,7 +26,6 @@ function Shared_Bets_Screen(props) {
         }
     })
 
-
     const renderSharedBets = betData => {
         let isShared = checkIfShared(betData.item)
         
@@ -67,9 +66,7 @@ const styles = StyleSheet.create({
     },
     emptyContainer: {
         flex: 1,
-        position: 'absolute',
-        top: 50,
-        alignSelf: 'center',
+        justifyContent: 'center',
         backgroundColor: Colors.backgroundColor
     },
     emptyText: {

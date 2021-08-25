@@ -14,7 +14,6 @@ export default function Notifications_Screen(props) {
     const [notifications, setNotifications] = useState()
 
     const notis = useSelector(state => state.notifications.notifications)
-
     useEffect(() => {
         setNotifications(notis)
         return () => {
@@ -25,6 +24,7 @@ export default function Notifications_Screen(props) {
     const renderCompletedBet = noti => {
         return (
             <NotificationCard
+                {...props}
                 noti={noti.item}
             />
         );
@@ -33,13 +33,13 @@ export default function Notifications_Screen(props) {
     return (
         <SafeAreaView style={styles.screen}>
 
-            {notifications.length > 0
+            {notis.length > 0
                 ? <FlatList
                     data={notifications}
                     renderItem={renderCompletedBet}
                     keyExtractor={(bet, index) => index.toString()}
                 />
-                : <View style={{justifyContent: 'center', flex: 1}}>
+                : <View style={{ justifyContent: 'center', flex: 1 }}>
                     <HeaderText style={styles.emptyTextHeader}>No Notifications</HeaderText>
                     <HeaderText style={styles.emptyText}>We'll notify you of anything important here!</HeaderText>
                 </View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         padding: 15,
-        backgroundColor: Colors.grayLight
+        backgroundColor: Colors.backgroundColor
     },
     emptyTextHeader: {
         fontSize: 30,

@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useState, useEffect } from 'react'
+import db from '../firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
 import { Button } from 'react-native-elements'
@@ -9,8 +10,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { addFriend, fetchAllPersonsFriends, removeFriend } from '../store/actions/friends';
+import { sendFriendRequest } from '../store/actions/notifications';
 import { formatBetArrayOfObjects } from '../constants/utils';
-import db from '../firebase/config';
 import Shared_Bets_Screen from './Shared_Bets_Screen';
 import All_Bets_Screen from './All_Bets_Screen';
 
@@ -19,12 +20,14 @@ function Person_Profile_Screen(props) {
     const [isFriend, setIsFriend] = useState()
     const [personsBets, setPersonsBets] = useState([])
     const [mergedBets, setMergedBets] = useState([])
+    const [requestPending, setRequestPending] = useState(false)
 
     const person = props.route.params.person
     const isUser = props.route.params.isUser
     const { firstName, lastName, email, username, id } = person
     const userFriends = useSelector(state => state.people.friends)
     const userBets = useSelector(state => state.bets.bets)
+    const user = useSelector(state => state.auth.userInfo)
     const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 
     const dispatch = useDispatch()
@@ -76,31 +79,54 @@ function Person_Profile_Screen(props) {
 
     // Get all of the person's/friend's bets
     const fetchPersonsBets = async () => {
-        let result1 = []
-        let result2 = []
-        let allResults = []
-        db.ref("bets").orderByChild("creator_id").equalTo(id).on("value", function (snapshot) {
-            result1 = snapshot.val()
-            db.ref("bets").orderByChild("other_id").equalTo(id).on("value", function (snapshot) {
-                result2 = snapshot.val()
-                allResults = {
-                    ...result1,
-                    ...result2
-                }
-                let formattedArr = formatBetArrayOfObjects(allResults)
-                setPersonsBets(formattedArr)
-                let mergedBets = personsBets.concat(userBets)
-                setMergedBets(mergedBets)
+        const betsRef = db.collection('bets')
+        betsRef.where("creator_id", "==", id).where("other_id", "==", id).get()
+            .then((querySnapshot) => {
+                let personsBets = []
+                querySnapshot.forEach((doc) => {
+                    let bet = doc.data()
+                    bet.id = doc.id
+                    personsBets.unshift(bet)
+                });
+                setMergedBets(personsBets)
+            })
+            .catch((error) => {
+                console.error("Error getting documents: ", error);
             });
-        });
+
+
+        // let result1 = []
+        // let result2 = []
+        // let allResults = []
+        // db.ref("bets").orderByChild("creator_id").equalTo(id).on("value", function (snapshot) {
+        //     result1 = snapshot.val()
+        //     db.ref("bets").orderByChild("other_id").equalTo(id).on("value", function (snapshot) {
+        //         result2 = snapshot.val()
+        //         allResults = {
+        //             ...result1,
+        //             ...result2
+        //         }
+        //         let formattedArr = formatBetArrayOfObjects(allResults)
+        //         setPersonsBets(formattedArr)
+        //         let mergedBets = personsBets.concat(userBets)
+        // setMergedBets(mergedBets)
+        //     });
+        // });
     }
 
 
 
     const handleAddFriend = () => {
-        dispatch(addFriend(person))
 
-        setIsFriend(true)
+
+        try {
+            sendFriendRequest(user, person)
+        }
+        catch (err) {
+            console.error(err)
+        }
+
+        setRequestPending(true)
     }
 
     const handleRemoveFriend = () => {
@@ -108,7 +134,7 @@ function Person_Profile_Screen(props) {
             dispatch(removeFriend(id))
         }
         catch (err) {
-            console.err(err)
+            console.error('error saving')
         }
         setIsFriend(false)
 
@@ -132,6 +158,47 @@ function Person_Profile_Screen(props) {
         );
     };
 
+    const friendBtn = () => {
+        if (isFriend) {
+            return (
+                <Button
+                    icon={<FontAwesome5 name="user-check" size={12} color={Colors.primaryColor} />}
+                    title='Friends'
+                    type="outline"
+                    buttonStyle={styles.isFriendBtn}
+                    titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
+                    onPress={() => showConfirmDialog()}
+                />
+            )
+        } else if (requestPending) {
+            return (
+                <Button
+                    // icon={<Ionicons name="person-add" size={13} color='white' />}
+                    title='Pending'
+                    type="outline"
+                    buttonStyle={[styles.addFriendBtn, { opacity: 1, backgroundColor: Colors.grayDark }]}
+                    titleStyle={{ fontSize: 13, color: 'white', fontWeight: 'bold', marginLeft: 5 }}
+                    onPress={() => handleAddFriend()}
+                    disabled={true}
+                    disabledTitleStyle={{ color: Colors.grayLight, borderColor: Colors.primaryColor, backgroundColor: Colors.grayDark }}
+                />
+            )
+
+        } else {
+            return (
+                <Button
+                    icon={<Ionicons name="person-add" size={13} color='white' />}
+                    title='Add Friend'
+                    type="outline"
+                    buttonStyle={styles.addFriendBtn}
+                    titleStyle={{ fontSize: 13, color: 'white', fontWeight: 'bold', marginLeft: 5 }}
+                    onPress={() => handleAddFriend()}
+                />
+            )
+        }
+
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -145,24 +212,7 @@ function Person_Profile_Screen(props) {
                     <Text>@{username}</Text>
                 </View>
                 <View style={styles.friendsContainer}>
-                    {isFriend
-                        ? <Button
-                            icon={<FontAwesome5 name="user-check" size={12} color={Colors.primaryColor} />}
-                            title='Friends'
-                            type="outline"
-                            buttonStyle={styles.isFriendBtn}
-                            titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
-                            onPress={() => showConfirmDialog()}
-                        />
-                        : <Button
-                            icon={<Ionicons name="person-add" size={13} color='white' />}
-                            title='Add Friend'
-                            type="outline"
-                            buttonStyle={styles.addFriendBtn}
-                            titleStyle={{ fontSize: 13, color: 'white', fontWeight: 'bold', marginLeft: 5 }}
-                            onPress={() => handleAddFriend()}
-                        />
-                    }
+                    {friendBtn()}
                     <Button
                         icon={
                             <FontAwesome5 name="user-friends" size={12} color={Colors.primaryColor} />

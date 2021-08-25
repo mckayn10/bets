@@ -4,17 +4,39 @@ import { Button } from 'react-native-elements';
 import Colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { formatTimeSince } from '../constants/utils';
+import { addFriend } from '../store/actions/friends';
+import { useDispatch } from 'react-redux';
+import { deleteNotification } from '../store/actions/notifications';
 
 export default function NotificationCard(props) {
-    const { to, from, message, data, type, date } = props.noti
 
-    const openNotification = () => {
+    const { to, from, message, data, type, date, id } = props.noti
+
+    const dispatch = useDispatch()
+
+    const handleDeclineFriendRequest = () => {
+        dispatch(deleteNotification(id))
     }
-    const closeNotification = () => {
+
+    const handleAddFriend = () => {
+
+        try {
+            dispatch(addFriend(from))
+        }
+        catch (err) {
+            console.error(err)
+        }
+        dispatch(deleteNotification(id))
+
+    }
+
+    const openBetReview = () => {
+        data.notiId = id
+        props.navigation.navigate('Bet Review', {data: data})
     }
 
     var aDay = 24 * 60 * 60 * 1000;
-    let timeSince = formatTimeSince(new Date(date-aDay))
+    let timeSince = formatTimeSince(new Date(date - aDay))
 
     return (
         <View style={styles.container}>
@@ -31,12 +53,15 @@ export default function NotificationCard(props) {
                         title='Accept'
                         buttonStyle={[styles.btnAccept, styles.btn]}
                         titleStyle={styles.btnTitle}
+                        onPress={() => handleAddFriend()}
 
                     />
                     <Button
                         title='Decline'
                         buttonStyle={[styles.btnDecline, styles.btn]}
                         titleStyle={styles.btnTitle}
+                        onPress={() => handleDeclineFriendRequest()}
+
                     />
                 </View>
                 : <View style={styles.btnContainer}>
@@ -45,6 +70,7 @@ export default function NotificationCard(props) {
                         buttonStyle={[styles.btnAccept, styles.btn]}
                         titleStyle={styles.btnTitle}
                         type='outline'
+                        onPress={() => openBetReview()}
                     />
                 </View>
             }
@@ -58,16 +84,11 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'space-between',
         padding: 5,
-        marginTop: 5,
         height: 120,
-        backgroundColor: Colors.backgroundColor,
+        backgroundColor: 'white',
         width: '100%',
-        shadowColor: '#d9d9d9',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 1,
-        borderRadius: 15
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.grayDark
     },
     btnContainer: {
         justifyContent: 'flex-end',
@@ -77,7 +98,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     titleContainer: {
-        // padding: 5,
         alignItems: 'center',
         flexDirection: 'row'
     },

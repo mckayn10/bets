@@ -10,10 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import { getUser } from '../store/actions/auth';
 import { fetchAllFriends } from '../store/actions/friends';
-import { fetchNotifications } from '../store/actions/notifications';
+import { fetchNotifications, fetchPendingRequests } from '../store/actions/notifications';
 import HeaderText from '../components/HeaderText';
 import { Ionicons } from '@expo/vector-icons';
 import db from '../firebase/config'
+import TestComponent from '../components/TestComponent';
 
 function Home_Screen(props) {
 
@@ -31,6 +32,7 @@ function Home_Screen(props) {
       dispatch(getUser())
       dispatch(fetchAllFriends())
       dispatch(fetchNotifications())
+      dispatch(fetchPendingRequests())
     }
     catch (err) {
       console.error(err)
@@ -45,6 +47,7 @@ function Home_Screen(props) {
         <HeaderText style={showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(true)}>COMPLETE</HeaderText>
         <HeaderText style={!showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(false)}>PENDING</HeaderText>
       </View>
+      {/* <TestComponent /> */}
       {showComplete
         ? <Completed_Bets_Screen bets={bets} permissions={true}/>
         : <Incomplete_Bets_Screen bets={bets} permissions={true}/>
