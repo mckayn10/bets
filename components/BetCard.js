@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux';
 export default function BetCard(props) {
     const [betModalVisible, setBetModalVisible] = useState(false)
     const { description, amount, other_bettor, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id } = props.bet
+    const showNotAccepted = is_verified && !is_accepted
+
+
     const userId = useSelector(state => state.auth.userId)
     const user = useSelector(state => state.auth.userInfo)
 
@@ -21,7 +24,6 @@ export default function BetCard(props) {
     if (props.invertName && userId != props.personId) {
         nameToDisplay = creator_id === userId ? creator : other_bettor
     }
-
 
     const updateBetModalStatus = () => {
         const modalStatus = betModalVisible
@@ -50,10 +52,18 @@ export default function BetCard(props) {
            
         }
     }
+    const displayVerifiedIcon = () => {
+        if(is_verified && !is_accepted){
+            return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-open" size={17} color={Colors.primaryColor} />
+        } 
+        else if (is_verified && is_accepted){
+            return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} />
+        }
+    }
 
     return (
         <TouchableOpacity
-            style={!is_accepted && is_verified ? [styles.container, {opacity: .5}] : styles.container}
+            style={!showNotAccepted ? styles.container : styles.notAcceptedContainer}
             onPress={() => updateBetModalStatus()}
         >
             <View style={styles.descriptionContainer}>
@@ -80,7 +90,7 @@ export default function BetCard(props) {
                     {!isPending ? (!won_bet ? '-' : '+') : ''}${parseFloat(Math.abs(amount)).toFixed(2)}
                 </Text>
                 {/* {is_verified ? <MaterialIcons style={{ alignSelf: 'flex-end' }} name="verified" size={17} color={Colors.primaryColor} /> : null} */}
-                {is_verified ? <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} /> : null}
+                {displayVerifiedIcon()}
 
             </View>
             {betModalVisible
@@ -99,6 +109,23 @@ export default function BetCard(props) {
 
 const styles = StyleSheet.create({
     container: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 8,
+        height: 110,
+        width: '95%',
+        alignSelf: 'center',
+        backgroundColor: 'white',
+        padding: 10,
+        borderRadius: 10,
+        shadowColor: '#d9d9d9',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 1,
+    },
+    notAcceptedContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

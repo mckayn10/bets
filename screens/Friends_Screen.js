@@ -19,7 +19,11 @@ function Friends_Screen(props) {
 
 
     useEffect(() => {
-        setFriends(friendsList)
+        if (props.route.params) {
+            setFriends(props.route.params.personsFriends)
+        } else {
+            setFriends(friendsList)
+        }
         return () => {
             friendsList = []
         }
@@ -27,6 +31,7 @@ function Friends_Screen(props) {
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
+            title: props.route.params ? props.route.params.title : 'My Friends',
             headerRight: () => {
                 return (
                     <TouchableOpacity {...props}>
@@ -47,7 +52,7 @@ function Friends_Screen(props) {
         setSearchText(text)
         const query = text.toLowerCase()
 
-        if(!query){
+        if (!query) {
             setFriends(friendsList)
             return;
         }
@@ -103,7 +108,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    },  
+    },
     emptyText: {
         fontSize: 18,
         textAlign: 'center',

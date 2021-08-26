@@ -7,35 +7,20 @@ import Person_Profile_Screen from '../screens/Person_Profile_Screen';
 import Create_Bet_Screen from '../screens/Create_Bet_Screen';
 import Friends_Screen from '../screens/Friends_Screen';
 import Home_Screen from '../screens/Home_Screen';
+import colors from '../constants/colors';
 
 const Stack = createNativeStackNavigator()
 
-const Profile_Navigator = (props) => {
+const Home_Navigator = (props) => {
     const user = useSelector(state => state.auth.userInfo)
 
     return (
         <Stack.Navigator
             screenOptions={{
-                headerTintColor: 'white',
-                headerStyle: {
-                    backgroundColor: Colors.primaryColor
-                }
+                headerShown: false,
             }}
         >
             <Stack.Group>
-                <Stack.Screen
-                    name="Personal Profile"
-                    component={Person_Profile_Screen}
-                    initialParams={{ person: user, isUser: true }}
-                />
-                <Stack.Screen
-                    name="Edit Profile"
-                    component={Profile_Screen}
-                />
-                <Stack.Screen
-                    name="Persons Friends"
-                    component={Friends_Screen}
-                />
                 <Stack.Screen
                     name="Home"
                     component={Home_Screen}
@@ -43,7 +28,11 @@ const Profile_Navigator = (props) => {
             </Stack.Group>
             <Stack.Group
                 screenOptions={{
-                    presentation: 'modal'
+                    presentation: 'modal',
+                    headerShown: true,
+                    headerStyle: {backgroundColor: colors.primaryColor},
+                    headerTitleStyle: {color: 'white'},
+                    
                 }}>
                 <Stack.Screen
                     name="Create Bet"
@@ -54,4 +43,4 @@ const Profile_Navigator = (props) => {
     )
 }
 
-export default Profile_Navigator
+export default Home_Navigator

@@ -3,9 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 export default function FriendCard(props) {
     const { firstName, lastName, email, username, id } = props.person
+    const user = useSelector(state => state.auth.userInfo)
+    const isUser = user.id === props.person.id
 
     return (
         <TouchableOpacity
@@ -13,7 +16,7 @@ export default function FriendCard(props) {
             onPress={() => props.navigation.navigate('Person',
                 {
                     person: props.person,
-                    isUser: false
+                    isUser: isUser
                 }
             )
             }

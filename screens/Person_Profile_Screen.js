@@ -11,14 +11,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { addFriend, fetchAllPersonsFriends, removeFriend } from '../store/actions/friends';
 import { sendFriendRequest } from '../store/actions/notifications';
-import { formatBetArrayOfObjects } from '../constants/utils';
+import { checkIfShared, formatBetArrayOfObjects } from '../constants/utils';
 import Shared_Bets_Screen from './Shared_Bets_Screen';
 import All_Bets_Screen from './All_Bets_Screen';
+import BetList from '../components/BetList';
 
 function Person_Profile_Screen(props) {
+
     const [showBetsfeed, setShowBetsFeed] = useState(true)
     const [isFriend, setIsFriend] = useState()
     const [personsBets, setPersonsBets] = useState([])
+    const [personsFriends, setPersonsFriends] = useState([])
     const [sharedBets, setSharedBets] = useState([])
     const [requestPending, setRequestPending] = useState(false)
     const [numFriends, setNumFriends] = useState(0)
@@ -27,11 +30,8 @@ function Person_Profile_Screen(props) {
     const isUser = props.route.params.isUser
     const { firstName, lastName, email, username, id } = person
     const userFriends = useSelector(state => state.people.friends)
-    const userBets = useSelector(state => state.bets.bets)
     const user = useSelector(state => state.auth.userInfo)
-    const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 
-    console.log('persons', personsBets)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -41,12 +41,12 @@ function Person_Profile_Screen(props) {
             setIsFriend(false)
         }
         fetchPersonsBets()
-        getNumFriends()
+        getPersonsFriends()
     }, [])
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
-            title: `${firstName} ${lastName}`,
+            title: 'Profile',
             headerRight: () => {
                 return (
                     isUser
@@ -86,39 +86,51 @@ function Person_Profile_Screen(props) {
                     bet.id = doc.id
                     betsArr.push(bet)
                 });
-                betsRef.where("other_id", "==", id).where("is_accepted", "==", true)
-                    .onSnapshot(querySnapshot => {
+                betsRef.where("other_id", "==", id).where("is_accepted", "==", true).get()
+                    .then(querySnapshot => {
                         querySnapshot.forEach((doc) => {
                             let bet = doc.data()
                             bet.id = doc.id
                             betsArr.push(bet)
                         });
-
+                        betsArr.sort(function (x, y) {
+                            return y.date - x.date;
+                        })
                         setPersonsBets(betsArr)
                         getSharedBets(betsArr)
                     })
             })
     }
 
-    const getNumFriends = () => {
+    const getPersonsFriends = () => {
+        let personsFriends = []
         db.collection('friends').doc(id).collection('friendsList').get()
             .then(querySnapshot => {
                 let count = 0
                 querySnapshot.forEach(doc => {
+                    let friend = doc.data()
+                    friend.id = doc.id
+                    personsFriends.unshift(friend)
                     count++
                 })
+                setPersonsFriends(personsFriends)
                 setNumFriends(count)
             })
     }
 
     const getSharedBets = (betsArr) => {
-        let sharedArr = []
-        betsArr.forEach(bet => {
-            if (bet.other_id === user.id || bet.creator_id === user.id) {
-                sharedArr.unshift(bet)
+        let shared = []
+        betsArr.forEach((bet) => {
+            let isShared = checkIfShared(bet, person.id, user.id)
+            if (isShared) {
+                shared.push(bet)
             }
         })
-        setSharedBets(sharedArr)
+        shared.sort(function (x, y) {
+            return y.date - x.date;
+        })
+
+        setSharedBets(shared)
     }
 
 
@@ -163,13 +175,16 @@ function Person_Profile_Screen(props) {
     const handleSendBetOffer = () => {
         props.navigation.navigate('Create Bet', { person: person })
     }
+    const handleViewFriends = () => {
+
+        props.navigation.navigate('Persons Friends', { personsFriends: personsFriends, title: isUser ? 'My Friends' : `${person.firstName}'s Friends` })
+    }
 
     const handleCreateBetOffer = () => {
         props.navigation.navigate('Create Bet')
     }
 
     const handleGoToStats = () => {
-        console.log('stats', personsBets)
         props.navigation.navigate('Stats Screen',
             {
                 person: person,
@@ -179,6 +194,9 @@ function Person_Profile_Screen(props) {
     }
 
     const friendBtn = () => {
+        if (isUser) {
+            return
+        }
         if (isFriend) {
             return (
                 <Button
@@ -193,7 +211,6 @@ function Person_Profile_Screen(props) {
         } else if (requestPending) {
             return (
                 <Button
-                    // icon={<Ionicons name="person-add" size={13} color='white' />}
                     title='Pending'
                     type="outline"
                     buttonStyle={[styles.addFriendBtn, { opacity: 1, backgroundColor: Colors.grayDark }]}
@@ -203,7 +220,6 @@ function Person_Profile_Screen(props) {
                     disabledTitleStyle={{ color: Colors.grayLight, borderColor: Colors.primaryColor, backgroundColor: Colors.grayDark }}
                 />
             )
-
         } else {
             return (
                 <Button
@@ -241,6 +257,7 @@ function Person_Profile_Screen(props) {
                         type="outline"
                         buttonStyle={styles.isFriendBtn}
                         titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
+                        onPress={() => handleViewFriends()}
                     />
                 </View>
                 <TouchableOpacity
@@ -260,13 +277,11 @@ function Person_Profile_Screen(props) {
             </View>
 
             {showBetsfeed
-                ? <All_Bets_Screen
-                    personId={id}
+                ? <BetList
                     bets={personsBets}
                     permissions={isUser ? true : false}
                 />
-                : <Shared_Bets_Screen
-                    personId={id}
+                : <BetList
                     bets={sharedBets}
                     permissions={false}
                 />

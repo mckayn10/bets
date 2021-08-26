@@ -32,8 +32,8 @@ export const fetchAllFriends = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
 
-        friendsRef.doc(userId).collection('friendsList')
-            .onSnapshot((querySnapshot) => {
+        friendsRef.doc(userId).collection('friendsList').get()
+            .then((querySnapshot) => {
                 let friendsArr = []
                 querySnapshot.forEach((doc) => {
                     let friend = doc.data()

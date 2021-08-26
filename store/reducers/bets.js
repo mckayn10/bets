@@ -18,9 +18,10 @@ const betsReducer = (state = initialState, action) => {
             return initialState
         }
         case GET_BETS:
-            return {...state, bets: action.bets}
+            return { ...state, bets: action.bets }
 
         case CREATE_BET:
+            updatedArr.unshift(action.bet)
             return { ...state, bets: updatedArr }
 
         case DELETE_BET:
@@ -33,25 +34,12 @@ const betsReducer = (state = initialState, action) => {
 
         case UPDATE_BET:
 
-            // const newData = action.bet
-            // updatedArr.forEach((bet, index) => {
-            //     let placeToTop = bet.is_complete != newData.is_complete ? true : false
-            //     if (bet.id === newData.id) {
-            //         bet.amount = newData.amount
-            //         bet.other_bettor = newData.other_bettor
-            //         bet.description = newData.description
-            //         bet.is_complete = newData.is_complete
-            //         bet.won_bet = newData.won_bet
-            //         bet.date = newData.date
-
-
-            //         if (placeToTop) {
-            //             updatedArr.splice(index, 1)
-            //             updatedArr.unshift(bet)
-            //         }
-            //     }
-
-            // })
+            const newData = action.bet
+            updatedArr.forEach((bet, index) => {
+                if (bet.id === newData.id) {
+                    bet = newData
+                }
+            })
 
             return { ...state, bets: updatedArr }
         default:

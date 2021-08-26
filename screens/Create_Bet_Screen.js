@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { StyleSheet, Text, Modal, Pressable, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,166 +32,166 @@ const Create_Bet_Screen = props => {
 
         }
     }, [])
+    
 
 
-    const dispatch = useDispatch();
+const dispatch = useDispatch();
 
-    const createNewBet = () => {
+const createNewBet = () => {
 
-        if (nameOfBettor === '' || betAmount === '' || description === '') {
-            Alert.alert('Please fill out all text fields')
-            return false
-        }
-
-        const defaultOtherBettor = {
-            id: 0,
-            username: 'null',
-            firstName: nameOfBettor,
-            lastName: '',
-            email: 'null',
-            did_accept: false
-        }
-
-        const otherBettorData = otherBettorInfo
-        if (otherBettorInfo) {
-            otherBettorData.did_accept = false
-        }
-
-        const data = {
-            description: description,
-            amount: parseInt(betAmount),
-            other_bettor: otherBettorData ? otherBettorData : defaultOtherBettor,
-            creator: creator,
-            won_bet: betWon,
-            is_complete: betComplete,
-            is_verified: otherBettorData ? true : false,
-            is_accepted: false
-        }
-        let sendBetNotification = otherBettorData ? true : false
-
-        try {
-            dispatch(createBet(data, sendBetNotification))
-        }
-        catch (err) {
-            Alert.alert('Error creating new bet. ' + err)
-            console.error(err)
-        }
-
-        let showComplete = betComplete ? true : false
-
-        props.navigation.pop()
-        closeModal()
-
+    if (nameOfBettor === '' || betAmount === '' || description === '') {
+        Alert.alert('Please fill out all text fields')
+        return false
     }
 
-    const closeModal = () => {
-        setNameOfBettor('')
-        setBetAmount('')
-        setDescription('')
-        setBetComplete(false)
-        setBetWon(false)
-        setOtherBetterInfo('')
+    const defaultOtherBettor = {
+        id: 0,
+        username: 'null',
+        firstName: nameOfBettor,
+        lastName: '',
+        email: 'null',
+        did_accept: false
     }
 
-    const handleSetUser = (person) => {
-        setNameOfBettor(person.firstName + " " + person.lastName)
-        setOtherBetterInfo(person)
+    const otherBettorData = otherBettorInfo
+    if (otherBettorInfo) {
+        otherBettorData.did_accept = false
     }
 
-    const clearInput = () => {
-        if (otherBettorInfo) {
-            setTimeout(() => {
-                setOtherBetterInfo('')
-                setNameOfBettor('')
-            }, 50)
+    const data = {
+        description: description,
+        amount: parseInt(betAmount),
+        other_bettor: otherBettorData ? otherBettorData : defaultOtherBettor,
+        creator: creator,
+        won_bet: betWon,
+        is_complete: betComplete,
+        is_verified: otherBettorData ? true : false,
+        is_accepted: false
+    }
+    let sendBetNotification = otherBettorData ? true : false
+
+    try {
+        dispatch(createBet(data, sendBetNotification))
+    }
+    catch (err) {
+        Alert.alert('Error creating new bet. ' + err)
+        console.error(err)
+    }
+
+    let showComplete = betComplete ? true : false
+
+    props.navigation.navigate('Home', {showComplete: showComplete})
+    closeModal()
+
+}
+
+const closeModal = () => {
+    setNameOfBettor('')
+    setBetAmount('')
+    setDescription('')
+    setBetComplete(false)
+    setBetWon(false)
+    setOtherBetterInfo('')
+}
+
+const handleSetUser = (person) => {
+    setNameOfBettor(person.firstName + " " + person.lastName)
+    setOtherBetterInfo(person)
+}
+
+const clearInput = () => {
+    if (otherBettorInfo) {
+        setTimeout(() => {
+            setOtherBetterInfo('')
+            setNameOfBettor('')
+        }, 50)
+    }
+
+}
+
+return (
+
+    <View style={styles.container}>
+        {!person
+            ? <SafeAreaView style={{ zIndex: 1 }}>
+                <MySearchableDropdown setUser={(person) => handleSetUser(person)} />
+            </SafeAreaView>
+            : null
         }
 
-    }
-
-    return (
-
-        <View style={styles.container}>
-            {!person
-                ? <SafeAreaView style={{ zIndex: 1 }}>
-                    <MySearchableDropdown setUser={(person) => handleSetUser(person)} />
-                </SafeAreaView>
-                : null
-            }
-
-            <View style={styles.inputContainer}>
-                <Input
-                    onKeyPress={({ nativeEvent }) => {
-                        if (nativeEvent.key === 'Backspace') {
-                            clearInput()
-                        }
-                    }}
-                    style={otherBettorInfo ? [styles.input, { color: Colors.primaryColor }] : styles.input}
-                    placeholder='or enter a custom name here'
-                    leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
-                    label="Name of the other bettor"
-                    labelStyle={{ color: 'gray' }}
-                    onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
-                    defaultValue={nameOfBettor}
-
-                />
-                <Input
-                    style={styles.input}
-                    placeholder='0.00'
-                    leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={Colors.primaryColor} />}
-                    label="Bet amount"
-                    keyboardType='numeric'
-                    labelStyle={{ color: 'gray' }}
-                    onChangeText={betAmount => setBetAmount(betAmount)}
-                    defaultValue={betAmount}
-                />
-                <Input
-                    style={styles.input}
-                    placeholder='description'
-                    leftIcon={<MaterialIcons name="text-snippet" size={20} color={Colors.primaryColor} style={{ marginRight: 2 }} />}
-                    label="Short description of bet"
-                    labelStyle={{ color: 'gray' }}
-                    onChangeText={description => setDescription(description)}
-                    defaultValue={description}
-                />
-                <View style={styles.betStatusContainer}>
-                    <Text style={styles.questionText}>Is this bet completed?</Text>
-                    <Switch
-                        value={betComplete}
-                        color={Colors.primaryColor}
-                        onValueChange={() => setBetComplete(!betComplete)}
-                    />
-                </View>
-                {betComplete ?
-                    <View style={styles.betStatusContainer}>
-                        <Text style={styles.questionText}>Did you win this bet?</Text>
-                        <Switch
-                            value={betWon}
-                            color={Colors.primaryColor}
-                            onValueChange={() => setBetWon(!betWon)}
-                        />
-                    </View> : null}
-            </View>
-            <View style={styles.btnContainer}>
-                <Button
-                    icon={
-                        <Feather name="check-circle" size={24} color='white' />
+        <View style={styles.inputContainer}>
+            <Input
+                onKeyPress={({ nativeEvent }) => {
+                    if (nativeEvent.key === 'Backspace') {
+                        clearInput()
                     }
-                    iconRight
-                    title="Create Bet  "
-                    type="solid"
-                    buttonStyle={styles.createBtn}
-                    onPress={() => createNewBet()}
+                }}
+                style={otherBettorInfo ? [styles.input, { color: Colors.primaryColor }] : styles.input}
+                placeholder='or enter a custom name here'
+                leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
+                label="Name of the other bettor"
+                labelStyle={{ color: 'gray' }}
+                onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
+                defaultValue={nameOfBettor}
+
+            />
+            <Input
+                style={styles.input}
+                placeholder='0.00'
+                leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={Colors.primaryColor} />}
+                label="Bet amount"
+                keyboardType='numeric'
+                labelStyle={{ color: 'gray' }}
+                onChangeText={betAmount => setBetAmount(betAmount)}
+                defaultValue={betAmount}
+            />
+            <Input
+                style={styles.input}
+                placeholder='description'
+                leftIcon={<MaterialIcons name="text-snippet" size={20} color={Colors.primaryColor} style={{ marginRight: 2 }} />}
+                label="Short description of bet"
+                labelStyle={{ color: 'gray' }}
+                onChangeText={description => setDescription(description)}
+                defaultValue={description}
+            />
+            <View style={styles.betStatusContainer}>
+                <Text style={styles.questionText}>Is this bet completed?</Text>
+                <Switch
+                    value={betComplete}
+                    color={Colors.primaryColor}
+                    onValueChange={() => setBetComplete(!betComplete)}
                 />
             </View>
+            {betComplete ?
+                <View style={styles.betStatusContainer}>
+                    <Text style={styles.questionText}>Did you win this bet?</Text>
+                    <Switch
+                        value={betWon}
+                        color={Colors.primaryColor}
+                        onValueChange={() => setBetWon(!betWon)}
+                    />
+                </View> : null}
         </View>
+        <View style={styles.btnContainer}>
+            <Button
+                icon={
+                    <Feather name="check-circle" size={24} color='white' />
+                }
+                iconRight
+                title="Create Bet  "
+                type="solid"
+                buttonStyle={styles.createBtn}
+                onPress={() => createNewBet()}
+            />
+        </View>
+    </View>
 
-    )
+)
 
 }
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
         width: '100%',
         height: '100%',
         backgroundColor: 'white',

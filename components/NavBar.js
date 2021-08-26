@@ -40,7 +40,7 @@ export default function NavBar({props}) {
 
 const styles = StyleSheet.create({
     navContainer: {
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         width: '100%',
         height: 150,
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         fontSize: 40,
         color: 'white',
         fontWeight: 'bold',
+        marginBottom: 25
     },
 
 });

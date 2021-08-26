@@ -2,11 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import Colors from '../constants/colors'
-import BetCard from '../components/BetCard'
+import BetCard from './BetCard'
 import { MaterialIcons } from '@expo/vector-icons';
 import { fetchBets } from '../store/actions/bets';
+import HeaderText from './HeaderText'
+import colors from '../constants/colors'
 
-function Completed_Bets_Screen(props) {
+function BetList(props) {
     const [isRefreshing, setIsRefreshing] = useState(false)
 
     useEffect(() => {
@@ -26,35 +28,22 @@ function Completed_Bets_Screen(props) {
         setIsRefreshing(false)
     }
 
-    let count = 0
-    props.bets.forEach(bet => {
-        const {is_accepted, is_complete, is_verified} = bet
-        let completedCriteria = is_complete && !is_verified || is_complete && is_accepted
-
-        if (completedCriteria) {
-            count++
-        }
-    })
-
     const renderCompletedBet = betData => {
-        const {is_accepted, is_complete, is_verified} = betData.item
-        let completedCriteria = is_complete && !is_verified || is_complete && is_accepted
-
-        if (completedCriteria) {
-            return (
+        let pendingStyle = betData.item.is_verified && !betData.item.is_accepted ? { opacity: .6 } : { opacity: 1 }
+        return (
+            <View style={pendingStyle}>
                 <BetCard
                     bet={betData.item}
                     permissions={props.permissions}
                 />
-            );
-        } else {
-            return
-        }
+            </View>
+        );
+
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            {count > 0
+            {props.bets.length > 0
                 ? <FlatList
                     onRefresh={loadBets}
                     refreshing={isRefreshing}
@@ -63,8 +52,19 @@ function Completed_Bets_Screen(props) {
                     keyExtractor={(bet, index) => index.toString()}
                 />
                 : <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>{props.permissions ? 'No complete bets to display' : 'No bets to display'}</Text>
-                    <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.grayDark} />
+                    <FlatList
+                        onRefresh={loadBets}
+                        refreshing={isRefreshing}
+                        data={props.bets}
+                        renderItem={renderCompletedBet}
+                        keyExtractor={(bet, index) => index.toString()}
+                        style={{backgroundColor: 'transparent', zIndex: 1}}
+                    />
+                    <View style={{position: 'absolute', left: 0, right: 0, zIndex:0, top: 60 }}>
+                        <HeaderText style={styles.emptyText}>Nothing to display</HeaderText>
+                        <HeaderText style={styles.emptyText}>Swipe down to refresh</HeaderText>
+                        <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.grayLight} />
+                    </View>
                 </View>
             }
         </SafeAreaView>
@@ -81,18 +81,18 @@ const styles = StyleSheet.create({
     emptyContainer: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: Colors.backgroundColor
+        backgroundColor: Colors.backgroundColor,
     },
     emptyText: {
         fontSize: 18,
         textAlign: 'center',
-        margin: 10,
         padding: 5,
-        opacity: .3
+        color: colors.grayDark
     },
     icon: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginTop: 10
     }
 })
 
-export default Completed_Bets_Screen;
+export default BetList;

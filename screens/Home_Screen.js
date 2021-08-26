@@ -5,7 +5,6 @@ import Completed_Bets_Screen from './Completed_Bets_Screen';
 import Incomplete_Bets_Screen from './Incomplete_Bets_Screen';
 import Colors from '../constants/colors'
 import { AntDesign } from '@expo/vector-icons';
-import CreateBetModal from '../modals/CreateBetModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import { getUser } from '../store/actions/auth';
@@ -15,29 +14,74 @@ import HeaderText from '../components/HeaderText';
 import { Ionicons } from '@expo/vector-icons';
 import db from '../firebase/config'
 import TestComponent from '../components/TestComponent';
+import Create_Bet_Screen from './Create_Bet_Screen';
+import BetList from '../components/BetList';
+import { completedCriteria, pendingCriteria } from '../constants/utils';
 
 function Home_Screen(props) {
 
-  const [modalVisible, setModalVisible] = useState(false);
   const [showComplete, setShowComplete] = useState(true);
+  const [completedBets, setCompletedBets] = useState([]);
+  const [pendingBets, setPendingBets] = useState([]);
 
   const dispatch = useDispatch()
 
   const bets = useSelector(state => state.bets.bets)
 
+  useEffect(() => {
+    dispatch(fetchBets())
+    dispatch(getUser())
+    dispatch(fetchAllFriends())
+    dispatch(fetchNotifications())
+    dispatch(fetchPendingRequests())
+  }, [])
 
   useEffect(() => {
     try {
-      dispatch(fetchBets())
-      dispatch(getUser())
-      dispatch(fetchAllFriends())
-      dispatch(fetchNotifications())
-      dispatch(fetchPendingRequests())
+      if (props.route.params) {
+        setShowComplete(props.route.params.showComplete)
+      }
     }
     catch (err) {
       console.error(err)
     }
-  }, [])
+
+  }, [props.route.params])
+
+  useEffect(() => {
+    getCompletedBets()
+    getPendingBets()
+  }, [bets])
+
+  const getCompletedBets = () => {
+    let completed = []
+    bets.forEach((bet) => {
+      let isComplete = completedCriteria(bet)
+      if (isComplete) {
+        completed.push(bet)
+      }
+    })
+    completed.sort(function (x, y) {
+      return y.date_complete - x.date_complete;
+    })
+
+    setCompletedBets(completed)
+  }
+
+  const getPendingBets = () => {
+    let pending = []
+    bets.forEach((bet) => {
+      let isPending = pendingCriteria(bet)
+      if (isPending) {
+        pending.push(bet)
+      }
+    })
+    pending.sort(function (x, y) {
+      return y.date - x.date
+    })
+
+    setPendingBets(pending)
+  }
 
   return (
 
@@ -49,14 +93,9 @@ function Home_Screen(props) {
       </View>
       {/* <TestComponent /> */}
       {showComplete
-        ? <Completed_Bets_Screen bets={bets} permissions={true}/>
-        : <Incomplete_Bets_Screen bets={bets} permissions={true}/>
+        ? <BetList bets={completedBets} permissions={true} />
+        : <BetList bets={pendingBets} permissions={true} />
       }
-      <CreateBetModal
-        toggleModal={() => setModalVisible(!modalVisible)}
-        modalVisible={modalVisible}
-        showComplete={(showComplete) => setShowComplete(showComplete)}
-      />
 
       <TouchableOpacity
         style={styles.btnContainer}
@@ -65,7 +104,7 @@ function Home_Screen(props) {
           name="create-outline"
           size={26}
           color='white'
-          onPress={() => setModalVisible(true)}
+          onPress={() => props.navigation.navigate('Create Bet')}
         />
       </TouchableOpacity>
     </View>

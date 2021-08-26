@@ -6,6 +6,7 @@ import Add_Friends_Screen from '../screens/Add_Friends_Screen'
 import Person_Profile_Screen from '../screens/Person_Profile_Screen';
 import Stats_Screen from '../screens/Stats_Screen';
 import Create_Bet_Screen from '../screens/Create_Bet_Screen';
+import Home_Screen from '../screens/Home_Screen';
 
 const Stack = createNativeStackNavigator()
 
@@ -60,6 +61,14 @@ const Friends_Navigator = (props) => {
                             color: 'white'
                         },
                     }}
+                />
+                <Stack.Screen
+                    name="Persons Friends"
+                    component={Friends_Screen}
+                />
+                <Stack.Screen
+                    name="Home"
+                    component={Home_Screen}
                 />
             </Stack.Group>
             <Stack.Group

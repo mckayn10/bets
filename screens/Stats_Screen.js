@@ -8,7 +8,6 @@ import HeaderText from '../components/HeaderText';
 
 function Stats_Screen(props) {
     let bets = props.route.params ? props.route.params.bets : useSelector(state => state.bets.bets)
-    console.log(props.route.params)
     const totalBets = bets.length
 
     useEffect(() => {

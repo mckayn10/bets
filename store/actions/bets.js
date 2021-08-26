@@ -27,8 +27,8 @@ export const fetchBets = () => {
                     bet.id = doc.id
                     betsArr.unshift(bet)
                 });
-                betsRef.where("other_id", "==", userId).where("is_accepted", "==", true)
-                    .onSnapshot(querySnapshot => {
+                betsRef.where("other_id", "==", userId).where("is_accepted", "==", true).get()
+                    .then(querySnapshot => {
                         querySnapshot.forEach((doc) => {
                             let bet = doc.data()
                             bet.id = doc.id
@@ -48,7 +48,7 @@ export const createBet = (betData, sendBetNotification) => {
         const userId = getState().auth.userId
 
         betData.date_complete = betData.is_complete ? Date.now() : 0
-        betData.date = new Date().toLocaleDateString()
+        betData.date = Date.now()
         betData.creator_id = userId
         betData.is_double_or_nothing = false
         betData.other_id = betData.other_bettor.id
