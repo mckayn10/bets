@@ -17,11 +17,6 @@ const notificationsReducer = (state = initialState, action) => {
         case GET_NOTIFICATIONS:
             return { ...state, notifications: action.notis }
         case DELETE_NOTIFICATION: {
-            notisArr.forEach((noti, index) => {
-                if (noti.id === action.id) {
-                    notisArr.splice(index, 1)
-                }
-            })
             return {...state, notifications: notisArr}
         }
         case GET_PENDING_REQUESTS: {

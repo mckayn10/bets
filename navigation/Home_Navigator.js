@@ -30,7 +30,7 @@ const Home_Navigator = (props) => {
                 screenOptions={{
                     presentation: 'modal',
                     headerShown: true,
-                    headerStyle: {backgroundColor: colors.primaryColor},
+                    headerStyle: {backgroundColor: Colors.primaryColor},
                     headerTitleStyle: {color: 'white'},
                     
                 }}>

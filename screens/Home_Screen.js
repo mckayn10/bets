@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import NavBar from '../components/NavBar';
-import Completed_Bets_Screen from './Completed_Bets_Screen';
-import Incomplete_Bets_Screen from './Incomplete_Bets_Screen';
 import Colors from '../constants/colors'
-import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import { getUser } from '../store/actions/auth';
@@ -12,9 +9,7 @@ import { fetchAllFriends } from '../store/actions/friends';
 import { fetchNotifications, fetchPendingRequests } from '../store/actions/notifications';
 import HeaderText from '../components/HeaderText';
 import { Ionicons } from '@expo/vector-icons';
-import db from '../firebase/config'
 import TestComponent from '../components/TestComponent';
-import Create_Bet_Screen from './Create_Bet_Screen';
 import BetList from '../components/BetList';
 import { completedCriteria, pendingCriteria } from '../constants/utils';
 
@@ -27,6 +22,7 @@ function Home_Screen(props) {
   const dispatch = useDispatch()
 
   const bets = useSelector(state => state.bets.bets)
+  const userId = useSelector(state => state.auth.userId)
 
   useEffect(() => {
     dispatch(fetchBets())
@@ -93,8 +89,8 @@ function Home_Screen(props) {
       </View>
       {/* <TestComponent /> */}
       {showComplete
-        ? <BetList bets={completedBets} permissions={true} />
-        : <BetList bets={pendingBets} permissions={true} />
+        ? <BetList bets={completedBets} permissions={true} personId={userId}/>
+        : <BetList bets={pendingBets} permissions={true} personId={userId}/>
       }
 
       <TouchableOpacity

@@ -1,6 +1,5 @@
 import db from "../../firebase/firestore";
 
-export const SEND_BET = 'GET_PEOPLE';
 export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS'
 export const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION'
 export const GET_PENDING_REQUESTS = 'GET_SENT_REQUESTS'
@@ -46,23 +45,20 @@ export const fetchPendingRequests = () => {
     }
 }
 
-export const sendBetOffer = async (betData) => {
+export const sendBetOffer = async (betData, type) => {
 
     let notiData = {
         date: Date.now(),
         from: betData.creator,
         to: betData.other_bettor,
-        type: 'bet',
-        data: {
-            bet_id: betData.id,
-            description: betData.description,
-            amount: betData.amount
-        }
+        type: type,
+        data: betData,
+        pendingAction: true
     }
 
-    notisRef.doc(betData.other_id).set(notiData)
+    notisRef.add(notiData)
         .then((docRef) => {
-            console.log('Notification successfully sent!', docRef)
+            console.log('Notification successfully sent!')
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -70,47 +66,79 @@ export const sendBetOffer = async (betData) => {
 
 }
 
-export const sendFriendRequest = async (user, person) => {
+export const sendBetResponse = async (betData, type) => {
+
+    let notiData = {
+        date: Date.now(),
+        from: betData.other_bettor,
+        to: betData.creator,
+        type: type,
+        data: betData,
+        pendingAction: false
+    }
+
+    notisRef.add(notiData)
+        .then((docRef) => {
+            console.log('Notification successfully sent!')
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
+
+}
+
+export const sendFriendRequest = async (user, person, type) => {
 
     let notiData = {
         date: Date.now(),
         from: user,
         to: person,
-        type: 'friend',
+        type: type,
         data: {},
-        pending: true,
+        pendingAction: true,
     }
 
 
-    notisRef.doc(person.id).set(notiData)
+    notisRef.add(notiData)
         .then((docRef) => {
-            console.log('Notification successfully sent!', docRef)
+            console.log('Notification successfully sent!')
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
+}
+
+export const sendFriendRequestAccepted = async (user, person, type) => {
+
+    let notiData = {
+        date: Date.now(),
+        from: user,
+        to: person,
+        type: type,
+        data: {},
+        pendingAction: false,
+    }
+
+
+    notisRef.add(notiData)
+        .then((docRef) => {
+            console.log('Notification successfully sent!')
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
+}
+
+export const deleteNotification = (id) => {
+
+    notisRef.doc(id).delete()
+        .then(() => {
+            console.log('Notification successfully deleted!')
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
         });
 
-}
 
-export const deleteNotification = (id) => {
-    return async (dispatch, getState) => {
-        const token = getState().auth.token
-        const userId = getState().auth.userId
-
-        notisRef.doc(id).delete()
-            .then(() => {
-                dispatch({
-                    type: DELETE_NOTIFICATION,
-                    id: id
-                })
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
-
-
-
-
-    }
 }
 

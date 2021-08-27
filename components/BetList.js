@@ -35,6 +35,7 @@ function BetList(props) {
                 <BetCard
                     bet={betData.item}
                     permissions={props.permissions}
+                    personId={props.personId}
                 />
             </View>
         );

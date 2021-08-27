@@ -12,8 +12,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { addFriend, fetchAllPersonsFriends, removeFriend } from '../store/actions/friends';
 import { sendFriendRequest } from '../store/actions/notifications';
 import { checkIfShared, formatBetArrayOfObjects } from '../constants/utils';
-import Shared_Bets_Screen from './Shared_Bets_Screen';
-import All_Bets_Screen from './All_Bets_Screen';
+
 import BetList from '../components/BetList';
 
 function Person_Profile_Screen(props) {
@@ -135,8 +134,9 @@ function Person_Profile_Screen(props) {
 
 
     const handleAddFriend = () => {
+        let type = 'friendRequest'
         try {
-            sendFriendRequest(user, person)
+            sendFriendRequest(user, person, type)
         }
         catch (err) {
             console.error(err)
@@ -249,16 +249,20 @@ function Person_Profile_Screen(props) {
                 </View>
                 <View style={styles.friendsContainer}>
                     {friendBtn()}
-                    <Button
-                        icon={
-                            <FontAwesome5 name="user-friends" size={12} color={Colors.primaryColor} />
-                        }
-                        title={numFriends + ' ' + (numFriends === 1 ? 'friend' : 'friends')}
-                        type="outline"
-                        buttonStyle={styles.isFriendBtn}
-                        titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
-                        onPress={() => handleViewFriends()}
-                    />
+                    {isUser
+                        ? null
+                        : <Button
+                            icon={
+                                <FontAwesome5 name="user-friends" size={12} color={Colors.primaryColor} />
+                            }
+                            title={numFriends + ' ' + (numFriends === 1 ? 'friend' : 'friends')}
+                            type="outline"
+                            buttonStyle={styles.isFriendBtn}
+                            titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
+                            onPress={() => handleViewFriends()}
+                        />
+                    }
+
                 </View>
                 <TouchableOpacity
                     onPress={() => isUser ? handleCreateBetOffer() : handleSendBetOffer()}
@@ -280,10 +284,12 @@ function Person_Profile_Screen(props) {
                 ? <BetList
                     bets={personsBets}
                     permissions={isUser ? true : false}
+                    personId={person.id}
                 />
                 : <BetList
                     bets={sharedBets}
                     permissions={false}
+                    personId={person.id}
                 />
             }
 

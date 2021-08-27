@@ -58,7 +58,8 @@ export const createBet = (betData, sendBetNotification) => {
                 betData.id = docRef.id
 
                 if (sendBetNotification) {
-                    sendBetOffer(betData)
+                    let notificationType = 'betRequest'
+                    sendBetOffer(betData, notificationType)
                 }
 
                 dispatch({

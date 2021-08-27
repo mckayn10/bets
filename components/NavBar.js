@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
-import { useSelector } from 'react-redux';
 import Colors from '../constants/colors'
 import HeaderText from './HeaderText';
 import { logout } from '../store/actions/auth';
 import { removeData } from '../store/actions/bets';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import OpenDrawerIcon from './OpenDrawerIcon';
 import NotificationsIcon from './NotificationsIcon'
 
 export default function NavBar({props}) {
 
     const dispatch = useDispatch()
+    const userId = useSelector(state => state.auth.userId)
+
 
     const allBetsArr = useSelector(state => state.bets.bets)
     function numberWithCommas(x) {
@@ -22,9 +23,9 @@ export default function NavBar({props}) {
     allBetsArr.forEach(bet => {
         const {is_accepted, is_complete, is_verified} = bet
         let completedCriteria = is_complete && !is_verified || is_complete && is_accepted
-        if (completedCriteria && bet.won_bet) {
+        if (completedCriteria && bet.won_bet == userId) {
             totalAmount += bet.amount
-        } else if (completedCriteria && !bet.won_bet) {
+        } else if (completedCriteria && bet.won_bet != userId) {
             totalAmount -= bet.amount
         }
     })

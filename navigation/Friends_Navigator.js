@@ -69,6 +69,9 @@ const Friends_Navigator = (props) => {
                 <Stack.Screen
                     name="Home"
                     component={Home_Screen}
+                    options={{
+                        headerShown: false
+                    }}
                 />
             </Stack.Group>
             <Stack.Group

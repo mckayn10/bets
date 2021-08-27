@@ -7,7 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button, Switch } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateBet } from '../store/actions/bets';
 import { deleteBet } from '../store/actions/bets';
 import Modal from 'react-native-modal'
@@ -18,7 +18,10 @@ import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 
 const ViewBetModal = props => {
-    const { description, amount, other_bettor, date, won_bet, is_complete, id, date_complete, is_verified, is_accepted } = props.betData
+    const { description, amount, other_bettor, date, won_bet, is_complete, id, date_complete, is_verified, is_accepted, creator_id, other_id } = props.betData
+    const userId = useSelector(state => state.auth.userId)
+    const otherPersonId = userId === creator_id ? other_id : creator_id
+
 
     const [editMode, setEditMode] = useState(false)
     const [nameOfBettor, setNameOfBettor] = useState('');
@@ -28,6 +31,8 @@ const ViewBetModal = props => {
     const [betWon, setBetWon] = useState(false);
     const [toggleModal, setToggleModal] = useState(props.modalVisible)
     const [hasPermission, setHasPermissions] = useState(props.permissions)
+
+
     let betStatusText = ''
     if (is_verified && !is_accepted) {
         betStatusText = 'Pending acceptance'
@@ -36,6 +41,9 @@ const ViewBetModal = props => {
     } else {
         betStatusText = 'Pending'
     }
+    console.log(won_bet)
+
+    let betWonText = userId == won_bet ? 'Yep' : (otherPersonId == won_bet ? 'Nope' : 'Undecided')
 
     useEffect(() => {
         setNameOfBettor(other_bettor.firstName)
@@ -71,8 +79,8 @@ const ViewBetModal = props => {
         betData.other_bettor.firstName = nameOfBettor
         betData.amount = parseInt(betAmount)
         betData.is_complete = betComplete
-        betData.won_bet = betWon
-        betData.description = betDescription
+        betData.won_bet = betWon ? userId : otherPersonId.
+            betData.description = betDescription
 
         const statusChanged = is_complete == betComplete ? false : true
 
@@ -155,7 +163,7 @@ const ViewBetModal = props => {
                         : null
                     }
 
-                    <Text style={!hasPermission ? [styles.pageTitle, {marginLeft: 18}] : styles.pageTitle}>Bet Details</Text>
+                    <Text style={!hasPermission ? [styles.pageTitle, { marginLeft: 18 }] : styles.pageTitle}>Bet Details</Text>
                     <TouchableOpacity
                         style={styles.titleIcon}
                         onPress={() => closeModal()}
@@ -171,7 +179,7 @@ const ViewBetModal = props => {
                     <View style={editMode ? styles.editDetailRow : styles.detailRow}>
                         <Text style={[styles.betText, { fontWeight: 'bold' }]}>Other Bettor: </Text>
                         {!editMode
-                            ? <Text style={styles.betText}>{other_bettor.firstName + ' ' + other_bettor.lastName}</Text>
+                            ? <Text style={styles.betText}>{props.infoToDisplayBasedOnUser.displayOtherName}</Text>
                             : <Input
                                 style={styles.input}
                                 leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
@@ -215,13 +223,13 @@ const ViewBetModal = props => {
                                 <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Status: </Text>
                                 <Text style={[styles.coloredCompleteText, styles.statusText]}>{betStatusText}</Text>
                             </View>
-                            {is_complete
-                                ? <View style={[styles.detailRow, styles.betStatusContainer]}>
-                                    <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Bet Won: </Text>
-                                    <Text style={[styles.coloredWonText, styles.statusText]}>{won_bet ? 'Yes' : 'Nope'}</Text>
-                                </View>
-                                : null
-                            }
+
+                            <View style={[styles.detailRow, styles.betStatusContainer]}>
+                                <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Bet Won: </Text>
+                                <Text style={[styles.coloredWonText, styles.statusText]}>{betWonText}</Text>
+                            </View>
+
+
                         </View>
                         : <View>
                             <View style={[styles.detailRow, styles.betStatusContainer]}>
@@ -277,7 +285,7 @@ const ViewBetModal = props => {
                                         iconRight
                                         title="Save Changes  "
                                         type="solid"
-                                        buttonStyle={[styles.updateButton, {width: '90%', alignSelf: 'center'}]}
+                                        buttonStyle={[styles.updateButton, { width: '90%', alignSelf: 'center' }]}
                                         onPress={() => handleUpdateBet()}
                                     />
                                 </View>

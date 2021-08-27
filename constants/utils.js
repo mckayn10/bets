@@ -1,3 +1,6 @@
+import React from 'react'
+import { View, Text } from 'react-native';
+
 export const formatBetArrayOfObjects = (betsArr) => {
   const newBetsArr = [];
   for (const key in betsArr) {
@@ -55,7 +58,7 @@ export const pendingCriteria = (bet) => {
 }
 
 export const checkIfShared = (bet, personId, userId) => {
-  return  bet.other_id === personId && bet.creator_id === userId || bet.other_id === userId && bet.creator_id === personId
+  return bet.other_id === personId && bet.creator_id === userId || bet.other_id === userId && bet.creator_id === personId
 }
 
 export function formatTimeSince(date) {
@@ -85,3 +88,4 @@ export function formatTimeSince(date) {
   }
   return Math.floor(seconds) + " seconds";
 }
+

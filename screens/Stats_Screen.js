@@ -8,6 +8,8 @@ import HeaderText from '../components/HeaderText';
 
 function Stats_Screen(props) {
     let bets = props.route.params ? props.route.params.bets : useSelector(state => state.bets.bets)
+    const userId = useSelector(state => state.auth.userId)
+
     const totalBets = bets.length
 
     useEffect(() => {
@@ -30,9 +32,9 @@ function Stats_Screen(props) {
         let amountWon = 0
         let amountLost = 0
         bets.forEach(bet => {
-            if (completedCriteria(bet) && bet.won_bet) {
+            if (completedCriteria(bet) && bet.won_bet == userId) {
                 amountWon += bet.amount
-            } else if(completedCriteria(bet) && !bet.won_bet) {
+            } else if(completedCriteria(bet) && bet.won_bet != userId) {
                 amountLost += bet.amount
             }
         })
@@ -52,7 +54,7 @@ function Stats_Screen(props) {
     const wonBetsCount = () => {
         let count = 0
         bets.forEach(bet => {
-            if (completedCriteria(bet) && bet.won_bet) {
+            if (completedCriteria(bet) && bet.won_bet == userId) {
                 count++
             }
         })
@@ -72,7 +74,7 @@ function Stats_Screen(props) {
     const lostBetsCount = () => {
         let count = 0
         bets.forEach(bet => {
-            if (completedCriteria(bet) && !bet.won_bet) {
+            if (completedCriteria(bet) && bet.won_bet != userId) {
                 count++
             }
         })

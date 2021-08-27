@@ -19,7 +19,7 @@ const Create_Bet_Screen = props => {
     const [betWon, setBetWon] = useState(false);
     const [otherBettorInfo, setOtherBetterInfo] = useState('')
 
-    const creator = useSelector(state => state.auth.userInfo)
+    const userInfo = useSelector(state => state.auth.userInfo)
     const person = props.route.params ? props.route.params.person : false
 
     useEffect(() => {
@@ -54,16 +54,17 @@ const createNewBet = () => {
     }
 
     const otherBettorData = otherBettorInfo
+    let other_id = defaultOtherBettor.id
     if (otherBettorInfo) {
-        otherBettorData.did_accept = false
+        other_id = otherBettorData.id
     }
 
     const data = {
         description: description,
         amount: parseInt(betAmount),
         other_bettor: otherBettorData ? otherBettorData : defaultOtherBettor,
-        creator: creator,
-        won_bet: betWon,
+        creator: userInfo,
+        won_bet: betComplete ? (betWon ? userInfo.id : other_id) : 0,
         is_complete: betComplete,
         is_verified: otherBettorData ? true : false,
         is_accepted: false

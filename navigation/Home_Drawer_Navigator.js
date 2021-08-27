@@ -1,7 +1,6 @@
 // import React from 'react'
 // import { createDrawerNavigator } from '@react-navigation/drawer';
 // import Home_Screen from "../screens/Home_Screen";
-// import CustomDrawerContent from '../components/CustomDrawerContent';
 // import { Ionicons } from '@expo/vector-icons';
 // import Colors from '../constants/colors';
 // import Notifications_Navigator from './Notifications_Navigator';
