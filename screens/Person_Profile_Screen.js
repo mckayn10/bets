@@ -26,7 +26,6 @@ function Person_Profile_Screen(props) {
     const [numFriends, setNumFriends] = useState(0)
 
     const person = props.route.params.person
-    const isUser = props.route.params.isUser
     const { firstName, lastName, email, username, id } = person
     const userFriends = useSelector(state => state.people.friends)
     const user = useSelector(state => state.auth.userInfo)
@@ -48,26 +47,14 @@ function Person_Profile_Screen(props) {
             title: 'Profile',
             headerRight: () => {
                 return (
-                    isUser
-                        ? <TouchableOpacity {...props}>
-                            <MaterialIcons
-                                name="edit"
-                                size={24}
-                                color="white"
-                                style={{ marginBottom: 3, padding: 0 }}
-                                onPress={() => props.navigation.navigate('Edit Profile')}
-                            />
-
-                        </TouchableOpacity>
-                        : <TouchableOpacity {...props}>
-                            <Ionicons
-                                name="stats-chart"
-                                size={22} color="black"
-                                style={{ color: 'white', marginBottom: 3, padding: 0 }}
-                                onPress={() => handleGoToStats()}
-                            />
-                        </TouchableOpacity>
-
+                    <TouchableOpacity {...props}>
+                        <Ionicons
+                            name="stats-chart"
+                            size={22} color="black"
+                            style={{ color: 'white', marginBottom: 3, padding: 0 }}
+                            onPress={() => handleGoToStats()}
+                        />
+                    </TouchableOpacity>
                 )
             }
         })
@@ -177,7 +164,7 @@ function Person_Profile_Screen(props) {
     }
     const handleViewFriends = () => {
 
-        props.navigation.navigate('Persons Friends', { personsFriends: personsFriends, title: isUser ? 'My Friends' : `${person.firstName}'s Friends` })
+        props.navigation.navigate('Persons Friends', { personsFriends: personsFriends, title: `${person.firstName}'s Friends` })
     }
 
     const handleCreateBetOffer = () => {
@@ -194,9 +181,6 @@ function Person_Profile_Screen(props) {
     }
 
     const friendBtn = () => {
-        if (isUser) {
-            return
-        }
         if (isFriend) {
             return (
                 <Button
@@ -249,41 +233,39 @@ function Person_Profile_Screen(props) {
                 </View>
                 <View style={styles.friendsContainer}>
                     {friendBtn()}
-                    {isUser
-                        ? null
-                        : <Button
-                            icon={
-                                <FontAwesome5 name="user-friends" size={12} color={Colors.primaryColor} />
-                            }
-                            title={numFriends + ' ' + (numFriends === 1 ? 'friend' : 'friends')}
-                            type="outline"
-                            buttonStyle={styles.isFriendBtn}
-                            titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
-                            onPress={() => handleViewFriends()}
-                        />
-                    }
+
+                    <Button
+                        icon={
+                            <FontAwesome5 name="user-friends" size={12} color={Colors.primaryColor} />
+                        }
+                        title={numFriends + ' ' + (numFriends === 1 ? 'friend' : 'friends')}
+                        type="outline"
+                        buttonStyle={styles.isFriendBtn}
+                        titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
+                        onPress={() => handleViewFriends()}
+                    />
+
 
                 </View>
                 <TouchableOpacity
-                    onPress={() => isUser ? handleCreateBetOffer() : handleSendBetOffer()}
+                    onPress={() => handleSendBetOffer()}
                     style={styles.sendBetBtn}
                 >
-                    <HeaderText style={styles.sendBetBtn}>{isUser ? 'Create New Bet' : 'Send Bet Offer'}</HeaderText>
+                    <HeaderText style={styles.sendBetBtn}>{'Send Bet Offer'}</HeaderText>
                 </TouchableOpacity>
             </View>
             <View style={styles.toggleButtonsContainer}>
                 <Text style={showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(true)}>Bets Feed</Text>
-                {isUser
-                    ? null
-                    : <Text style={!showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(false)}>Between You</Text>
-                }
+
+                <Text style={!showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(false)}>Between You</Text>
+
 
             </View>
 
             {showBetsfeed
                 ? <BetList
                     bets={personsBets}
-                    permissions={isUser ? true : false}
+                    permissions={false}
                     personId={person.id}
                 />
                 : <BetList

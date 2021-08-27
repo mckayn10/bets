@@ -15,6 +15,8 @@ import Settings_Screen from '../screens/Settings_Screen';
 import Settings_Navigator from './Settings_Navigator';
 import { useSelector } from 'react-redux';
 import Home_Navigator from './Home_Navigator';
+import User_Profile_Screen from '../screens/User_Profile_Screen';
+import User_Profile_Navigator from './User_Profile_Navigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -110,7 +112,7 @@ export default function Tab_Navigator() {
             />
             <Tab.Screen
                 name="Profile Tab"
-                component={Profile_Navigator}
+                component={User_Profile_Navigator}
                 options={{
                     headerShown: false,
                     tabBarShowLabel: false

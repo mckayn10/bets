@@ -1,12 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import Colors from '../constants/colors'
 import HeaderText from './HeaderText';
-import { logout } from '../store/actions/auth';
-import { removeData } from '../store/actions/bets';
 import { useDispatch, useSelector } from 'react-redux';
-import OpenDrawerIcon from './OpenDrawerIcon';
-import NotificationsIcon from './NotificationsIcon'
 
 export default function NavBar({props}) {
 

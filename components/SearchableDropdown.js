@@ -4,7 +4,7 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 import { useSelector } from 'react-redux';
 import Colors from '../constants/colors';
 
-export default MySearchableDropdown = (props) => {
+const MySearchableDropdown = (props) => {
     const friendsList = useSelector(state => state.people.friends)
 
     return (
@@ -48,3 +48,4 @@ export default MySearchableDropdown = (props) => {
             />
     );
 }
+export default MySearchableDropdown

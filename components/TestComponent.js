@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Button } from 'react-native'
 import db from '../firebase/firestore'
 
-export default TestComponent = () => {
+const TestComponent = () => {
 
     const testAdd = () => {
         console.log('test button')
@@ -59,3 +59,4 @@ export default TestComponent = () => {
         </View>
     )
 }
+export default TestComponent

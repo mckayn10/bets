@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 export default function BetCard(props) {
     const [betModalVisible, setBetModalVisible] = useState(false)
-    const { description, amount, other_bettor, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id } = props.bet
+    const { description, amount, other_bettor,other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id } = props.bet
     const showNotAccepted = is_verified && !is_accepted
 
     const userId = useSelector(state => state.auth.userId)
@@ -18,9 +18,9 @@ export default function BetCard(props) {
     let nameToDisplay = creator_id === userId ? other_bettor : creator
 
     let infoToDisplayBasedOnUser = {
-        otherBettorname: creator_id === userId ? other_bettor.firstName + ' ' + other_bettor.lastName : 'You',
-        creatorName: creator_id === userId ? 'You' : creator.firstName + ' ' + creator.lastName,
-        displayOtherName: creator_id === userId ? other_bettor.firstName + ' ' + other_bettor.lastName : creator.firstName + ' ' + creator.lastName,
+        otherBettorname: creator_id === userId ? other_bettor.firstName : (other_id === userId ? 'You' : other_bettor.firstName),
+        creatorName: creator_id === userId ? 'You' : creator.firstName,
+        displayOtherName: creator_id === userId ? other_bettor.firstName : creator.firstName,
         didWin: won_bet === userId ? true : false,
     }
 

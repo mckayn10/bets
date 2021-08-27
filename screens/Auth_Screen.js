@@ -92,9 +92,9 @@ function Auth_Screen(props) {
                 placeholderTextColor='rgba(255, 255, 255, 0.5)'
                 onChangeText={passwordText => setPasswordText(passwordText)}
                 defaultValue={passwordText}
-                keyboardType='visible-password'
+                keyboardType='default'
                 autoCapitalize='none'
-                secureTextEntry
+                secureTextEntry={true}
             />
             {isLoading
                 ? <ActivityIndicator style={{ marginBottom: 12 }} />

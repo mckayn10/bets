@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Colors from '../constants/colors'
 import BetCard from './BetCard'
 import { MaterialIcons } from '@expo/vector-icons';

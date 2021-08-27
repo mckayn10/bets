@@ -6,7 +6,6 @@ import Startup_Screen from '../screens/Startup_Screen'
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authenticate } from '../store/actions/auth';
-import Home_Drawer_Navigator from './Home_Drawer_Navigator';
 import Tab_Navigator from './Tab_Navigator';
 
 const Stack = createNativeStackNavigator()

@@ -1,9 +1,7 @@
 import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import Colors from '../constants/colors'
 import Notifications_Screen from '../screens/Notifications_Screen';
-import BetReview from '../components/BetReview';
 import Bet_Review_Screen from '../screens/Bet_Review_Screen';
 import Person_Profile_Screen from '../screens/Person_Profile_Screen';
 import Profile_Screen from '../screens/Profile_Screen';
