@@ -1,17 +1,15 @@
 import React, { useLayoutEffect, useState, useEffect } from 'react'
 import db from '../firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
+import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
 import { Button } from 'react-native-elements'
 import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText';
-import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { addFriend, fetchAllPersonsFriends, removeFriend } from '../store/actions/friends';
+import { removeFriend } from '../store/actions/friends';
 import { sendFriendRequest } from '../store/actions/notifications';
-import { checkIfShared, formatBetArrayOfObjects } from '../constants/utils';
+import { checkIfShared } from '../constants/utils';
 
 import BetList from '../components/BetList';
 
@@ -32,6 +30,7 @@ function Person_Profile_Screen(props) {
 
     const dispatch = useDispatch()
 
+
     useEffect(() => {
         if (userFriends.some(person => person.id == id)) {
             setIsFriend(true)
@@ -46,19 +45,20 @@ function Person_Profile_Screen(props) {
         props.navigation.setOptions({
             title: 'Profile',
             headerRight: () => {
+                let shared = sharedBets
                 return (
                     <TouchableOpacity {...props}>
                         <Ionicons
                             name="stats-chart"
                             size={22} color="black"
                             style={{ color: 'white', marginBottom: 3, padding: 0 }}
-                            onPress={() => handleGoToStats()}
+                            onPress={() => props.navigation.navigate('Stats Screen', { person: person, bets: shared })}
                         />
                     </TouchableOpacity>
                 )
             }
         })
-    }, [])
+    }, [sharedBets])
 
     // Get all of the person's/friend's bets
     const fetchPersonsBets = () => {
@@ -72,7 +72,7 @@ function Person_Profile_Screen(props) {
                     bet.id = doc.id
                     betsArr.push(bet)
                 });
-                betsRef.where("other_id", "==", id).where("is_accepted", "==", true).get()
+                betsRef.where("other_id", "==", id).get()
                     .then(querySnapshot => {
                         querySnapshot.forEach((doc) => {
                             let bet = doc.data()
@@ -117,6 +117,8 @@ function Person_Profile_Screen(props) {
         })
 
         setSharedBets(shared)
+        console.log('shared bets is set', sharedBets.length)
+        return shared
     }
 
 
@@ -172,12 +174,9 @@ function Person_Profile_Screen(props) {
     }
 
     const handleGoToStats = () => {
-        props.navigation.navigate('Stats Screen',
-            {
-                person: person,
-                bets: personsBets
-            }
-        )
+        let bets = personsBets
+        console.log(personsBets)
+        props.navigation.navigate('Stats Screen', { person: person, bets: personsBets })
     }
 
     const friendBtn = () => {

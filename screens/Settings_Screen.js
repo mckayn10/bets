@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import HeaderText from '../components/HeaderText';
 import Colors from '../constants/colors';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
 
 
 export default function Settings_Screen() {
@@ -21,40 +23,52 @@ export default function Settings_Screen() {
         <SafeAreaView style={styles.container}>
             <TouchableOpacity
                 style={styles.cardContainer}
-                // onPress={() => handleLogout()}
+            // onPress={() => handleLogout()}
             >
                 <View style={styles.descriptionContainer}>
-                    <Text style={styles.name}>Setting 1</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Octicons name="settings" size={20} color="black" />
+                        <Text style={[styles.name]}>Account Settings</Text>
+                    </View>
+                    <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
+
+                </View>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
+                style={styles.cardContainer}
+            // onPress={() => handleLogout()}
+            >
+                <View style={styles.descriptionContainer}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <MaterialIcons name="settings-display" size={20} color="black" />
+                        <Text style={[styles.name]}>Display Settings</Text>
+                    </View>
+                    <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
+
+                </View>
+            </TouchableOpacity> */}
+            <TouchableOpacity
+                style={styles.cardContainer}
+            // onPress={() => handleLogout()}
+            >
+                <View style={styles.descriptionContainer}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <MaterialIcons name="help-outline" size={20} color="black" />
+                        <Text style={[styles.name]}>Help</Text>
+                    </View>
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
 
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.cardContainer}
-                // onPress={() => handleLogout()}
+            // onPress={() => handleLogout()}
             >
                 <View style={styles.descriptionContainer}>
-                    <Text style={styles.name}>Setting 2</Text>
-                    <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
-
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.cardContainer}
-                // onPress={() => handleLogout()}
-            >
-                <View style={styles.descriptionContainer}>
-                    <Text style={styles.name}>Setting 3</Text>
-                    <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
-
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.cardContainer}
-                // onPress={() => handleLogout()}
-            >
-                <View style={styles.descriptionContainer}>
-                    <Text style={styles.name}>Setting 4</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <MaterialIcons name="feedback" size={20} color="black" />
+                        <Text style={[styles.name]}>Submit Feedback</Text>
+                    </View>
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
 
                 </View>
@@ -64,9 +78,11 @@ export default function Settings_Screen() {
                 onPress={() => handleLogout()}
             >
                 <View style={styles.descriptionContainer}>
-                    <Text style={[styles.name, {color: Colors.red}]}>Logout</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <MaterialIcons name="logout" size={20} color={Colors.red} />
+                        <Text style={[styles.name, { color: Colors.red }]}>Logout</Text>
+                    </View>
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
-
                 </View>
             </TouchableOpacity>
         </SafeAreaView>
@@ -94,8 +110,8 @@ const styles = StyleSheet.create({
         height: 60
     },
     name: {
-        fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginLeft: 10
     }
 
 });

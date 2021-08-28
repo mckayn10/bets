@@ -41,8 +41,9 @@ export default function NotificationCard(props) {
     }
 
     const openBetReview = () => {
-        data.notiId = id
-        props.navigation.navigate('Bet Review', { data: data })
+        let notiData = { notiId: id, pendingAction: pendingAction, from: from, to: to, type: type }
+
+        props.navigation.navigate('Bet Review', { betData: data, notiData: notiData })
     }
 
     const openPersonProfile = () => {
@@ -72,9 +73,10 @@ export default function NotificationCard(props) {
                             onPress={() => handleDeclineFriendRequest()}
                         />
                     </View>
-
+                notiPackage.betDescription = ''
                 notiPackage.message = " has sent you a friend request"
                 return notiPackage
+
             case 'friendAccept':
                 notiPackage.btns =
                     <View style={styles.btnContainer}>
@@ -93,9 +95,10 @@ export default function NotificationCard(props) {
                             onPress={() => dismissNotification()}
                         />
                     </View>
-
+                notiPackage.betDescription = ''
                 notiPackage.message = " has accepted your friend request"
                 return notiPackage
+
             case 'betRequest':
                 notiPackage.btns =
                     <View style={styles.btnContainer}>
@@ -107,9 +110,10 @@ export default function NotificationCard(props) {
                             onPress={() => openBetReview()}
                         />
                     </View>
-
+                notiPackage.betDescription = data.description
                 notiPackage.message = " has sent you a bet offer"
                 return notiPackage
+
             case 'betAccept':
                 notiPackage.btns =
                     <View style={styles.btnContainer}>
@@ -128,10 +132,78 @@ export default function NotificationCard(props) {
                             onPress={() => dismissNotification()}
                         />
                     </View>
-
+                notiPackage.betDescription = data.description
                 notiPackage.message = " has accepted your bet offer"
                 return notiPackage
+
             case 'betDecline':
+                notiPackage.btns =
+                    <View style={styles.btnContainer}>
+                        <Button
+                            title='Review'
+                            buttonStyle={[styles.btnAccept, styles.btn]}
+                            titleStyle={styles.btnTitle}
+                            type='outline'
+                            onPress={() => openBetReview()}
+                        />
+                        <Button
+                            title='Dismiss'
+                            buttonStyle={[styles.btnDismiss, styles.btn]}
+                            titleStyle={[styles.btnTitle, { color: Colors.red }]}
+                            type='outline'
+                            onPress={() => dismissNotification()}
+                        />
+                    </View>
+                notiPackage.betDescription = data.description
+                notiPackage.message = " has declined your bet offer"
+                return notiPackage
+
+            case 'betUpdateDecline':
+                notiPackage.btns =
+                    <View style={styles.btnContainer}>
+                        <Button
+                            title='Review'
+                            buttonStyle={[styles.btnAccept, styles.btn]}
+                            titleStyle={styles.btnTitle}
+                            type='outline'
+                            onPress={() => openBetReview()}
+                        />
+                        <Button
+                            title='Dismiss'
+                            buttonStyle={[styles.btnDismiss, styles.btn]}
+                            titleStyle={[styles.btnTitle, { color: Colors.red }]}
+                            type='outline'
+                            onPress={() => dismissNotification()}
+                        />
+                    </View>
+
+                notiPackage.betDescription = data.description
+                notiPackage.message = " has declined the proposed updates for your bet"
+                return notiPackage
+
+            case 'betUpdateAccept':
+                notiPackage.btns =
+                    <View style={styles.btnContainer}>
+                        <Button
+                            title='Review'
+                            buttonStyle={[styles.btnAccept, styles.btn]}
+                            titleStyle={styles.btnTitle}
+                            type='outline'
+                            onPress={() => openBetReview()}
+                        />
+                        <Button
+                            title='Dismiss'
+                            buttonStyle={[styles.btnDismiss, styles.btn]}
+                            titleStyle={[styles.btnTitle, { color: Colors.red }]}
+                            type='outline'
+                            onPress={() => dismissNotification()}
+                        />
+                    </View>
+                notiPackage.betDescription = data.description
+                notiPackage.message = " has accepted the proposed updates for your bet"
+                return notiPackage
+
+            case 'betUpdate':
                 notiPackage.btns =
                     <View style={styles.btnContainer}>
                         <Button
@@ -143,68 +215,9 @@ export default function NotificationCard(props) {
                         />
                     </View>
                 notiPackage.betDescription = data.description
-                notiPackage.message = " has declined your bet offer"
-                return notiPackage
-            case 'betUpdateDecline':
-                notiPackage.btns =
-                    <View style={styles.btnContainer}>
-                        <Button
-                            title='Accept'
-                            buttonStyle={[styles.btnAccept, styles.btn]}
-                            titleStyle={styles.btnTitle}
-                            onPress={() => handleAcceptFriendRequest()}
-
-                        />
-                        <Button
-                            title='Decline'
-                            buttonStyle={[styles.btnDecline, styles.btn]}
-                            titleStyle={styles.btnTitle}
-                            onPress={() => handleDeclineFriendRequest()}
-                        />
-                    </View>
-
-                notiPackage.message = " has declined the proposed updates for your bet"
-                return notiPackage
-            case 'betUpdateAccept':
-                notiPackage.btns =
-                    <View style={styles.btnContainer}>
-                        <Button
-                            title='Accept'
-                            buttonStyle={[styles.btnAccept, styles.btn]}
-                            titleStyle={styles.btnTitle}
-                            onPress={() => handleAcceptFriendRequest()}
-
-                        />
-                        <Button
-                            title='Decline'
-                            buttonStyle={[styles.btnDecline, styles.btn]}
-                            titleStyle={styles.btnTitle}
-                            onPress={() => handleDeclineFriendRequest()}
-                        />
-                    </View>
-
-                notiPackage.message = " has accepted the proposed updates for your bet"
-                return notiPackage
-            case 'betUpdate':
-                notiPackage.btns =
-                    <View style={styles.btnContainer}>
-                        <Button
-                            title='Accept'
-                            buttonStyle={[styles.btnAccept, styles.btn]}
-                            titleStyle={styles.btnTitle}
-                            onPress={() => handleAcceptFriendRequest()}
-
-                        />
-                        <Button
-                            title='Decline'
-                            buttonStyle={[styles.btnDecline, styles.btn]}
-                            titleStyle={styles.btnTitle}
-                            onPress={() => handleDeclineFriendRequest()}
-                        />
-                    </View>
-
                 notiPackage.message = " has proposed an update to your bet"
                 return notiPackage
+
             case 'doubleOrNothing':
                 notiPackage.btns =
                     <View style={styles.btnContainer}>
@@ -222,7 +235,7 @@ export default function NotificationCard(props) {
                             onPress={() => handleDeclineFriendRequest()}
                         />
                     </View>
-
+                notiPackage.betDescription = data.description
                 notiPackage.message = " has offered to go double or nothing on your bet"
                 return notiPackage
         }
@@ -233,7 +246,7 @@ export default function NotificationCard(props) {
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Ionicons name="ios-person-circle-outline" size={60} color="black" />
-                <View style={{width: '100%'}}>
+                <View style={{ width: '100%', flexWrap: 'wrap' }}>
                     <Text style={styles.title}>
                         {from.firstName}
                         <Text style={{ fontWeight: '300' }}>{notificationCreator().message}</Text>
@@ -267,11 +280,15 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     title: {
         fontWeight: 'bold',
         marginLeft: 3,
+        width: '80%',
+        flexWrap: 'wrap',
+        marginTop: 10
+
     },
     description: {
         marginTop: 5,

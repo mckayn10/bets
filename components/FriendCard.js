@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // marginTop: 5,
         height: 70,
         width: '100%',
         alignSelf: 'center',
@@ -62,10 +61,6 @@ const styles = StyleSheet.create({
     },
     username: {
         fontSize: 12
-    },
-    friendStatus: {
-        marginRight: 15,
-        padding: 5
     },
     arrow: {
         position: 'absolute',

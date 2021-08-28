@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { StyleSheet, ScrollView, FlatList, Text, View, TouchableOpacity } from 'react-native'
+import React, { useEffect } from 'react'
+import { StyleSheet, ScrollView, Text, View, } from 'react-native'
 import Colors from '../constants/colors';
 import { useSelector } from 'react-redux'
 import { completedCriteria, pendingCriteria } from '../constants/utils';
@@ -11,12 +11,6 @@ function Stats_Screen(props) {
     const userId = useSelector(state => state.auth.userId)
 
     const totalBets = bets.length
-
-    useEffect(() => {
-        return () => {
-            bets = []
-        }
-    }, [bets])
 
     const completedBetsCount = () => {
         let count = 0
@@ -34,7 +28,7 @@ function Stats_Screen(props) {
         bets.forEach(bet => {
             if (completedCriteria(bet) && bet.won_bet == userId) {
                 amountWon += bet.amount
-            } else if(completedCriteria(bet) && bet.won_bet != userId) {
+            } else if (completedCriteria(bet) && bet.won_bet != userId) {
                 amountLost += bet.amount
             }
         })
@@ -93,52 +87,52 @@ function Stats_Screen(props) {
 
     return (
         <ScrollView>
-            <HeaderText style={styles.pageTitle}>{props.route.params ? props.route.params.person.firstName + "'s Stats" : 'My Stats'}</HeaderText>
+            <HeaderText style={styles.pageTitle}>{props.route.params ? 'You vs. ' + props.route.params.person.firstName : 'My Stats'}</HeaderText>
 
             <View style={styles.container}>
-                <View style={styles.statContainer}>
-                    <HeaderText style={styles.statTitle}>Total Bets</HeaderText>
+                <View style={[styles.statContainer, { width: '95%' }]}>
+                    <HeaderText style={styles.statTitle}>Total Amount Won</HeaderText>
+                    <Text style={[styles.statNumber, { fontSize: 40 }]}>{totalAmountCompleted() < 0 ? '-' : ''}${parseFloat(Math.abs(totalAmountCompleted())).toFixed(2)}</Text>
+                </View>
+                <View style={[styles.statContainer]}>
+                    <HeaderText style={styles.statTitle}>Total</HeaderText>
                     <Text style={styles.statNumber}>{totalBets}</Text>
                 </View>
-                <View style={styles.statContainer}>
-                    <HeaderText style={styles.statTitle}>Per Bet Avg</HeaderText>
-                    <Text style={styles.statNumber}>{totalAmountCompleted() < 0 ? '-' : ''}${perBetAvg}</Text>
-                </View>
-                <View style={styles.statContainer}>
-                    <HeaderText style={styles.statTitle}>Completed</HeaderText>
-                    <Text style={styles.statNumber}>{completedBetsCount()}</Text>
-                </View>
-                <View style={styles.statContainer}>
+                <View style={[styles.statContainer]}>
                     <HeaderText style={styles.statTitle}>Pending</HeaderText>
                     <Text style={styles.statNumber}>{pendingBetsCount()}</Text>
                 </View>
-                <View style={styles.statContainer}>
-                    <HeaderText style={styles.statTitle}>Verified Bets</HeaderText>
+                <View style={[styles.statContainer]}>
+                    <HeaderText style={styles.statTitle}>Verified</HeaderText>
                     <Text style={styles.statNumber}>{verifiedBetsCount()}</Text>
                 </View>
-                <View style={styles.statContainer}>
-                    <HeaderText style={styles.statTitle}>Unverified Bets</HeaderText>
+                <View style={[styles.statContainer]}>
+                    <HeaderText style={styles.statTitle}>Unverified</HeaderText>
                     <Text style={styles.statNumber}>{totalBets - verifiedBetsCount()}</Text>
                 </View>
-                <View style={styles.statContainer}>
-                    <HeaderText style={styles.statTitle}>Total Won</HeaderText>
+                <View style={[styles.statContainer, { width: '95%' }]}>
+                    <HeaderText style={styles.statTitle}>Avg Winnings Per Bet</HeaderText>
+                    <Text style={styles.statNumber}>{totalAmountCompleted() < 0 ? '-' : ''}${perBetAvg}</Text>
+                </View>
+                <View style={[styles.statContainer, styles.thirdColumn]}>
+                    <HeaderText style={styles.statTitle}>Complete</HeaderText>
+                    <Text style={styles.statNumber}>{completedBetsCount()}</Text>
+                </View>
+                <View style={[styles.statContainer, styles.thirdColumn]}>
+                    <HeaderText style={styles.statTitle}>Won</HeaderText>
                     <Text style={styles.statNumber}>{wonBetsCount()}</Text>
                 </View>
-                <View style={styles.statContainer}>
-                    <HeaderText style={styles.statTitle}>Total Lost</HeaderText>
+                <View style={[styles.statContainer, styles.thirdColumn]}>
+                    <HeaderText style={styles.statTitle}>Lost</HeaderText>
                     <Text style={styles.statNumber}>{lostBetsCount()}</Text>
                 </View>
-                <View style={styles.statContainer}>
+                <View style={[styles.statContainer]}>
                     <HeaderText style={styles.statTitle}>Win Percentage</HeaderText>
                     <Text style={styles.statNumber}>{winPercentage}%</Text>
                 </View>
-                <View style={styles.statContainer}>
+                <View style={[styles.statContainer]}>
                     <HeaderText style={styles.statTitle}>Lose Percentage</HeaderText>
                     <Text style={styles.statNumber}>{lostPercentage}%</Text>
-                </View>
-                <View style={styles.statContainer}>
-                    <HeaderText style={styles.statTitle}>Total Amount</HeaderText>
-                    <Text style={styles.statNumber}>{totalAmountCompleted() < 0 ? '-' : ''}${parseFloat(Math.abs(totalAmountCompleted())).toFixed(2)}</Text>
                 </View>
             </View>
         </ScrollView>
@@ -158,8 +152,8 @@ const styles = StyleSheet.create({
         padding: 5
     },
     statContainer: {
-        height: 170,
-        width: '45%',
+        height: 150,
+        width: '46%',
         backgroundColor: 'white',
         margin: 5,
         padding: 10,
@@ -190,6 +184,10 @@ const styles = StyleSheet.create({
         padding: 15,
         textAlign: 'center',
         color: 'gray'
+    },
+    thirdColumn: {
+        width: '30%',
+        height: 120
     }
 })
 

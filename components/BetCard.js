@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import ViewBetModal from '../modals/ViewBetModal';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function BetCard(props) {
     const [betModalVisible, setBetModalVisible] = useState(false)
@@ -36,10 +37,12 @@ export default function BetCard(props) {
     }
     const displayVerifiedIcon = () => {
         if (is_verified && !is_accepted) {
-            return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-open" size={17} color={Colors.primaryColor} />
+            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-open" size={17} color={Colors.primaryColor} />
+            return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
         }
         else if (is_verified && is_accepted) {
-            return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} />
+            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} />
+            return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check" size={22} color={Colors.primaryColor} />
         }
     }
 

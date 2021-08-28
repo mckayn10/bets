@@ -14,13 +14,16 @@ import Modal from 'react-native-modal'
 import { KeyboardAvoidingView } from 'react-native';
 import { set } from 'react-native-reanimated';
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
+import { sendBetUpdate } from '../store/actions/notifications';
 
 
 
 const ViewBetModal = props => {
-    const { description, amount, other_bettor, date, won_bet, is_complete, id, date_complete, is_verified, is_accepted, creator_id, other_id } = props.betData
+    const { description, amount, other_bettor, date, won_bet, is_complete, id, date_complete, is_verified, is_accepted, creator_id, other_id, creator } = props.betData
     const userId = useSelector(state => state.auth.userId)
+    const user = useSelector(state => state.auth.userInfo)
     const otherPersonId = userId === creator_id ? other_id : creator_id
+    const otherPerson = userId === creator_id ? other_bettor : creator
 
 
     const [editMode, setEditMode] = useState(false)
@@ -41,7 +44,6 @@ const ViewBetModal = props => {
     } else {
         betStatusText = 'Pending'
     }
-    console.log(won_bet)
 
     let betWonText = userId == won_bet ? 'Yep' : (otherPersonId == won_bet ? 'Nope' : 'Undecided')
 
@@ -67,6 +69,12 @@ const ViewBetModal = props => {
     const dispatch = useDispatch()
 
     const closeModal = () => {
+        setEditMode(false)
+        setNameOfBettor('')
+        setBetAmount(0)
+        setBetDescription('')
+        setBetComplete(false)
+        setBetWon(false)
         setToggleModal(false)
         setTimeout(() => {
             props.toggleModal(!props.modalVisible)
@@ -74,15 +82,21 @@ const ViewBetModal = props => {
     }
 
     const handleUpdateBet = async () => {
-
         const betData = props.betData
         betData.other_bettor.firstName = nameOfBettor
         betData.amount = parseInt(betAmount)
         betData.is_complete = betComplete
-        betData.won_bet = betWon ? userId : otherPersonId.
-            betData.description = betDescription
+        betData.won_bet = betWon ? userId : otherPersonId
+        betData.description = betDescription
 
         const statusChanged = is_complete == betComplete ? false : true
+        if (!hasPermission) {
+            let type = 'betUpdate'
+            sendBetUpdate(betData, user, otherPerson, type)
+            closeModal()
+            return
+        }
+        console.log('this shouldnt log')
 
         closeModal()
         setTimeout(() => {
@@ -92,6 +106,10 @@ const ViewBetModal = props => {
     }
 
     const handleDeleteBet = () => {
+        if (!hasPermission) {
+            console.log('Send notificaiton to update')
+            return
+        }
         closeModal()
         setTimeout(() => {
             dispatch(deleteBet(id))
@@ -117,6 +135,24 @@ const ViewBetModal = props => {
         );
     };
 
+    const showUpdateAlert = () => {
+        return Alert.alert(
+            "Both bettors will need to confirm these updates. Updates will be made if they are accepted.",
+            "",
+            [
+                {
+                    text: "Send Notification",
+                    onPress: () => {
+                        handleUpdateBet()
+                    },
+                },
+                {
+                    text: "Back",
+                },
+            ]
+        );
+    };
+
     return (
         <Modal
             isVisible={toggleModal}
@@ -134,46 +170,8 @@ const ViewBetModal = props => {
                 behavior='position'
                 contentContainerStyle={styles.avoidKeyboardContainer}>
                 <View style={styles.titleContainer}>
-                    {hasPermission
-                        ? <View>
-                            {editMode
-                                ? <TouchableOpacity
-                                    style={[styles.titleIcon, styles.leftIcon]}
-                                    onPress={() => setEditMode(!editMode)}
-                                >
-                                    <AntDesign
-                                        name="back"
-                                        size={25}
-                                        color="white"
-                                    />
-                                </TouchableOpacity>
-                                : <TouchableOpacity
-                                    style={[styles.titleIcon, styles.leftIcon]}
-                                    onPress={() => setEditMode(!editMode)}
-                                >
-                                    <FontAwesome
-                                        name="edit"
-                                        size={27}
-                                        color="white"
-                                        style={{ paddingTop: 2 }}
-                                    />
-                                </TouchableOpacity>
-                            }
-                        </View>
-                        : null
-                    }
 
-                    <Text style={!hasPermission ? [styles.pageTitle, { marginLeft: 18 }] : styles.pageTitle}>Bet Details</Text>
-                    <TouchableOpacity
-                        style={styles.titleIcon}
-                        onPress={() => closeModal()}
-                    >
-                        <Ionicons
-                            name="close-circle-outline"
-                            size={31}
-                            color="white"
-                        />
-                    </TouchableOpacity>
+                    <Text style={styles.pageTitle}>Bet Details</Text>
                 </View>
                 <View style={styles.detailsContainer}>
                     <View style={editMode ? styles.editDetailRow : styles.detailRow}>
@@ -185,6 +183,7 @@ const ViewBetModal = props => {
                                 leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
                                 onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
                                 defaultValue={other_bettor.firstName + ' ' + other_bettor.lastName}
+                                disabled={hasPermission ? false : true}
                             />
                         }
                     </View>
@@ -254,45 +253,43 @@ const ViewBetModal = props => {
 
                         </View>
                     }
-                    {hasPermission
-                        ? <View>
-                            {!editMode
-                                ?
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                    <View style={styles.btnContainer}>
-                                        <Button
-                                            iconRight
-                                            title="Edit"
-                                            type="solid"
-                                            buttonStyle={styles.updateButton}
-                                            onPress={() => setEditMode(!editMode)}
-                                        />
-                                    </View>
-                                    <View style={styles.btnContainer}>
-                                        <Button
-                                            title="Delete Bet"
-                                            type="solid"
-                                            buttonStyle={styles.deleteButton}
-                                            onPress={() => showConfirmDialog()}
-                                        />
-                                    </View>
-                                </View>
-                                : <View style={styles.btnContainer}>
+                    <View>
+                        {!editMode
+                            ?
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                                <View style={styles.btnContainer}>
                                     <Button
-                                        icon={
-                                            <Feather name="check-circle" size={24} color='white' />
-                                        }
                                         iconRight
-                                        title="Save Changes  "
+                                        title="Update"
                                         type="solid"
-                                        buttonStyle={[styles.updateButton, { width: '90%', alignSelf: 'center' }]}
-                                        onPress={() => handleUpdateBet()}
+                                        buttonStyle={styles.updateButton}
+                                        onPress={() => setEditMode(!editMode)}
                                     />
                                 </View>
-                            }
-                        </View>
-                        : null
-                    }
+                                <View style={styles.btnContainer}>
+                                    <Button
+                                        title="Delete"
+                                        type="solid"
+                                        buttonStyle={styles.deleteButton}
+                                        onPress={() => showConfirmDialog()}
+                                    />
+                                </View>
+                            </View>
+                            : <View style={styles.btnContainer}>
+                                <Button
+                                    icon={
+                                        <Feather name="check-circle" size={24} color='white' />
+                                    }
+                                    iconRight
+                                    title={hasPermission ? 'Save Changes  ' : 'Request Changes  '}
+                                    type="solid"
+                                    buttonStyle={[styles.updateButton, { width: '90%', alignSelf: 'center' }]}
+                                    onPress={() => hasPermission ? handleUpdateBet() : showUpdateAlert()}
+                                />
+                            </View>
+                        }
+                    </View>
+
 
                 </View>
             </KeyboardAvoidingView>
@@ -318,7 +315,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primaryColor,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20
     },
@@ -336,6 +333,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'white',
         alignSelf: 'center',
+        padding: 15,
+        alignSelf: 'center'
     },
     titleIcon: {
         margin: 15,
@@ -371,7 +370,6 @@ const styles = StyleSheet.create({
     },
     btnContainer: {
         marginTop: 15,
-        // paddingBottom: 15
     },
     statusText: {
         paddingBottom: 10,

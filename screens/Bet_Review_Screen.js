@@ -6,12 +6,18 @@ import { completedCriteria } from '../constants/utils'
 import db from '../firebase/firestore'
 import { deleteBet, updateBet } from '../store/actions/bets'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteNotification, sendBetResponse } from '../store/actions/notifications'
+import { deleteNotification, sendBetResponse, sendBetUpdateResponse } from '../store/actions/notifications'
 
 export default function Bet_Review_Screen(props) {
+    console.log(props.route.params.notiData)
 
-    const data = props.route.params.data
-    const notiId = props.route.params.data.notiId
+    const data = props.route.params.betData
+    const notiData = props.route.params.notiData
+    const needsAction = props.route.params.notiData.pendingAction
+    const notiId = props.route.params.notiData.notiId
+
+    const person = props.route.params.notiData.from
+    const user = props.route.params.notiData.to
 
     const dispatch = useDispatch()
 
@@ -36,7 +42,7 @@ export default function Bet_Review_Screen(props) {
         setIsLoading(false)
     }, [])
 
-    const handleAccepted = () => {
+    const handleAcceptOffer = () => {
 
         let statusChanged = completedCriteria(bet)
         bet.is_accepted = true
@@ -53,6 +59,30 @@ export default function Bet_Review_Screen(props) {
 
     }
 
+    const handleAcceptUpdate = () => {
+        let statusChanged = true
+        let notificationType = 'betUpdateAccept'
+
+        try {
+            dispatch(updateBet(bet, statusChanged))
+        } catch (err) {
+            console.error(err)
+        }
+        sendBetUpdateResponse(bet, user, person, notificationType)
+        deleteNotification(notiId)
+        props.navigation.navigate('Notifications')
+
+    }
+
+    const handleDeclineUpdate = () => {
+        let notificationType = 'betUpdateDecline'
+
+        sendBetUpdateResponse(bet, user, person, notificationType)
+        deleteNotification(notiId)
+        props.navigation.navigate('Notifications')
+
+    }
+
     const handleDeclined = () => {
         let notificationType = 'betDecline'
         sendBetResponse(bet, notificationType)
@@ -62,8 +92,6 @@ export default function Bet_Review_Screen(props) {
         } catch (err) {
             console.error(err)
         }
-        // sendBetResponse(bet, notificationType)
-        // deleteNotification(notiId)
         props.navigation.navigate('Notifications')
 
     }
@@ -92,7 +120,7 @@ export default function Bet_Review_Screen(props) {
                     <Text style={styles.text}>{bet.won_bet == userId ? 'You' : (bet.won_bet == infoToDisplayBasedOnUser.otherId ? infoToDisplayBasedOnUser.otherBettorName : 'Undecided') }</Text>
                 </View>
 
-                {bet.is_accepted
+                {!needsAction
                     ? null
                     : <View style={styles.btnRow}>
                         <Button
@@ -100,14 +128,14 @@ export default function Bet_Review_Screen(props) {
                             type="outline"
                             buttonStyle={[styles.btn, styles.btnAccept]}
                             titleStyle={{ color: 'white' }}
-                            onPress={() => handleAccepted()}
+                            onPress={() => notiData.type == 'betUpdate' ? handleAcceptUpdate() : handleAcceptOffer()}
                         />
                         <Button
                             title='Decline'
                             type="outline"
                             buttonStyle={[styles.btn, styles.btnDecline]}
                             titleStyle={{ color: 'white' }}
-                            onPress={() => handleDeclined()}
+                            onPress={() => notiData.type === 'betUpdate' ? handleDeclineUpdate() :  handleDeclined()}
 
                         />
                     </View>

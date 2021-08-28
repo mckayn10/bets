@@ -79,6 +79,7 @@ export const updateBet = (betData, statusChanged) => {
         const userId = getState().auth.userId
 
         betData.date_complete = statusChanged && betData.is_complete ? Date.now() : betData.date_complete
+        betData.won_bet = betData.is_complete ? betData.won_bet : 0
 
         betsRef.doc(betData.id).update(betData)
             .then(() => {
