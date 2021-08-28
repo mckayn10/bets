@@ -14,7 +14,8 @@ import Modal from 'react-native-modal'
 import { KeyboardAvoidingView } from 'react-native';
 import { set } from 'react-native-reanimated';
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
-import { sendBetUpdate } from '../store/actions/notifications';
+import { sendBetDeleteRequest, sendBetUpdate } from '../store/actions/notifications';
+import { completedCriteria } from '../constants/utils';
 
 
 
@@ -89,14 +90,13 @@ const ViewBetModal = props => {
         betData.won_bet = betWon ? userId : otherPersonId
         betData.description = betDescription
 
-        const statusChanged = is_complete == betComplete ? false : true
+        const statusChanged = completedCriteria(props.betData) != completedCriteria(betData) ? false : true
         if (!hasPermission) {
             let type = 'betUpdate'
             sendBetUpdate(betData, user, otherPerson, type)
             closeModal()
             return
         }
-        console.log('this shouldnt log')
 
         closeModal()
         setTimeout(() => {
@@ -106,8 +106,11 @@ const ViewBetModal = props => {
     }
 
     const handleDeleteBet = () => {
+        let betData = props.betData
         if (!hasPermission) {
-            console.log('Send notificaiton to update')
+            let type = 'betDelete'
+            sendBetDeleteRequest(betData, user, otherPerson, type)
+            closeModal()
             return
         }
         closeModal()
@@ -137,13 +140,31 @@ const ViewBetModal = props => {
 
     const showUpdateAlert = () => {
         return Alert.alert(
-            "Both bettors will need to confirm these updates. Updates will be made if they are accepted.",
+            "Both bettors will need to confirm these updates. Send update request?",
             "",
             [
                 {
                     text: "Send Notification",
                     onPress: () => {
                         handleUpdateBet()
+                    },
+                },
+                {
+                    text: "Back",
+                },
+            ]
+        );
+    };
+
+    const showDeleteAlert = () => {
+        return Alert.alert(
+            "Both betters will need to confirm this delete. Send delete request?",
+            "",
+            [
+                {
+                    text: "Send Notification",
+                    onPress: () => {
+                        handleDeleteBet()
                     },
                 },
                 {
@@ -271,7 +292,7 @@ const ViewBetModal = props => {
                                         title="Delete"
                                         type="solid"
                                         buttonStyle={styles.deleteButton}
-                                        onPress={() => showConfirmDialog()}
+                                        onPress={() => hasPermission ? showConfirmDialog() : showDeleteAlert()}
                                     />
                                 </View>
                             </View>

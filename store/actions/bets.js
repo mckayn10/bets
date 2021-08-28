@@ -2,6 +2,7 @@
 import db from "../../firebase/firestore";
 import { useDispatch } from "react-redux";
 import { sendBetOffer } from "./notifications";
+import { completedCriteria } from "../../constants/utils";
 
 export const CREATE_BET = 'CREATE_BET';
 export const UPDATE_MODAL = 'UPDATE_MODAL';
@@ -47,7 +48,7 @@ export const createBet = (betData, sendBetNotification) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
 
-        betData.date_complete = betData.is_complete ? Date.now() : 0
+        betData.date_complete = completedCriteria(betData) ? Date.now() : 0
         betData.date = Date.now()
         betData.creator_id = userId
         betData.is_double_or_nothing = false
@@ -78,7 +79,8 @@ export const updateBet = (betData, statusChanged) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
 
-        betData.date_complete = statusChanged && betData.is_complete ? Date.now() : betData.date_complete
+        betData.date_complete = statusChanged && completedCriteria(betData) ? Date.now() : betData.date_complete
+        console.log('status changed', statusChanged)
         betData.won_bet = betData.is_complete ? betData.won_bet : 0
 
         betsRef.doc(betData.id).update(betData)

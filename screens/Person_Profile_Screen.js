@@ -117,7 +117,6 @@ function Person_Profile_Screen(props) {
         })
 
         setSharedBets(shared)
-        console.log('shared bets is set', sharedBets.length)
         return shared
     }
 
@@ -175,7 +174,6 @@ function Person_Profile_Screen(props) {
 
     const handleGoToStats = () => {
         let bets = personsBets
-        console.log(personsBets)
         props.navigation.navigate('Stats Screen', { person: person, bets: personsBets })
     }
 

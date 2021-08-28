@@ -85,6 +85,46 @@ export const sendBetUpdate = async (betData, user, other_bettor, type) => {
         });
 }
 
+export const sendBetDeleteRequest = async (betData, user, other_bettor, type) => {
+
+    let notiData = {
+        date: Date.now(),
+        from: user,
+        to: other_bettor,
+        type: type,
+        data: betData,
+        pendingAction: true
+    }
+
+    notisRef.add(notiData)
+        .then((docRef) => {
+            console.log('Notification successfully sent!')
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
+}
+
+export const sendBetDeleteResponse = async (betData, user, other_bettor, type) => {
+
+    let notiData = {
+        date: Date.now(),
+        from: user,
+        to: other_bettor,
+        type: type,
+        data: betData,
+        pendingAction: false
+    }
+
+    notisRef.add(notiData)
+        .then((docRef) => {
+            console.log('Notification successfully sent!')
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
+}
+
 export const sendBetUpdateResponse = async (betData, user, other_bettor, type) => {
 
     let notiData = {

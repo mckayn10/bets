@@ -4,6 +4,8 @@ import Colors from '../constants/colors';
 import { useSelector } from 'react-redux'
 import { completedCriteria, pendingCriteria } from '../constants/utils';
 import HeaderText from '../components/HeaderText';
+import MyLineChart from '../components/LineChart';
+import colors from '../constants/colors';
 
 
 function Stats_Screen(props) {
@@ -11,6 +13,28 @@ function Stats_Screen(props) {
     const userId = useSelector(state => state.auth.userId)
 
     const totalBets = bets.length
+
+    
+    const getChartData = () => {
+        let betsArr = bets
+        let dataArr = [0]
+        let totalAmount = 0
+        betsArr.sort(function (x, y) {
+            return x.date_complete - y.date_complete;
+          })
+        betsArr.forEach(bet => {
+            if (completedCriteria(bet) && bet.won_bet == userId) {
+                totalAmount += bet.amount
+                dataArr.push(totalAmount)
+            } else if (completedCriteria(bet) && bet.won_bet != userId) {
+                totalAmount -= bet.amount
+                dataArr.push(totalAmount)
+            }
+        })
+        console.log(dataArr)
+        return dataArr
+
+    }
 
     const completedBetsCount = () => {
         let count = 0
@@ -87,7 +111,8 @@ function Stats_Screen(props) {
 
     return (
         <ScrollView>
-            <HeaderText style={styles.pageTitle}>{props.route.params ? 'You vs. ' + props.route.params.person.firstName : 'My Stats'}</HeaderText>
+            <HeaderText style={styles.pageTitle}>{props.route.params ? 'You vs ' + props.route.params.person.firstName : 'My Stats'}</HeaderText>
+            <MyLineChart data={getChartData()}/>
 
             <View style={styles.container}>
                 <View style={[styles.statContainer, { width: '95%' }]}>
@@ -149,7 +174,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexWrap: 'wrap',
-        padding: 5
+        padding: 5,
+        backgroundColor: colors.backgroundColor
     },
     statContainer: {
         height: 150,
@@ -183,7 +209,8 @@ const styles = StyleSheet.create({
         fontSize: 27,
         padding: 15,
         textAlign: 'center',
-        color: 'gray'
+        color: 'gray',
+        backgroundColor: colors.backgroundColor
     },
     thirdColumn: {
         width: '30%',

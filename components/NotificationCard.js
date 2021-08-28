@@ -111,7 +111,7 @@ export default function NotificationCard(props) {
                         />
                     </View>
                 notiPackage.betDescription = data.description
-                notiPackage.message = " has sent you a bet offer"
+                notiPackage.message = " has sent you a bet offer:"
                 return notiPackage
 
             case 'betAccept':
@@ -133,7 +133,7 @@ export default function NotificationCard(props) {
                         />
                     </View>
                 notiPackage.betDescription = data.description
-                notiPackage.message = " has accepted your bet offer"
+                notiPackage.message = " has accepted your bet offer:"
                 return notiPackage
 
             case 'betDecline':
@@ -155,7 +155,7 @@ export default function NotificationCard(props) {
                         />
                     </View>
                 notiPackage.betDescription = data.description
-                notiPackage.message = " has declined your bet offer"
+                notiPackage.message = " has declined your bet offer:"
                 return notiPackage
 
             case 'betUpdateDecline':
@@ -178,7 +178,7 @@ export default function NotificationCard(props) {
                     </View>
 
                 notiPackage.betDescription = data.description
-                notiPackage.message = " has declined the proposed updates for your bet"
+                notiPackage.message = " has declined the proposed updates for your bet:"
                 return notiPackage
 
             case 'betUpdateAccept':
@@ -200,7 +200,7 @@ export default function NotificationCard(props) {
                         />
                     </View>
                 notiPackage.betDescription = data.description
-                notiPackage.message = " has accepted the proposed updates for your bet"
+                notiPackage.message = " has accepted the proposed updates for your bet:"
                 return notiPackage
 
             case 'betUpdate':
@@ -215,7 +215,66 @@ export default function NotificationCard(props) {
                         />
                     </View>
                 notiPackage.betDescription = data.description
-                notiPackage.message = " has proposed an update to your bet"
+                notiPackage.message = " has proposed an update to your bet:"
+                return notiPackage
+
+            case 'betDelete':
+                notiPackage.btns =
+                    <View style={styles.btnContainer}>
+                        <Button
+                            title='Review'
+                            buttonStyle={[styles.btnAccept, styles.btn]}
+                            titleStyle={styles.btnTitle}
+                            type='outline'
+                            onPress={() => openBetReview()}
+                        />
+                    </View>
+                notiPackage.betDescription = data.description
+                notiPackage.message = " has proposed to delete your bet:"
+                return notiPackage
+
+            case 'betDeleteAccept':
+                notiPackage.btns =
+                    <View style={styles.btnContainer}>
+                        <Button
+                            title='Review'
+                            buttonStyle={[styles.btnAccept, styles.btn]}
+                            titleStyle={styles.btnTitle}
+                            type='outline'
+                            onPress={() => openBetReview()}
+                        />
+                        <Button
+                            title='Dismiss'
+                            buttonStyle={[styles.btnDismiss, styles.btn]}
+                            titleStyle={[styles.btnTitle, { color: Colors.red }]}
+                            type='outline'
+                            onPress={() => dismissNotification()}
+                        />
+                    </View>
+                notiPackage.betDescription = data.description
+                notiPackage.message = " has agreed to delete your bet:"
+                return notiPackage
+
+            case 'betDeleteDecline':
+                notiPackage.btns =
+                    <View style={styles.btnContainer}>
+                        <Button
+                            title='Review'
+                            buttonStyle={[styles.btnAccept, styles.btn]}
+                            titleStyle={styles.btnTitle}
+                            type='outline'
+                            onPress={() => openBetReview()}
+                        />
+                        <Button
+                            title='Dismiss'
+                            buttonStyle={[styles.btnDismiss, styles.btn]}
+                            titleStyle={[styles.btnTitle, { color: Colors.red }]}
+                            type='outline'
+                            onPress={() => dismissNotification()}
+                        />
+                    </View>
+                notiPackage.betDescription = data.description
+                notiPackage.message = " has declined to delete your bet:"
                 return notiPackage
 
             case 'doubleOrNothing':
@@ -236,7 +295,7 @@ export default function NotificationCard(props) {
                         />
                     </View>
                 notiPackage.betDescription = data.description
-                notiPackage.message = " has offered to go double or nothing on your bet"
+                notiPackage.message = " has offered to go double or nothing on your bet:"
                 return notiPackage
         }
     }

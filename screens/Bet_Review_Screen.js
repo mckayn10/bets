@@ -6,10 +6,9 @@ import { completedCriteria } from '../constants/utils'
 import db from '../firebase/firestore'
 import { deleteBet, updateBet } from '../store/actions/bets'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteNotification, sendBetResponse, sendBetUpdateResponse } from '../store/actions/notifications'
+import { deleteNotification, sendBetResponse, sendBetUpdateResponse, sendBetDeleteResponse } from '../store/actions/notifications'
 
 export default function Bet_Review_Screen(props) {
-    console.log(props.route.params.notiData)
 
     const data = props.route.params.betData
     const notiData = props.route.params.notiData
@@ -58,8 +57,34 @@ export default function Bet_Review_Screen(props) {
         props.navigation.navigate('Notifications')
 
     }
+    const handleAccept = () => {
+        console.log('handle', notiData.type)
+        if(notiData.type === 'betUpdate'){
+            handleAcceptUpdate()
+        } else if (notiData.type === 'betRequest'){
+            handleAcceptOffer()
+        } else if (notiData.type === 'betDelete'){
+            handleAcceptDelete()
+        }
+
+    }
+
+    const handleAcceptDelete = () => {
+        let notificationType = 'betDeleteAccept'
+
+        try {
+            dispatch(deleteBet(bet.id))
+        } catch (err) {
+            console.error(err)
+        }
+        sendBetDeleteResponse(bet, user, person, notificationType)
+        deleteNotification(notiId)
+        props.navigation.navigate('Notifications')
+
+    }
 
     const handleAcceptUpdate = () => {
+        // TODO need to maybe compare this updated bet with the original to know if it is completing the bet or just making an update to amount or description
         let statusChanged = true
         let notificationType = 'betUpdateAccept'
 
@@ -128,7 +153,7 @@ export default function Bet_Review_Screen(props) {
                             type="outline"
                             buttonStyle={[styles.btn, styles.btnAccept]}
                             titleStyle={{ color: 'white' }}
-                            onPress={() => notiData.type == 'betUpdate' ? handleAcceptUpdate() : handleAcceptOffer()}
+                            onPress={() => handleAccept()}
                         />
                         <Button
                             title='Decline'
