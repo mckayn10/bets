@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import Person_Profile_Screen from '../screens/Person_Profile_Screen';
 import Stats_Screen from '../screens/Stats_Screen';
 import Settings_Screen from '../screens/Settings_Screen';
+import User_Profile_Navigator from '../navigation/User_Profile_Navigator'
 
 const Stack = createNativeStackNavigator()
 
@@ -24,6 +25,10 @@ const Settings_Navigator = (props) => {
             <Stack.Screen
                 name="Settings"
                 component={Settings_Screen}
+            />
+                        <Stack.Screen
+                name="User Profile"
+                component={User_Profile_Navigator}
             />
         </Stack.Navigator>
     )

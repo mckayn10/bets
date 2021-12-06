@@ -1,5 +1,6 @@
 import {
     AUTHENTICATE,
+    GET_PROFILE_PICTURE,
     GET_USER,
     LOGOUT,
     UPDATE_USER
@@ -8,7 +9,8 @@ import {
 const initialState = {
     userId: null,
     token: null,
-    userInfo: null
+    userInfo: null,
+    profPic: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -26,6 +28,9 @@ const authReducer = (state = initialState, action) => {
         }
         case GET_USER: {
             return {...state, userInfo: action.user}
+        }
+        case GET_PROFILE_PICTURE: {
+            return {...state, profPic: action.pic}
         }
 
         default:

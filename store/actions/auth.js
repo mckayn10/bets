@@ -1,12 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import db from '../../firebase/config';
-import db from '../../firebase/firestore';
+import { storage } from '../../firebase/firestore'
+
+// import { db } from '../../firebase/config';
+import { db } from '../../firebase/firestore';
 export const SIGN_UP = 'SIGN_UP'
 export const SIGN_IN = 'SIGN_IN'
 export const AUTHENTICATE = 'AUTHENTICATE'
 export const LOGOUT = 'LOGOUT'
 export const UPDATE_USER = 'UPDATE_USER'
 export const GET_USER = 'GET_USER'
+export const GET_PROFILE_PICTURE = 'GET_PROFILE_PICTURE'
 
 const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 var peopleRef = db.collection("people");
@@ -33,6 +36,38 @@ const createPerson = async (userId, token, userData) => {
         });
 }
 
+export const getProfilePic = (userEmail) => {
+    return storage.child(`profile_pictures/${userEmail}-profile-picture`).getDownloadURL()
+        .then((url) => {
+            return url
+        })
+        .catch(err => {
+            storage.child(`profile_pictures/placeholder.png`).getDownloadURL()
+                .then((url) => {
+                    return url
+                })
+        })
+}
+
+export const getUserPic = () => {
+    return async (dispatch, getState) => {
+        const user = getState().auth.userInfo
+        console.log('user', user)
+
+        // storage.child(`profile_pictures/${user.email}-profile-picture`).getDownloadURL()
+        // .then((url) => {
+        //     dispatch({ type: GET_PROFILE_PICTURE, pic: url })
+        // })
+        // .catch(err => {
+        //     storage.child(`profile_pictures/placeholder.png`).getDownloadURL()
+        //         .then((url) => {
+        //             dispatch({ type: GET_PROFILE_PICTURE, pic: url })
+        //         })
+        // })
+
+    }
+}
+
 export const getUser = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
@@ -40,7 +75,8 @@ export const getUser = () => {
         peopleRef.doc(userId).get()
             .then((doc) => {
                 if (doc.exists) {
-                    dispatch({ type: GET_USER, user: doc.data() })
+                    let user = doc.data()
+                    dispatch({ type: GET_USER, user: user })
                 } else {
                     console.log("Person document does not exist");
                 }
@@ -133,7 +169,7 @@ export const updateUser = (userData) => {
         const userId = getState().auth.userId
         userData.id = userId
 
-        personRef.doc(userId).set(userData, { merge: true })
+        peopleRef.doc(userId).set(userData, { merge: true })
             .then(() => {
                 dispatch({ type: UPDATE_USER, userData: userData })
             }).catch((error) => {

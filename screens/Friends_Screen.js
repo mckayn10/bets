@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
     emptyContainer: {
         flex: 1,
-        justifyContent: 'center',
+        marginTop: 40,
         alignItems: 'center'
     },
     emptyText: {

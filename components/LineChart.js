@@ -14,7 +14,6 @@ const MyLineChart = (props) => {
 
     let data = [...props.data]
 
-    console.log(data.length)
     let condensedArr = [0]
     if(data.length >= 45){
         data.forEach((amount, i)=> {
@@ -22,7 +21,6 @@ const MyLineChart = (props) => {
                 condensedArr.push(amount)
             }
         })
-        console.log(condensedArr)
     } else {
         condensedArr = [...data]
     }

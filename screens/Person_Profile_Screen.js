@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState, useEffect } from 'react'
-import db from '../firebase/firestore';
+import { db } from '../firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
 import { Button } from 'react-native-elements'
@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { removeFriend } from '../store/actions/friends';
 import { sendFriendRequest } from '../store/actions/notifications';
 import { checkIfShared } from '../constants/utils';
+import { getProfilePic } from '../store/actions/auth';
 
 import BetList from '../components/BetList';
 
@@ -22,6 +23,8 @@ function Person_Profile_Screen(props) {
     const [sharedBets, setSharedBets] = useState([])
     const [requestPending, setRequestPending] = useState(false)
     const [numFriends, setNumFriends] = useState(0)
+    const [profileImage, setProfileImage] = useState()
+
 
     const person = props.route.params.person
     const { firstName, lastName, email, username, id } = person
@@ -39,6 +42,13 @@ function Person_Profile_Screen(props) {
         }
         fetchPersonsBets()
         getPersonsFriends()
+        getProfilePic(email).then(url => {
+            if (!url) {
+                setProfileImage('https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fplaceholder.png?alt=media&token=55bc2c6a-f6f2-4392-844d-29edbd88fe63')
+            } else {
+                setProfileImage(url)
+            }
+        })
     }, [])
 
     useLayoutEffect(() => {
@@ -221,8 +231,8 @@ function Person_Profile_Screen(props) {
         <SafeAreaView style={styles.container}>
             <View style={styles.detailsContainer}>
                 <Image
-                    source={require('../assets/profile-placeholder.png')}
-                    style={{ width: 120, height: 120, opacity: .3 }}
+                    source={{uri: profileImage}}
+                    style={{ width: 120, height: 120, borderRadius: 100 }}
                 />
                 <View style={styles.personInfoConatiner}>
                     <HeaderText style={styles.name}>{firstName} {lastName}</HeaderText>
@@ -261,11 +271,13 @@ function Person_Profile_Screen(props) {
 
             {showBetsfeed
                 ? <BetList
+                    {...props}
                     bets={personsBets}
                     permissions={false}
                     personId={person.id}
                 />
                 : <BetList
+                    {...props}
                     bets={sharedBets}
                     permissions={false}
                     personId={person.id}

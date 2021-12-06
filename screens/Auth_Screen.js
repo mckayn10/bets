@@ -30,7 +30,8 @@ function Auth_Screen(props) {
                 password: passwordText,
                 firstName: firstNameText,
                 lastName: lastNameText,
-                username: firstNameText + '_' + lastNameText + '_' + Math.floor(Math.random() * 10000)
+                username: firstNameText + '_' + lastNameText + '_' + Math.floor(Math.random() * 10000),
+                picture: 'https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fmckay.nilsson%40gmail.com-profile-picture?alt=media&token=9476d57d-9144-4b93-b7c4-c8516b6ad179'
             }
             action = signUp(userInfo)
         }

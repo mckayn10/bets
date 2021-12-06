@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
 import colors from '../constants/colors'
 import { completedCriteria } from '../constants/utils'
-import db from '../firebase/firestore'
+import { db } from '../firebase/firestore'
 import { deleteBet, updateBet } from '../store/actions/bets'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteNotification, sendBetResponse, sendBetUpdateResponse, sendBetDeleteResponse } from '../store/actions/notifications'
@@ -58,7 +58,6 @@ export default function Bet_Review_Screen(props) {
 
     }
     const handleAccept = () => {
-        console.log('handle', notiData.type)
         if(notiData.type === 'betUpdate'){
             handleAcceptUpdate()
         } else if (notiData.type === 'betRequest'){

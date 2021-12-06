@@ -10,7 +10,6 @@ import colors from '../constants/colors'
 
 function BetList(props) {
     const [isRefreshing, setIsRefreshing] = useState(false)
-
     useEffect(() => {
         setIsRefreshing(false)
     }, [])
@@ -29,10 +28,11 @@ function BetList(props) {
     }
 
     const renderCompletedBet = betData => {
-        let pendingStyle = betData.item.is_verified && !betData.item.is_accepted ? { opacity: .6 } : { opacity: 1 }
+        let pendingStyle = betData.item.is_verified && !betData.item.is_accepted ? { opacity: 1 } : { opacity: 1 }
         return (
             <View style={pendingStyle}>
                 <BetCard
+                    {...props}
                     bet={betData.item}
                     permissions={props.permissions}
                     personId={props.personId}
@@ -59,9 +59,9 @@ function BetList(props) {
                         data={props.bets}
                         renderItem={renderCompletedBet}
                         keyExtractor={(bet, index) => index.toString()}
-                        style={{backgroundColor: 'transparent', zIndex: 1}}
+                        style={{ backgroundColor: 'transparent', zIndex: 1 }}
                     />
-                    <View style={{position: 'absolute', left: 0, right: 0, zIndex:0, top: 60 }}>
+                    <View style={{ position: 'absolute', left: 0, right: 0, zIndex: 0, top: 60 }}>
                         <HeaderText style={styles.emptyText}>Nothing to display</HeaderText>
                         <HeaderText style={styles.emptyText}>Swipe down to refresh</HeaderText>
                         <MaterialIcons style={styles.icon} name="request-page" size={120} color={Colors.grayLight} />

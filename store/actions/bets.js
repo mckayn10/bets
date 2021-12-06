@@ -1,5 +1,5 @@
-// import db from "../../firebase/config";
-import db from "../../firebase/firestore";
+// import { db } from "../../firebase/config";
+import { db } from "../../firebase/firestore";
 import { useDispatch } from "react-redux";
 import { sendBetOffer } from "./notifications";
 import { completedCriteria } from "../../constants/utils";
@@ -80,7 +80,6 @@ export const updateBet = (betData, statusChanged) => {
         const userId = getState().auth.userId
 
         betData.date_complete = statusChanged && completedCriteria(betData) ? Date.now() : betData.date_complete
-        console.log('status changed', statusChanged)
         betData.won_bet = betData.is_complete ? betData.won_bet : 0
 
         betsRef.doc(betData.id).update(betData)

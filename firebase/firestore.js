@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 import firestore from 'firebase/firestore'
+import {getStorage, ref} from 'firebase/storage'
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -10,22 +11,29 @@ const firebaseConfig = {
     storageBucket: "betz-1bfb4.appspot.com",
     messagingSenderId: "27201185871",
     appId: "1:27201185871:web:c5829534be3283fde2223a",
-    measurementId: "G-8WVK68KNB9"
+    measurementId: "G-8WVK68KNB9",
+    storeageBucket: 'gs://betz-1bfb4.appspot.com'
 };
 
-
 try {
-
     firebase.initializeApp(firebaseConfig);
-
 } catch (e) {
-
     console.log('App reloaded, so firebase did not re-initialize');
 }
 
-let db = firebase.firestore()
 
-export default db
+// console.log(firebase.storage(firebase.app()))
+// console.log(firebase.storage())
+const db = firebase.firestore()
+const storage = firebase.storage().ref()
+
+// storage.child('foreup-hs-mckayN.jpg').getDownloadURL()
+// .then((url) => {
+//     console.log(url)
+// })
+
+
+export {db, storage}
 
 
 

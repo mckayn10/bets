@@ -7,6 +7,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../store/actions/auth';
 import { Feather } from '@expo/vector-icons';
+import UploadImage from '../components/UploadImage';
+import { getProfilePic } from '../store/actions/auth';
+import { storage } from '../firebase/firestore';
 
 
 
@@ -17,6 +20,9 @@ export default function Profile_Screen(props) {
     const [lastNameText, setLastNameText] = useState('')
     const [emailText, setEmailText] = useState('')
     const [usernameText, setUsernameText] = useState('')
+    const [image, setImage] = useState('')
+    const [profileImage, setProfileImage] = useState()
+
 
     useEffect(() => {
         setFirstNameText(userData.firstName)
@@ -24,7 +30,19 @@ export default function Profile_Screen(props) {
         setUsernameText(userData.username)
         setEmailText(userData.email)
 
+        getProfilePic(userData.email).then(url => {
+            if (!url) {
+                setProfileImage('https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fplaceholder.png?alt=media&token=55bc2c6a-f6f2-4392-844d-29edbd88fe63')
+            } else {
+                setProfileImage(url)
+            }
+        })
+
     }, [])
+
+    const getImg = () => {
+        return profileImage
+    }
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -45,7 +63,31 @@ export default function Profile_Screen(props) {
 
     const dispatch = useDispatch()
 
+    const upload = async () => {
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function () {
+                reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', image.uri, true);
+            xhr.send(null);
+        });
+
+        storage.child(`profile_pictures/${userData.email}-profile-picture`).put(blob, {
+            contentType: blob.type
+        })
+            .then((snapshot) => {
+                console.log('successfully uploaded file')
+            })
+    }
+
     const handleSave = () => {
+        upload()
+
         if (firstNameText === '' || lastNameText === '' || usernameText === '') {
             Alert.alert('Please fill out all text fields')
             return false
@@ -55,10 +97,13 @@ export default function Profile_Screen(props) {
             lastName: lastNameText,
             username: usernameText,
             email: emailText,
+            picture: image.uri
         }
 
         try {
             dispatch(updateUser(user))
+
+
         }
         catch (err) {
             Alert.alert('Error updating profile. ' + err)
@@ -79,10 +124,7 @@ export default function Profile_Screen(props) {
     return (
         <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={100}>
             <View style={styles.screen}>
-                <Image
-                    source={require('../assets/profile-placeholder.png')}
-                    style={{ width: 150, height: 150, margin: 10, opacity: .3 }}
-                />
+                <UploadImage setImage={(image) => setImage(image)} />
                 <Input
                     label="first name"
                     defaultValue={userData.firstName}

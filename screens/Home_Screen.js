@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar';
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
-import { getUser } from '../store/actions/auth';
+import { getUser, getUserPic } from '../store/actions/auth';
 import { fetchAllFriends } from '../store/actions/friends';
 import { fetchNotifications, fetchPendingRequests } from '../store/actions/notifications';
 import HeaderText from '../components/HeaderText';
@@ -12,6 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import TestComponent from '../components/TestComponent';
 import BetList from '../components/BetList';
 import { completedCriteria, pendingCriteria } from '../constants/utils';
+import UploadImage from '../components/UploadImage';
 
 function Home_Screen(props) {
 
@@ -30,6 +31,8 @@ function Home_Screen(props) {
     dispatch(fetchAllFriends())
     dispatch(fetchNotifications())
     dispatch(fetchPendingRequests())
+    // dispatch(getUserPic())
+
   }, [])
 
   useEffect(() => {
@@ -58,7 +61,7 @@ function Home_Screen(props) {
       }
     })
     completed.sort(function (x, y) {
-      return y.date_complete - x.date_complete;
+      return x.date_complete - y.date_complete;
     })
 
     setCompletedBets(completed)
@@ -73,7 +76,7 @@ function Home_Screen(props) {
       }
     })
     pending.sort(function (x, y) {
-      return y.date - x.date
+      return x.date - y.date
     })
 
     setPendingBets(pending)
@@ -87,10 +90,11 @@ function Home_Screen(props) {
         <HeaderText style={showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(true)}>COMPLETE</HeaderText>
         <HeaderText style={!showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(false)}>PENDING</HeaderText>
       </View>
+      {/* <UploadImage /> */}
       {/* <TestComponent /> */}
       {showComplete
-        ? <BetList bets={completedBets} permissions={true} personId={userId}/>
-        : <BetList bets={pendingBets} permissions={true} personId={userId}/>
+        ? <BetList {...props} bets={completedBets} permissions={true} personId={userId}/>
+        : <BetList {...props} bets={pendingBets} permissions={true} personId={userId}/>
       }
 
       <TouchableOpacity

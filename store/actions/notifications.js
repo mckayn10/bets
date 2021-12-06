@@ -1,4 +1,4 @@
-import db from "../../firebase/firestore";
+import { db } from "../../firebase/firestore";
 
 export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS'
 export const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION'

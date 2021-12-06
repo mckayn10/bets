@@ -5,18 +5,27 @@ import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText';
 import { MaterialIcons } from '@expo/vector-icons';
 import BetList from '../components/BetList';
+import { getProfilePic } from '../store/actions/auth';
+import { storage } from '../firebase/firestore'
 
 function User_Profile_Screen(props) {
 
     const [showBetsfeed, setShowBetsFeed] = useState(true)
     const [bets, setBets] = useState([])
+    const [profileImage, setProfileImage] = useState()
 
     const user = useSelector(state => state.auth.userInfo)
     const userBets = useSelector(state => state.bets.bets)
+    const pic = useSelector(state => state.auth.profPic)
+
 
     useEffect(() => {
         setBets(userBets)
     }, [])
+
+    useEffect(() => {
+        setProfileImage(pic)
+    }, [pic])
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -46,9 +55,10 @@ function User_Profile_Screen(props) {
         <SafeAreaView style={styles.container}>
             <View style={styles.detailsContainer}>
                 <Image
-                    source={require('../assets/profile-placeholder.png')}
-                    style={{ width: 120, height: 120, opacity: .3 }}
+                    source={{ uri: profileImage }}
+                    style={{ width: 150, height: 150, borderRadius: 100 }}
                 />
+                {/* <Image source={{ uri: profileImage }} style={{ width: 200, height: 200 }} /> */}
                 <View style={styles.personInfoConatiner}>
                     <HeaderText style={styles.name}>{user.firstName} {user.lastName}</HeaderText>
                     <Text>@{user.username}</Text>
@@ -67,6 +77,7 @@ function User_Profile_Screen(props) {
                 <Text style={showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(true)}>Bets Feed</Text>
             </View>
             <BetList
+                {...props}
                 bets={bets}
                 permissions={true}
                 personId={user.id}

@@ -31,7 +31,6 @@ function Stats_Screen(props) {
                 dataArr.push(totalAmount)
             }
         })
-        console.log(dataArr)
         return dataArr
 
     }
@@ -108,6 +107,8 @@ function Stats_Screen(props) {
     const lostPercentage = !lostBetsCount() / completedBetsCount() ? 0 : parseFloat((lostBetsCount() / completedBetsCount()) * 100).toFixed(2)
     const perBetAvg = !averageWinningsPerBet() ? 0 : parseFloat(Math.abs(averageWinningsPerBet())).toFixed(2)
 
+    let totalAmountTitle = props.route.params ? `You've fleeced ` + props.route.params.person.firstName + ' for:' : 'Net Profit/Loss'
+
 
     return (
         <ScrollView>
@@ -116,8 +117,32 @@ function Stats_Screen(props) {
 
             <View style={styles.container}>
                 <View style={[styles.statContainer, { width: '95%' }]}>
-                    <HeaderText style={styles.statTitle}>Total Amount Won</HeaderText>
-                    <Text style={[styles.statNumber, { fontSize: 40 }]}>{totalAmountCompleted() < 0 ? '-' : ''}${parseFloat(Math.abs(totalAmountCompleted())).toFixed(2)}</Text>
+                    <HeaderText style={styles.statTitle}>Your total Gains/Losses</HeaderText>
+                    <Text style={[styles.statNumber, { fontSize: 40, color: totalAmountCompleted() < 0 ? colors.red : colors.primaryColor }]}>{totalAmountCompleted() < 0 ? '-' : ''}${parseFloat(Math.abs(totalAmountCompleted())).toFixed(2)}</Text>
+                </View>
+                <View style={[styles.statContainer]}>
+                    <HeaderText style={styles.statTitle}>Win Percentage</HeaderText>
+                    <Text style={styles.statNumber}>{winPercentage}%</Text>
+                </View>
+                <View style={[styles.statContainer]}>
+                    <HeaderText style={styles.statTitle}>Lose Percentage</HeaderText>
+                    <Text style={styles.statNumber}>{lostPercentage}%</Text>
+                </View>
+                <View style={[styles.statContainer, { width: '95%' }]}>
+                    <HeaderText style={styles.statTitle}>Avg Winnings Per Bet</HeaderText>
+                    <Text style={[styles.statNumber, { fontSize: 40, color: totalAmountCompleted() < 0 ? colors.red : colors.primaryColor  }]}>{totalAmountCompleted() < 0 ? '-' : ''}${perBetAvg}</Text>
+                </View>
+                <View style={[styles.statContainer, styles.thirdColumn]}>
+                    <HeaderText style={styles.statTitle}>Complete</HeaderText>
+                    <Text style={styles.statNumber}>{completedBetsCount()}</Text>
+                </View>
+                <View style={[styles.statContainer, styles.thirdColumn]}>
+                    <HeaderText style={styles.statTitle}>Won</HeaderText>
+                    <Text style={styles.statNumber}>{wonBetsCount()}</Text>
+                </View>
+                <View style={[styles.statContainer, styles.thirdColumn]}>
+                    <HeaderText style={styles.statTitle}>Lost</HeaderText>
+                    <Text style={styles.statNumber}>{lostBetsCount()}</Text>
                 </View>
                 <View style={[styles.statContainer]}>
                     <HeaderText style={styles.statTitle}>Total</HeaderText>
@@ -134,30 +159,6 @@ function Stats_Screen(props) {
                 <View style={[styles.statContainer]}>
                     <HeaderText style={styles.statTitle}>Unverified</HeaderText>
                     <Text style={styles.statNumber}>{totalBets - verifiedBetsCount()}</Text>
-                </View>
-                <View style={[styles.statContainer, { width: '95%' }]}>
-                    <HeaderText style={styles.statTitle}>Avg Winnings Per Bet</HeaderText>
-                    <Text style={styles.statNumber}>{totalAmountCompleted() < 0 ? '-' : ''}${perBetAvg}</Text>
-                </View>
-                <View style={[styles.statContainer, styles.thirdColumn]}>
-                    <HeaderText style={styles.statTitle}>Complete</HeaderText>
-                    <Text style={styles.statNumber}>{completedBetsCount()}</Text>
-                </View>
-                <View style={[styles.statContainer, styles.thirdColumn]}>
-                    <HeaderText style={styles.statTitle}>Won</HeaderText>
-                    <Text style={styles.statNumber}>{wonBetsCount()}</Text>
-                </View>
-                <View style={[styles.statContainer, styles.thirdColumn]}>
-                    <HeaderText style={styles.statTitle}>Lost</HeaderText>
-                    <Text style={styles.statNumber}>{lostBetsCount()}</Text>
-                </View>
-                <View style={[styles.statContainer]}>
-                    <HeaderText style={styles.statTitle}>Win Percentage</HeaderText>
-                    <Text style={styles.statNumber}>{winPercentage}%</Text>
-                </View>
-                <View style={[styles.statContainer]}>
-                    <HeaderText style={styles.statTitle}>Lose Percentage</HeaderText>
-                    <Text style={styles.statNumber}>{lostPercentage}%</Text>
                 </View>
             </View>
         </ScrollView>
@@ -197,12 +198,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 15,
         marginTop: 15,
-        color: 'gray',
+        color: colors.primaryColor,
         fontWeight: 'bold'
     },
     statTitle: {
         textAlign: 'center',
-        color: Colors.primaryColor,
+        color: 'gray',
         fontSize: 16
     },
     pageTitle: {

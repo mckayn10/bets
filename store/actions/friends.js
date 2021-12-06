@@ -1,4 +1,4 @@
-import db from "../../firebase/firestore";
+import { db } from "../../firebase/firestore";
 
 export const GET_PEOPLE = 'GET_PEOPLE';
 export const ADD_FRIEND = 'ADD_FRIEND';

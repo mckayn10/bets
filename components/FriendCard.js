@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import Colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
+import { getProfilePic } from '../store/actions/auth';
+import CachedImage from 'react-native-expo-cached-image';
+
 
 export default function FriendCard(props) {
     const { firstName, lastName, email, username, id } = props.person
     const user = useSelector(state => state.auth.userInfo)
     const isUser = user.id === props.person.id
+    const [profileImage, setProfileImage] = useState()
+
+    useEffect(() => {
+        setProfPic()
+    })
+
+    const setProfPic = () => {
+        getProfilePic(email).then(url => {
+            if (!url) {
+                setProfileImage('https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fplaceholder.png?alt=media&token=55bc2c6a-f6f2-4392-844d-29edbd88fe63')
+            } else {
+                setProfileImage(url)
+            }
+        })
+    }
 
     return (
         <TouchableOpacity
@@ -23,7 +41,10 @@ export default function FriendCard(props) {
         >
             <View style={styles.descriptionContainer}>
                 <View style={styles.personContainer}>
-                    <Ionicons name="person-circle-outline" size={48} color="black" />
+                    <CachedImage
+                        source={{ uri: profileImage }}
+                        style={{ width: 35, height: 35, borderRadius: 100, marginRight: 8 }}
+                    />
                 </View>
                 <View>
                     <Text style={styles.name}>{firstName} {lastName}</Text>
@@ -52,8 +73,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     personContainer: {
-        margin: 5,
-        opacity: .3
+        marginLeft: 10,
     },
     name: {
         fontWeight: 'bold',

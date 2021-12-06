@@ -81,7 +81,9 @@ const createNewBet = () => {
 
     let showComplete = betComplete ? true : false
 
-    props.navigation.navigate('Home', {showComplete: showComplete})
+    // console.log('props navigate value', props.navigation.getParent().getState().routes[0].name)
+    let parentTab = props.navigation.getParent().getState().routes
+    props.navigation.goBack()
     closeModal()
 
 }

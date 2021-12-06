@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Pressable, Image } from 'react-native';
 import Colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import ViewBetModal from '../modals/ViewBetModal';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { getProfilePic } from '../store/actions/auth';
+import FastImage from 'react-native-fast-image';
+import CachedImage from 'react-native-expo-cached-image';
+
+
 
 export default function BetCard(props) {
-    const [betModalVisible, setBetModalVisible] = useState(false)
-    const { description, amount, other_bettor,other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id } = props.bet
-    const showNotAccepted = is_verified && !is_accepted
-
+    const [profileImage, setProfileImage] = useState()
     const userId = useSelector(state => state.auth.userId)
     const user = useSelector(state => state.auth.userInfo)
+
+    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id } = props.bet
+    const showNotAccepted = is_verified && !is_accepted
+
     let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
     let isCreator = creator_id === userId ? true : false
     let nameToDisplay = creator_id === userId ? other_bettor : creator
@@ -21,23 +27,41 @@ export default function BetCard(props) {
     let infoToDisplayBasedOnUser = {
         otherBettorname: creator_id === userId ? other_bettor.firstName : (other_id === userId ? 'You' : other_bettor.firstName),
         creatorName: creator_id === userId ? 'You' : creator.firstName,
-        displayOtherName: creator_id === userId ? other_bettor.firstName : creator.firstName,
+        displayOtherName: creator_id === userId ? other_bettor.firstName + ' ' + other_bettor.lastName : creator.firstName + ' ' + creator.lastName,
         didWin: won_bet === userId ? true : false,
+        opponent: creator_id === userId ? other_bettor : creator
     }
+    useEffect(() => {
+        getProfilePic(infoToDisplayBasedOnUser.opponent.email).then(url => {
+            if (!url) {
+                setProfileImage('https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fplaceholder.png?alt=media&token=55bc2c6a-f6f2-4392-844d-29edbd88fe63')
+            } else {
+                setProfileImage(url)
+            }
+        })
+    })
+
 
     // Used for showing all bets of another user
     if (props.invertName && userId != props.personId) {
         nameToDisplay = creator_id === userId ? creator : other_bettor
     }
 
-    const updateBetModalStatus = () => {
-        const modalStatus = betModalVisible
-
-        setBetModalVisible(!modalStatus)
+    const openViewBet = () => {
+        props.navigation.navigate('View Bet', {
+            bet: props.bet,
+            infoToDisplayBasedOnUser: infoToDisplayBasedOnUser,
+            permissions: props.permissions
+        })
     }
+
     const displayVerifiedIcon = () => {
         if (is_verified && !is_accepted) {
             // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-open" size={17} color={Colors.primaryColor} />
+            return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-minus-outline" size={22} color={Colors.red} />
+        }
+        else if (is_verified && is_accepted && !is_complete) {
+            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} />
             return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
         }
         else if (is_verified && is_accepted) {
@@ -47,21 +71,28 @@ export default function BetCard(props) {
     }
 
     return (
-        <TouchableOpacity
+        <Pressable
             style={!showNotAccepted ? styles.container : styles.notAcceptedContainer}
-            onPress={() => updateBetModalStatus()}
+            onPress={() => openViewBet()}
         >
             <View style={styles.descriptionContainer}>
                 <View style={styles.personContainer}>
-                    <Ionicons
+                    {/* <Ionicons
                         name="person-circle-outline"
                         size={24} color="black"
                         style={{ marginRight: 8 }}
+                    /> */}
+                    <CachedImage
+                        style={{ width: 35, height: 35, borderRadius: 100, marginRight: 8 }}
+                        source={{
+                            uri: profileImage, 
+                            // headers: { Authorization: 'token' }
+                        }}
                     />
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.name}>{infoToDisplayBasedOnUser.creatorName}</Text>
-                        <Text > bet </Text>
-                        <Text style={styles.name}>{infoToDisplayBasedOnUser.otherBettorname}</Text>
+                        {/* <Text style={styles.name}>{infoToDisplayBasedOnUser.creatorName}</Text> */}
+                        <Text >You bet with </Text>
+                        <Text style={styles.name}>{infoToDisplayBasedOnUser.displayOtherName}</Text>
                     </View>
                 </View>
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>
@@ -78,22 +109,10 @@ export default function BetCard(props) {
                 >
                     {!isPending ? (won_bet != props.personId ? '-' : '+') : ''}${parseFloat(Math.abs(amount)).toFixed(2)}
                 </Text>
-                {/* {is_verified ? <MaterialIcons style={{ alignSelf: 'flex-end' }} name="verified" size={17} color={Colors.primaryColor} /> : null} */}
                 {displayVerifiedIcon()}
 
             </View>
-            {betModalVisible
-                ? <ViewBetModal
-                    toggleModal={() => setBetModalVisible(!betModalVisible)}
-                    modalVisible={betModalVisible}
-                    betData={props.bet}
-                    permissions={props.permissions}
-                    infoToDisplayBasedOnUser={infoToDisplayBasedOnUser}
-                />
-                : null
-            }
-
-        </TouchableOpacity>
+        </Pressable>
     );
 }
 
@@ -103,34 +122,38 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 8,
-        height: 110,
+        height: 120,
         width: '95%',
         alignSelf: 'center',
-        backgroundColor: 'white',
+        backgroundColor: Colors.backgroundColor,
         padding: 10,
-        borderRadius: 10,
-        shadowColor: '#d9d9d9',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.grayDark
+        // borderRadius: 10,
+        // shadowColor: '#d9d9d9',
+        // shadowOffset: { width: 0, height: 2 },
+        // shadowOpacity: 0.8,
+        // shadowRadius: 2,
+        // elevation: 1,
     },
     notAcceptedContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 8,
-        height: 110,
+        height: 120,
         width: '95%',
         alignSelf: 'center',
-        backgroundColor: 'white',
+        backgroundColor: Colors.backgroundColor,
         padding: 10,
-        borderRadius: 10,
-        shadowColor: '#d9d9d9',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.grayDark
+        // borderRadius: 10,
+        // shadowColor: '#d9d9d9',
+        // shadowOffset: { width: 0, height: 2 },
+        // shadowOpacity: 0.8,
+        // shadowRadius: 2,
+        // elevation: 1,
     },
     descriptionContainer: {
         justifyContent: 'space-between',
@@ -144,7 +167,7 @@ const styles = StyleSheet.create({
     amount: {
         fontSize: 15,
         fontWeight: 'bold',
-        marginTop: 4
+        marginTop: 8
     },
     amountContainer: {
         alignSelf: 'flex-start',
