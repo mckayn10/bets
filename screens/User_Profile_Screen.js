@@ -12,20 +12,18 @@ function User_Profile_Screen(props) {
 
     const [showBetsfeed, setShowBetsFeed] = useState(true)
     const [bets, setBets] = useState([])
-    const [profileImage, setProfileImage] = useState()
+    const [profPic, setProfPic] = useState()
 
     const user = useSelector(state => state.auth.userInfo)
     const userBets = useSelector(state => state.bets.bets)
-    const pic = useSelector(state => state.auth.profPic)
-
 
     useEffect(() => {
         setBets(userBets)
     }, [])
 
     useEffect(() => {
-        setProfileImage(pic)
-    }, [pic])
+        setProfPic(user.picture)
+    }, [user])
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -55,7 +53,7 @@ function User_Profile_Screen(props) {
         <SafeAreaView style={styles.container}>
             <View style={styles.detailsContainer}>
                 <Image
-                    source={{ uri: profileImage }}
+                    source={{ uri: profPic }}
                     style={{ width: 150, height: 150, borderRadius: 100 }}
                 />
                 {/* <Image source={{ uri: profileImage }} style={{ width: 200, height: 200 }} /> */}

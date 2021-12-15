@@ -51,19 +51,18 @@ export const getProfilePic = (userEmail) => {
 
 export const getUserPic = () => {
     return async (dispatch, getState) => {
-        const user = getState().auth.userInfo
-        console.log('user', user)
+        const user = getState().auth
 
-        // storage.child(`profile_pictures/${user.email}-profile-picture`).getDownloadURL()
-        // .then((url) => {
-        //     dispatch({ type: GET_PROFILE_PICTURE, pic: url })
-        // })
-        // .catch(err => {
-        //     storage.child(`profile_pictures/placeholder.png`).getDownloadURL()
-        //         .then((url) => {
-        //             dispatch({ type: GET_PROFILE_PICTURE, pic: url })
-        //         })
-        // })
+        storage.child(`profile_pictures/${user.email}-profile-picture`).getDownloadURL()
+        .then((url) => {
+            dispatch({ type: GET_PROFILE_PICTURE, pic: url })
+        })
+        .catch(err => {
+            storage.child(`profile_pictures/placeholder.png`).getDownloadURL()
+                .then((url) => {
+                    dispatch({ type: GET_PROFILE_PICTURE, pic: url })
+                })
+        })
 
     }
 }

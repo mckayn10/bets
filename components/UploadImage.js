@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 export default function UploadImage(props) {
     const [image, setImage] = useState();
-    const pic = useSelector(state => state.auth.profPic)
+    const pic = useSelector(state => state.auth.userInfo.picture)
 
     useEffect(() => {
         // checkForCameraRollPermission()

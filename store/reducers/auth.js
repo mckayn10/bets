@@ -24,7 +24,8 @@ const authReducer = (state = initialState, action) => {
             return initialState
         }
         case UPDATE_USER: {
-            return {...state, userInfo: action.userData}
+            console.log({action})
+            return {...state, userInfo: action.userData, profPic: action.userData.picture}
         }
         case GET_USER: {
             return {...state, userInfo: action.user}

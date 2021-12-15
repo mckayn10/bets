@@ -91,8 +91,8 @@ export default function BetCard(props) {
                     />
                     <View style={{ flexDirection: 'row' }}>
                         {/* <Text style={styles.name}>{infoToDisplayBasedOnUser.creatorName}</Text> */}
-                        <Text >You bet with </Text>
                         <Text style={styles.name}>{infoToDisplayBasedOnUser.displayOtherName}</Text>
+                        <Text> bet with You</Text>
                     </View>
                 </View>
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>

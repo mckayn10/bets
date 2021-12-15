@@ -29,14 +29,7 @@ export default function Profile_Screen(props) {
         setLastNameText(userData.lastName)
         setUsernameText(userData.username)
         setEmailText(userData.email)
-
-        getProfilePic(userData.email).then(url => {
-            if (!url) {
-                setProfileImage('https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fplaceholder.png?alt=media&token=55bc2c6a-f6f2-4392-844d-29edbd88fe63')
-            } else {
-                setProfileImage(url)
-            }
-        })
+        setProfileImage(userData.picture)
 
     }, [])
 
@@ -85,31 +78,35 @@ export default function Profile_Screen(props) {
             })
     }
 
-    const handleSave = () => {
+    const handleSave = async () => {
         upload()
 
         if (firstNameText === '' || lastNameText === '' || usernameText === '') {
             Alert.alert('Please fill out all text fields')
             return false
         }
-        const user = {
-            firstName: firstNameText,
-            lastName: lastNameText,
-            username: usernameText,
-            email: emailText,
-            picture: image.uri
-        }
 
-        try {
-            dispatch(updateUser(user))
-
-
-        }
-        catch (err) {
-            Alert.alert('Error updating profile. ' + err)
-            console.error(err)
-        }
-        handleGoBack()
+        getProfilePic(userData.email).then(url => {
+            setProfileImage(url)
+            const user = {
+                firstName: firstNameText,
+                lastName: lastNameText,
+                username: usernameText,
+                email: emailText,
+                picture: profileImage
+            }
+        
+            try {
+                dispatch(updateUser(user))
+    
+            }
+            catch (err) {
+                Alert.alert('Error updating profile. ' + err)
+                console.error(err)
+            }
+            handleGoBack()
+        })
+        
     }
 
     const handleGoBack = () => {
@@ -117,6 +114,7 @@ export default function Profile_Screen(props) {
         setLastNameText(userData.lastName)
         setUsernameText(userData.username)
         setEmailText(userData.email)
+        setProfileImage(userData.picture)
         props.navigation.goBack()
     }
 

@@ -30,6 +30,7 @@ function Person_Profile_Screen(props) {
     const { firstName, lastName, email, username, id } = person
     const userFriends = useSelector(state => state.people.friends)
     const user = useSelector(state => state.auth.userInfo)
+    const profPic = useSelector(state => state.auth)
 
     const dispatch = useDispatch()
 
@@ -50,6 +51,7 @@ function Person_Profile_Screen(props) {
             }
         })
     }, [])
+
 
     useLayoutEffect(() => {
         props.navigation.setOptions({

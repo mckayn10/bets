@@ -13,6 +13,8 @@ import TestComponent from '../components/TestComponent';
 import BetList from '../components/BetList';
 import { completedCriteria, pendingCriteria } from '../constants/utils';
 import UploadImage from '../components/UploadImage';
+import { getProfilePic } from '../store/actions/auth';
+
 
 function Home_Screen(props) {
 
@@ -24,6 +26,7 @@ function Home_Screen(props) {
 
   const bets = useSelector(state => state.bets.bets)
   const userId = useSelector(state => state.auth.userId)
+  const user = useSelector(state => state.auth)
 
   useEffect(() => {
     dispatch(fetchBets())
@@ -31,7 +34,8 @@ function Home_Screen(props) {
     dispatch(fetchAllFriends())
     dispatch(fetchNotifications())
     dispatch(fetchPendingRequests())
-    // dispatch(getUserPic())
+    dispatch(getUserPic())
+
 
   }, [])
 
@@ -93,8 +97,8 @@ function Home_Screen(props) {
       {/* <UploadImage /> */}
       {/* <TestComponent /> */}
       {showComplete
-        ? <BetList {...props} bets={completedBets} permissions={true} personId={userId}/>
-        : <BetList {...props} bets={pendingBets} permissions={true} personId={userId}/>
+        ? <BetList {...props} bets={completedBets} permissions={true} personId={userId} />
+        : <BetList {...props} bets={pendingBets} permissions={true} personId={userId} />
       }
 
       <TouchableOpacity

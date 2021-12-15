@@ -145,8 +145,8 @@ const View_Bet_Screen = props => {
 
     }
     const goToUser = () => {
-        console.log('go to user')
-        console.log(otherPerson)
+        // console.log('go to user')
+        // console.log(otherPerson)
     }
 
     const showConfirmDialog = () => {
