@@ -23,6 +23,7 @@ export default function BetCard(props) {
     let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
     let isCreator = creator_id === userId ? true : false
     let nameToDisplay = creator_id === userId ? other_bettor : creator
+    let otherPerson = props.personId === creator.id ? `${other_bettor.firstName} ${other_bettor.lastName}` :`${creator.firstName} ${creator.lastName}`
 
     let infoToDisplayBasedOnUser = {
         otherBettorname: creator_id === userId ? other_bettor.firstName : (other_id === userId ? 'You' : other_bettor.firstName),
@@ -55,17 +56,19 @@ export default function BetCard(props) {
         })
     }
 
+    const getBetTitle = () => {
+        return <Text style={{fontWeight: 'bold'}}>{otherPerson}</Text>
+    }
+
+
     const displayVerifiedIcon = () => {
         if (is_verified && !is_accepted) {
-            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-open" size={17} color={Colors.primaryColor} />
             return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-minus-outline" size={22} color={Colors.red} />
         }
         else if (is_verified && is_accepted && !is_complete) {
-            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} />
             return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
         }
         else if (is_verified && is_accepted) {
-            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} />
             return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check" size={22} color={Colors.primaryColor} />
         }
     }
@@ -90,9 +93,7 @@ export default function BetCard(props) {
                         }}
                     />
                     <View style={{ flexDirection: 'row' }}>
-                        {/* <Text style={styles.name}>{infoToDisplayBasedOnUser.creatorName}</Text> */}
-                        <Text style={styles.name}>{infoToDisplayBasedOnUser.displayOtherName}</Text>
-                        <Text> bet with You</Text>
+                        {getBetTitle()}
                     </View>
                 </View>
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>
