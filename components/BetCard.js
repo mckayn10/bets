@@ -21,16 +21,13 @@ export default function BetCard(props) {
     const showNotAccepted = is_verified && !is_accepted
 
     let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
-    let isCreator = creator_id === userId ? true : false
-    let nameToDisplay = creator_id === userId ? other_bettor : creator
-    let otherPerson = props.personId === creator.id ? `${other_bettor.firstName} ${other_bettor.lastName}` :`${creator.firstName} ${creator.lastName}`
 
     let infoToDisplayBasedOnUser = {
-        otherBettorname: creator_id === userId ? other_bettor.firstName : (other_id === userId ? 'You' : other_bettor.firstName),
+        otherBettorname: props.personId === creator.id ? `${other_bettor.firstName} ${other_bettor.lastName}` :`${creator.firstName} ${creator.lastName}`,
         creatorName: creator_id === userId ? 'You' : creator.firstName,
         displayOtherName: creator_id === userId ? other_bettor.firstName + ' ' + other_bettor.lastName : creator.firstName + ' ' + creator.lastName,
         didWin: won_bet === userId ? true : false,
-        opponent: creator_id === userId ? other_bettor : creator
+        opponent: creator_id === props.personId ? other_bettor : creator
     }
     useEffect(() => {
         getProfilePic(infoToDisplayBasedOnUser.opponent.email).then(url => {
@@ -42,12 +39,6 @@ export default function BetCard(props) {
         })
     })
 
-
-    // Used for showing all bets of another user
-    if (props.invertName && userId != props.personId) {
-        nameToDisplay = creator_id === userId ? creator : other_bettor
-    }
-
     const openViewBet = () => {
         props.navigation.navigate('View Bet', {
             bet: props.bet,
@@ -57,7 +48,7 @@ export default function BetCard(props) {
     }
 
     const getBetTitle = () => {
-        return <Text style={{fontWeight: 'bold'}}>{otherPerson}</Text>
+        return <Text style={{fontWeight: 'bold'}}>{infoToDisplayBasedOnUser.otherBettorname}</Text>
     }
 
 
