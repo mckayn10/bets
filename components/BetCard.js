@@ -21,15 +21,13 @@ export default function BetCard(props) {
     const showNotAccepted = is_verified && !is_accepted
 
     let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
-    let isCreator = creator_id === userId ? true : false
-    let nameToDisplay = creator_id === userId ? other_bettor : creator
 
     let infoToDisplayBasedOnUser = {
-        otherBettorname: creator_id === userId ? other_bettor.firstName : (other_id === userId ? 'You' : other_bettor.firstName),
+        otherBettorname: props.personId === creator.id ? `${other_bettor.firstName} ${other_bettor.lastName}` :`${creator.firstName} ${creator.lastName}`,
         creatorName: creator_id === userId ? 'You' : creator.firstName,
         displayOtherName: creator_id === userId ? other_bettor.firstName + ' ' + other_bettor.lastName : creator.firstName + ' ' + creator.lastName,
         didWin: won_bet === userId ? true : false,
-        opponent: creator_id === userId ? other_bettor : creator
+        opponent: creator_id === props.personId ? other_bettor : creator
     }
     useEffect(() => {
         getProfilePic(infoToDisplayBasedOnUser.opponent.email).then(url => {
@@ -41,12 +39,6 @@ export default function BetCard(props) {
         })
     })
 
-
-    // Used for showing all bets of another user
-    if (props.invertName && userId != props.personId) {
-        nameToDisplay = creator_id === userId ? creator : other_bettor
-    }
-
     const openViewBet = () => {
         props.navigation.navigate('View Bet', {
             bet: props.bet,
@@ -55,17 +47,19 @@ export default function BetCard(props) {
         })
     }
 
+    const getBetTitle = () => {
+        return <Text style={{fontWeight: 'bold'}}>{infoToDisplayBasedOnUser.otherBettorname}</Text>
+    }
+
+
     const displayVerifiedIcon = () => {
         if (is_verified && !is_accepted) {
-            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-open" size={17} color={Colors.primaryColor} />
             return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-minus-outline" size={22} color={Colors.red} />
         }
         else if (is_verified && is_accepted && !is_complete) {
-            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} />
             return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
         }
         else if (is_verified && is_accepted) {
-            // return <Ionicons style={{ alignSelf: 'flex-end' }} name="lock-closed" size={17} color={Colors.primaryColor} />
             return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check" size={22} color={Colors.primaryColor} />
         }
     }
@@ -90,9 +84,7 @@ export default function BetCard(props) {
                         }}
                     />
                     <View style={{ flexDirection: 'row' }}>
-                        {/* <Text style={styles.name}>{infoToDisplayBasedOnUser.creatorName}</Text> */}
-                        <Text style={styles.name}>{infoToDisplayBasedOnUser.displayOtherName}</Text>
-                        <Text> bet with You</Text>
+                        {getBetTitle()}
                     </View>
                 </View>
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>

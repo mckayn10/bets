@@ -72,7 +72,7 @@ const View_Bet_Screen = props => {
         betStatusText = 'Pending'
     }
 
-    let betWonText = userId == won_bet ? 'Yep' : (otherPersonId == won_bet ? 'Nope' : 'Undecided')
+    let betWonText = userId == won_bet ? user.firstName : (otherPersonId == won_bet ? otherPerson.firstName : 'Undecided')
 
     useEffect(() => {
         setNameOfBettor(other_bettor.firstName)
