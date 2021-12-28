@@ -158,7 +158,7 @@ return (
                 defaultValue={description}
             />
             <View style={styles.betStatusContainer}>
-                <Text style={styles.questionText}>Is this bet completed?</Text>
+                <Text style={styles.questionText}>Is this bet complete?</Text>
                 <Switch
                     value={betComplete}
                     color={Colors.primaryColor}

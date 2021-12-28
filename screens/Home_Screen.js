@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Button } from 'react-native-elements';
 import NavBar from '../components/NavBar';
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
@@ -65,7 +66,7 @@ function Home_Screen(props) {
       }
     })
     completed.sort(function (x, y) {
-      return x.date_complete - y.date_complete;
+      return y.date_complete - x.date_complete;
     })
 
     setCompletedBets(completed)
@@ -104,10 +105,17 @@ function Home_Screen(props) {
       <TouchableOpacity
         style={styles.btnContainer}
       >
-        <Ionicons
+        {/* <Ionicons
           name="create-outline"
           size={26}
-          color='white'
+          color='green'
+          onPress={() => props.navigation.navigate('Create Bet')}
+        /> */}
+        <Button
+          title="Create New Bet"
+          type="solid"
+          buttonStyle={styles.createBetBtn}
+          titleStyle={styles.createBetBtn}
           onPress={() => props.navigation.navigate('Create Bet')}
         />
       </TouchableOpacity>
@@ -123,20 +131,32 @@ const styles = StyleSheet.create({
   toggleScreenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.grayDark,
+    backgroundColor: Colors.grayDarker,
     borderTopWidth: 1,
     borderTopColor: Colors.backgroundColor,
     borderBottomWidth: 1,
     borderBottomColor: Colors.grayDark
   },
   btnContainer: {
-    position: 'absolute',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    top: 45,
-    right: 15,
-    borderRadius: 50,
+    // position: 'absolute',
+    // bottom: 50,
+    // right: 15,
+    borderTopWidth: 1,
+    borderTopColor: Colors.grayLight,
+    paddingTop: 30,
+    paddingBottom: 30,
+    width: '100%',
     alignSelf: 'center',
+    backgroundColor: Colors.backgroundColor
+  },
+  createBetBtn: {
+    width: '80%',
+    fontSize: 18,
+    alignSelf: 'center',
+    backgroundColor: Colors.primaryColor,
+    fontWeight: 'bold',
+    borderRadius: 50,
+    padding: 15
   },
   toggleText: {
     flex: 1,
