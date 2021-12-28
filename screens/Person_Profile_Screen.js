@@ -235,7 +235,7 @@ function Person_Profile_Screen(props) {
             <View style={styles.detailsContainer}>
                 <Image
                     source={{uri: profileImage}}
-                    style={{ width: 120, height: 120, borderRadius: 100 }}
+                    style={{ width: 110, height: 110, borderRadius: 100 }}
                 />
                 <View style={styles.personInfoConatiner}>
                     <HeaderText style={styles.name}>{firstName} {lastName}</HeaderText>

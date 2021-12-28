@@ -49,7 +49,7 @@ function User_Profile_Screen(props) {
                 <CachedImage
                     source={{ uri: user.picture }}
 
-                    style={{ width: 150, height: 150, borderRadius: 100 }}
+                    style={{ width: 110, height: 110, borderRadius: 100 }}
                 />
                 {/* <Image source={{ uri: profileImage }} style={{ width: 200, height: 200 }} /> */}
                 <View style={styles.personInfoConatiner}>

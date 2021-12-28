@@ -21,7 +21,7 @@ export default function Settings_Screen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 style={styles.cardContainer}
             // onPress={() => handleLogout()}
             >
@@ -33,7 +33,7 @@ export default function Settings_Screen() {
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
 
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {/* <TouchableOpacity
                 style={styles.cardContainer}
             // onPress={() => handleLogout()}
@@ -47,7 +47,7 @@ export default function Settings_Screen() {
 
                 </View>
             </TouchableOpacity> */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 style={styles.cardContainer}
             // onPress={() => handleLogout()}
             >
@@ -59,8 +59,8 @@ export default function Settings_Screen() {
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
 
                 </View>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity
                 style={styles.cardContainer}
             // onPress={() => handleLogout()}
             >
@@ -72,7 +72,7 @@ export default function Settings_Screen() {
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
 
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
                 style={styles.cardContainer}
                 onPress={() => handleLogout()}
