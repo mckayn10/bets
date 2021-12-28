@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { signIn, signUp } from '../store/actions/auth'
 import { MaterialIcons } from '@expo/vector-icons';
 import HeaderText from '../components/HeaderText'
+import { placeholderPic } from '../constants/urls'
 
 
 function Auth_Screen(props) {
@@ -15,7 +16,6 @@ function Auth_Screen(props) {
     const [isSignIn, setIsSignIn] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState()
-
 
     const dispatch = useDispatch()
 
@@ -31,7 +31,7 @@ function Auth_Screen(props) {
                 firstName: firstNameText,
                 lastName: lastNameText,
                 username: firstNameText + '_' + lastNameText + '_' + Math.floor(Math.random() * 10000),
-                picture: 'https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fmckay.nilsson%40gmail.com-profile-picture?alt=media&token=9476d57d-9144-4b93-b7c4-c8516b6ad179'
+                picture: placeholderPic
             }
             action = signUp(userInfo)
         }

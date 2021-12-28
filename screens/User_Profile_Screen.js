@@ -7,7 +7,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import BetList from '../components/BetList';
 import CachedImage from 'react-native-expo-cached-image';
 
-
 function User_Profile_Screen(props) {
 
     const [showBetsfeed, setShowBetsFeed] = useState(true)
@@ -49,6 +48,7 @@ function User_Profile_Screen(props) {
             <View style={styles.detailsContainer}>
                 <CachedImage
                     source={{ uri: user.picture }}
+
                     style={{ width: 150, height: 150, borderRadius: 100 }}
                 />
                 {/* <Image source={{ uri: profileImage }} style={{ width: 200, height: 200 }} /> */}
