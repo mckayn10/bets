@@ -10,6 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import UploadImage from '../components/UploadImage';
 import { getProfilePic } from '../store/actions/auth';
 import { storage } from '../firebase/firestore';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 
@@ -21,21 +22,14 @@ export default function Profile_Screen(props) {
     const [emailText, setEmailText] = useState('')
     const [usernameText, setUsernameText] = useState('')
     const [image, setImage] = useState('')
-    const [profileImage, setProfileImage] = useState()
-
+    const [spinner, setSpinner] = useState(false)
 
     useEffect(() => {
         setFirstNameText(userData.firstName)
         setLastNameText(userData.lastName)
         setUsernameText(userData.username)
         setEmailText(userData.email)
-        setProfileImage(userData.picture)
-
     }, [])
-
-    const getImg = () => {
-        return profileImage
-    }
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -57,6 +51,7 @@ export default function Profile_Screen(props) {
     const dispatch = useDispatch()
 
     const upload = async () => {
+        setSpinner(true)
         const blob = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.onload = function () {
@@ -74,39 +69,50 @@ export default function Profile_Screen(props) {
             contentType: blob.type
         })
             .then((snapshot) => {
-                console.log('successfully uploaded file')
+                url = userData.picture
+                getProfilePic(userData.email).then(url => {
+                    const user = {
+                        firstName: firstNameText,
+                        lastName: lastNameText,
+                        username: usernameText,
+                        email: emailText,
+                        picture: url
+                    }
+
+                    try {
+                        dispatch(updateUser(user))
+
+                    }
+                    catch (err) {
+                        Alert.alert('Error updating profile. ' + err)
+                        console.error(err)
+                    }
+                    setSpinner(false)
+                    handleGoBack()
+                })
             })
     }
 
     const handleSave = async () => {
-        upload()
 
         if (firstNameText === '' || lastNameText === '' || usernameText === '') {
             Alert.alert('Please fill out all text fields')
             return false
         }
 
-        getProfilePic(userData.email).then(url => {
-            setProfileImage(url)
+        if(image){
+            upload()
+        } else {
             const user = {
                 firstName: firstNameText,
                 lastName: lastNameText,
                 username: usernameText,
                 email: emailText,
-                picture: profileImage
+                picture: userData.picture
             }
-        
-            try {
-                dispatch(updateUser(user))
-    
-            }
-            catch (err) {
-                Alert.alert('Error updating profile. ' + err)
-                console.error(err)
-            }
-            handleGoBack()
-        })
-        
+            dispatch(updateUser(user))
+        }
+
     }
 
     const handleGoBack = () => {
@@ -114,13 +120,18 @@ export default function Profile_Screen(props) {
         setLastNameText(userData.lastName)
         setUsernameText(userData.username)
         setEmailText(userData.email)
-        setProfileImage(userData.picture)
         props.navigation.goBack()
     }
 
 
     return (
         <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={100}>
+            <Spinner
+                visible={spinner}
+                textContent={'Saving User...'}
+                textStyle={styles.spinnerTextStyle}
+                overlayColor='rgba(0, 0, 0, 0.5)'
+            />
             <View style={styles.screen}>
                 <UploadImage setImage={(image) => setImage(image)} />
                 <Input
@@ -170,4 +181,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primaryColor,
         width: '100%'
     },
+    spinnerTextStyle: {
+        color: 'white'
+    }
 })

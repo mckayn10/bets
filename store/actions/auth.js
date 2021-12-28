@@ -12,7 +12,7 @@ export const GET_USER = 'GET_USER'
 export const GET_PROFILE_PICTURE = 'GET_PROFILE_PICTURE'
 
 const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
-var peopleRef = db.collection("people");
+var peopleRef = db.collection("people")
 
 
 export const authenticate = (userId, token) => {
@@ -54,15 +54,15 @@ export const getUserPic = () => {
         const user = getState().auth
 
         storage.child(`profile_pictures/${user.email}-profile-picture`).getDownloadURL()
-        .then((url) => {
-            dispatch({ type: GET_PROFILE_PICTURE, pic: url })
-        })
-        .catch(err => {
-            storage.child(`profile_pictures/placeholder.png`).getDownloadURL()
-                .then((url) => {
-                    dispatch({ type: GET_PROFILE_PICTURE, pic: url })
-                })
-        })
+            .then((url) => {
+                dispatch({ type: GET_PROFILE_PICTURE, pic: url })
+            })
+            .catch(err => {
+                storage.child(`profile_pictures/placeholder.png`).getDownloadURL()
+                    .then((url) => {
+                        dispatch({ type: GET_PROFILE_PICTURE, pic: url })
+                    })
+            })
 
     }
 }
@@ -71,8 +71,8 @@ export const getUser = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
 
-        peopleRef.doc(userId).get()
-            .then((doc) => {
+        peopleRef.doc(userId)
+            .onSnapshot((doc) => {
                 if (doc.exists) {
                     let user = doc.data()
                     dispatch({ type: GET_USER, user: user })
@@ -80,10 +80,6 @@ export const getUser = () => {
                     console.log("Person document does not exist");
                 }
             })
-            .catch((error) => {
-                console.log("Error getting User:", error);
-            });
-
     }
 }
 
@@ -167,6 +163,7 @@ export const updateUser = (userData) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
         userData.id = userId
+
 
         peopleRef.doc(userId).set(userData, { merge: true })
             .then(() => {

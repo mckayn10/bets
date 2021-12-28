@@ -5,14 +5,13 @@ import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText';
 import { MaterialIcons } from '@expo/vector-icons';
 import BetList from '../components/BetList';
-import { getProfilePic } from '../store/actions/auth';
-import { storage } from '../firebase/firestore'
+import CachedImage from 'react-native-expo-cached-image';
+
 
 function User_Profile_Screen(props) {
 
     const [showBetsfeed, setShowBetsFeed] = useState(true)
     const [bets, setBets] = useState([])
-    const [profPic, setProfPic] = useState()
 
     const user = useSelector(state => state.auth.userInfo)
     const userBets = useSelector(state => state.bets.bets)
@@ -20,10 +19,6 @@ function User_Profile_Screen(props) {
     useEffect(() => {
         setBets(userBets)
     }, [])
-
-    useEffect(() => {
-        setProfPic(user.picture)
-    }, [user])
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -52,8 +47,8 @@ function User_Profile_Screen(props) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.detailsContainer}>
-                <Image
-                    source={{ uri: profPic }}
+                <CachedImage
+                    source={{ uri: user.picture }}
                     style={{ width: 150, height: 150, borderRadius: 100 }}
                 />
                 {/* <Image source={{ uri: profileImage }} style={{ width: 200, height: 200 }} /> */}
