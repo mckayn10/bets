@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getProfilePic } from '../store/actions/auth';
 import FastImage from 'react-native-fast-image';
 import CachedImage from 'react-native-expo-cached-image';
+import { placeholderPic } from '../constants/urls';
 
 
 
@@ -32,7 +33,7 @@ export default function BetCard(props) {
     useEffect(() => {
         getProfilePic(infoToDisplayBasedOnUser.opponent.email).then(url => {
             if (!url) {
-                setProfileImage('https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fplaceholder.png?alt=media&token=55bc2c6a-f6f2-4392-844d-29edbd88fe63')
+                setProfileImage(placeholderPic)
             } else {
                 setProfileImage(url)
             }
