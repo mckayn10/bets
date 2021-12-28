@@ -6,6 +6,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { getProfilePic } from '../store/actions/auth';
 import CachedImage from 'react-native-expo-cached-image';
+import { placeholderPic } from '../constants/urls';
 
 
 export default function FriendCard(props) {
@@ -21,7 +22,7 @@ export default function FriendCard(props) {
     const setProfPic = () => {
         getProfilePic(email).then(url => {
             if (!url) {
-                setProfileImage('https://firebasestorage.googleapis.com/v0/b/betz-1bfb4.appspot.com/o/profile_pictures%2Fplaceholder.png?alt=media&token=55bc2c6a-f6f2-4392-844d-29edbd88fe63')
+                setProfileImage(placeholderPic)
             } else {
                 setProfileImage(url)
             }
