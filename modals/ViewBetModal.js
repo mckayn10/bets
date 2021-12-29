@@ -35,6 +35,8 @@ const ViewBetModal = props => {
     const [betWon, setBetWon] = useState(false);
     const [toggleModal, setToggleModal] = useState(props.modalVisible)
     const [hasPermission, setHasPermissions] = useState(props.permissions)
+    console.log(props.permissions)
+    console.log(hasPermission)
 
 
     let betStatusText = ''
@@ -275,7 +277,7 @@ const ViewBetModal = props => {
                         </View>
                     }
                     <View>
-                        {!editMode
+                        {!editMode && hasPermission
                             ?
                             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                                 <View style={styles.btnContainer}>

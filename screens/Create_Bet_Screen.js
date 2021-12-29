@@ -131,8 +131,8 @@ return (
                 }}
                 style={otherBettorInfo ? [styles.input, { color: Colors.primaryColor }] : styles.input}
                 placeholder='or enter a custom name here'
-                leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
-                label="Name of the other bettor"
+                leftIcon={<Icon style={styles.icon} name='user' size={20} color={nameOfBettor ? Colors.primaryColor : Colors.red} />}
+                label="Name of the other bettor *"
                 labelStyle={{ color: 'gray' }}
                 onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
                 defaultValue={nameOfBettor}
@@ -141,8 +141,8 @@ return (
             <Input
                 style={styles.input}
                 placeholder='0.00'
-                leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={Colors.primaryColor} />}
-                label="Bet amount"
+                leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={betAmount ? Colors.primaryColor : Colors.red} />}
+                label="Bet amount *"
                 keyboardType='numeric'
                 labelStyle={{ color: 'gray' }}
                 onChangeText={betAmount => setBetAmount(betAmount)}
@@ -151,8 +151,8 @@ return (
             <Input
                 style={styles.input}
                 placeholder='description'
-                leftIcon={<MaterialIcons name="text-snippet" size={20} color={Colors.primaryColor} style={{ marginRight: 2 }} />}
-                label="Short description of bet"
+                leftIcon={<MaterialIcons name="text-snippet" size={20} color={description ? Colors.primaryColor : Colors.red} style={{ marginRight: 2 }} />}
+                label="Short description of bet *"
                 labelStyle={{ color: 'gray' }}
                 onChangeText={description => setDescription(description)}
                 defaultValue={description}

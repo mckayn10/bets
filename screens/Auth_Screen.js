@@ -16,6 +16,7 @@ function Auth_Screen(props) {
     const [isSignIn, setIsSignIn] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState()
+    const [showResetPassword, setShowResetPassword] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -97,6 +98,10 @@ function Auth_Screen(props) {
                 autoCapitalize='none'
                 secureTextEntry={true}
             />
+            {isSignIn 
+                ? <Text style={[styles.registerText, styles.createText, styles.forgotPassword]}>Forgot Password?</Text>
+                : null
+            }
             {isLoading
                 ? <ActivityIndicator style={{ marginBottom: 12 }} />
                 : <TouchableOpacity >
@@ -167,6 +172,8 @@ const styles = StyleSheet.create({
     },
     registerText: {
         color: 'white'
+    },
+    forgotPassword: {
     },
     createText: {
         textDecorationLine: 'underline',

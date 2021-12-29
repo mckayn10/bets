@@ -30,7 +30,6 @@ const View_Bet_Screen = props => {
     const otherPersonId = userId === creator_id ? other_id : creator_id
     const otherPerson = userId === creator_id ? other_bettor : creator
 
-
     const [editMode, setEditMode] = useState(false)
     const [nameOfBettor, setNameOfBettor] = useState('');
     const [betAmount, setBetAmount] = useState(0);
@@ -57,6 +56,21 @@ const View_Bet_Screen = props => {
                             />
                         </TouchableOpacity>
                         : <View></View>
+                )
+            },
+            headerRight: () => {
+
+                return (
+
+                    <TouchableOpacity {...props}>
+                        <AntDesign
+                            name="close"
+                            size={28}
+                            color="white"
+                            // style={{ paddingBottom: 5 }}
+                            onPress={() => closeModal()}
+                        />
+                    </TouchableOpacity>
                 )
             }
         })
@@ -211,9 +225,9 @@ const View_Bet_Screen = props => {
             </View> */}
             <View style={styles.detailsContainer}>
                 <View style={editMode ? styles.editDetailRow : styles.detailRow}>
-                    <Text style={[styles.betText, { fontWeight: 'bold' }]}>Other Bettor: </Text>
+                    <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bettors: </Text>
                     {!editMode
-                        ? <Text style={styles.betText}>{props.route.params.infoToDisplayBasedOnUser.displayOtherName}</Text>
+                        ? <Text style={styles.betText}>{creator.firstName} vs. {other_bettor.firstName}</Text>
                         : <Input
                             style={styles.input}
                             leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
@@ -240,9 +254,9 @@ const View_Bet_Screen = props => {
                 </View>
                 <View behavior='position'>
                     <View style={editMode ? styles.editDetailRow : styles.detailRow}>
-                        <Text style={[styles.betText, { fontWeight: 'bold', width: '100%' }]} >Description: </Text>
+                        <Text style={[styles.betText, { fontWeight: 'bold', width: '30%' }]} >Description: </Text>
                         {!editMode
-                            ? <Text style={styles.betText} numberOfLines={4}>{description}</Text>
+                            ? <Text style={[styles.betText, styles.description]} numberOfLines={4}>{description}</Text>
                             : <Input
                                 style={styles.input}
                                 onChangeText={betDescription => setBetDescription(betDescription)}
@@ -290,42 +304,46 @@ const View_Bet_Screen = props => {
                     </View>
                 }
             </View>
-            <View style={styles.btnsPosition}>
-                {!editMode
-                    ?
-                    <View>
-                        <View style={styles.btnContainer}>
+            {userId == creator_id || userId == other_id
+                ? <View style={styles.btnsPosition}>
+                    {!editMode
+                        ?
+                        <View>
+                            <View style={styles.btnContainer}>
+                                <Button
+                                    iconRight
+                                    title="Update"
+                                    type="solid"
+                                    buttonStyle={styles.updateButton}
+                                    onPress={() => setEditMode(!editMode)}
+                                />
+                            </View>
+                            <View style={styles.btnContainer}>
+                                <Button
+                                    title="Delete"
+                                    type="solid"
+                                    buttonStyle={styles.deleteButton}
+                                    onPress={() => hasPermission ? showConfirmDialog() : showDeleteAlert()}
+                                />
+                            </View>
+                        </View>
+                        : <View style={styles.btnContainer}>
                             <Button
+                                icon={
+                                    <Feather name="check-circle" size={24} color='white' />
+                                }
                                 iconRight
-                                title="Update"
+                                title={hasPermission ? 'Save Changes  ' : 'Request Changes  '}
                                 type="solid"
                                 buttonStyle={styles.updateButton}
-                                onPress={() => setEditMode(!editMode)}
+                                onPress={() => hasPermission ? handleUpdateBet() : showUpdateAlert()}
                             />
                         </View>
-                        <View style={styles.btnContainer}>
-                            <Button
-                                title="Delete"
-                                type="solid"
-                                buttonStyle={styles.deleteButton}
-                                onPress={() => hasPermission ? showConfirmDialog() : showDeleteAlert()}
-                            />
-                        </View>
-                    </View>
-                    : <View style={styles.btnContainer}>
-                        <Button
-                            icon={
-                                <Feather name="check-circle" size={24} color='white' />
-                            }
-                            iconRight
-                            title={hasPermission ? 'Save Changes  ' : 'Request Changes  '}
-                            type="solid"
-                            buttonStyle={styles.updateButton}
-                            onPress={() => hasPermission ? handleUpdateBet() : showUpdateAlert()}
-                        />
-                    </View>
-                }
-            </View>
+                    }
+                </View>
+                : null
+            }
+
         </View>
     )
 
