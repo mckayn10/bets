@@ -6,6 +6,7 @@ import { signIn, signUp } from '../store/actions/auth'
 import { MaterialIcons } from '@expo/vector-icons';
 import HeaderText from '../components/HeaderText'
 import { placeholderPic } from '../constants/urls'
+import Reset_Password_Screen from './Reset_Password_Screen'
 
 
 function Auth_Screen(props) {
@@ -51,78 +52,102 @@ function Auth_Screen(props) {
 
     return (
         <View style={styles.container}>
-            {error
-                ? <View style={styles.errorContainer}>
-                    <MaterialIcons style={{ marginRight: 5 }} name="error-outline" size={17} color={Colors.red} />
-                    <Text style={styles.error}>{error}</Text>
-                </View>
-                : null
-            }
-            <HeaderText style={styles.pageTitle}>mybetz.</HeaderText >
-            {isSignIn
-                ? null
-                :
-                <View style={{width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="first name"
-                        placeholderTextColor='rgba(255, 255, 255, 0.5)'
-                        onChangeText={firstNameText => setFirstNameText(firstNameText)}
-                        defaultValue={firstNameText}
-                    />
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="last name"
-                        placeholderTextColor='rgba(255, 255, 255, 0.5)'
-                        onChangeText={lastNameText => setLastNameText(lastNameText)}
-                        defaultValue={lastNameText}
-                    />
-                </View>
-            }
-            <TextInput
-                style={styles.textInput}
-                placeholder="email address"
-                placeholderTextColor='rgba(255, 255, 255, 0.5)'
-                onChangeText={emailText => setEmailText(emailText)}
-                defaultValue={emailText}
-                keyboardType='email-address'
-                autoCapitalize='none'
-            />
-            <TextInput
-                style={styles.textInput}
-                placeholder="password"
-                placeholderTextColor='rgba(255, 255, 255, 0.5)'
-                onChangeText={passwordText => setPasswordText(passwordText)}
-                defaultValue={passwordText}
-                keyboardType='default'
-                autoCapitalize='none'
-                secureTextEntry={true}
-            />
-            {isSignIn 
-                ? <Text style={[styles.registerText, styles.createText, styles.forgotPassword]}>Forgot Password?</Text>
-                : null
-            }
-            {isLoading
-                ? <ActivityIndicator style={{ marginBottom: 12 }} />
-                : <TouchableOpacity >
-                    <Text
-                        style={styles.signInBtn}
-                        onPress={() =>
-                            handleAuthenticate()}>
-                        {isSignIn ? 'Sign In' : 'Register'}
-                    </Text>
-                </TouchableOpacity>
-            }
+            {showResetPassword
+                ? <Reset_Password_Screen goBack={(val) => setShowResetPassword(val)} />
+                : <View style={styles.container}>
+                    {error
+                        ? <View style={styles.errorContainer}>
+                            <MaterialIcons style={{ marginRight: 5 }} name="error-outline" size={17} color={Colors.red} />
+                            <Text style={styles.error}>{error}</Text>
+                        </View>
+                        : null
+                    }
+                    <HeaderText style={styles.pageTitle}>mybetz.</HeaderText >
+                    {isSignIn
+                        ? <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="email address"
+                                placeholderTextColor='rgba(255, 255, 255, 0.5)'
+                                onChangeText={emailText => setEmailText(emailText)}
+                                defaultValue={emailText}
+                                keyboardType='email-address'
+                                autoCapitalize='none'
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="password"
+                                placeholderTextColor='rgba(255, 255, 255, 0.5)'
+                                onChangeText={passwordText => setPasswordText(passwordText)}
+                                defaultValue={passwordText}
+                                keyboardType='default'
+                                autoCapitalize='none'
+                                secureTextEntry={true}
+                            />
+                        </View>
+                        : <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="first name"
+                                placeholderTextColor='rgba(255, 255, 255, 0.5)'
+                                onChangeText={firstNameText => setFirstNameText(firstNameText)}
+                                defaultValue={firstNameText}
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="last name"
+                                placeholderTextColor='rgba(255, 255, 255, 0.5)'
+                                onChangeText={lastNameText => setLastNameText(lastNameText)}
+                                defaultValue={lastNameText}
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="email address"
+                                placeholderTextColor='rgba(255, 255, 255, 0.5)'
+                                onChangeText={emailText => setEmailText(emailText)}
+                                defaultValue={emailText}
+                                keyboardType='email-address'
+                                autoCapitalize='none'
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="password"
+                                placeholderTextColor='rgba(255, 255, 255, 0.5)'
+                                onChangeText={passwordText => setPasswordText(passwordText)}
+                                defaultValue={passwordText}
+                                keyboardType='default'
+                                autoCapitalize='none'
+                                secureTextEntry={true}
+                            />
+                        </View>
+                    }
+                    {isSignIn
+                        ? <Text style={[styles.registerText, styles.createText, styles.forgotPassword]} onPress={() => setShowResetPassword(true)}>Forgot Password?</Text>
+                        : null
+                    }
+                    {isLoading
+                        ? <ActivityIndicator style={{ marginBottom: 12 }} />
+                        : <TouchableOpacity >
+                            <Text
+                                style={styles.signInBtn}
+                                onPress={() =>
+                                    handleAuthenticate()}>
+                                {isSignIn ? 'Sign In' : 'Register'}
+                            </Text>
+                        </TouchableOpacity>
+                    }
 
-            <View style={styles.registerContainer}>
-                <Text style={styles.registerText}>{isSignIn ? 'Don\'t have an account?' : 'Already have an account?'}</Text>
-                <Text
-                    style={[styles.registerText, styles.createText]}
-                    onPress={() => setIsSignIn(!isSignIn)}
-                >
-                    {isSignIn ? ' Register here.' : ' Sign in here'}
-                </Text >
-            </View>
+                    <View style={styles.registerContainer}>
+                        <Text style={styles.registerText}>{isSignIn ? 'Don\'t have an account?' : 'Already have an account?'}</Text>
+                        <Text
+                            style={[styles.registerText, styles.createText]}
+                            onPress={() => setIsSignIn(!isSignIn)}
+                        >
+                            {isSignIn ? ' Register here.' : ' Sign in here'}
+                        </Text >
+                    </View>
+                </View>
+            }
         </View>
     )
 }
@@ -130,6 +155,7 @@ function Auth_Screen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Colors.primaryColor
