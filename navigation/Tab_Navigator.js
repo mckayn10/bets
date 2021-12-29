@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home_Screen from '../screens/Home_Screen';
@@ -22,6 +22,19 @@ const Tab = createBottomTabNavigator();
 
 export default function Tab_Navigator() {
     let notifications = useSelector(state => state.notifications.notifications)
+    const [unseenNotis, setUnseenNotis] = useState([])
+
+    useEffect(() => {
+
+        let unseenArr = []
+        notifications.forEach(noti => {
+            if(!noti.seen){
+                unseenArr.push(noti)
+            }
+        })
+        setUnseenNotis(unseenArr.length)
+        
+    }, [notifications])
 
     return (
         <Tab.Navigator
@@ -95,7 +108,7 @@ export default function Tab_Navigator() {
                 options={{
                     headerShown: false,
                     tabBarShowLabel: false,
-                    tabBarBadge: notifications.length > 0 ? notifications.length : null,
+                    tabBarBadge: unseenNotis > 0 ? unseenNotis : null,
                     tabBarBadgeStyle: {
                         fontSize: 12,
                         marginTop: 10

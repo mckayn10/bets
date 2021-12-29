@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import firestore from 'firebase/firestore'
-import {getStorage, ref} from 'firebase/storage'
+import { getStorage, ref } from 'firebase/storage'
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -33,7 +33,16 @@ const storage = firebase.storage().ref()
 // })
 
 
-export {db, storage}
+const forgotPassword = (Email) => {
+    firebase.auth().sendPasswordResetEmail(Email)
+        .then(() => {
+            alert(`A password reset email has been sent to ${Email}`)
+        }).catch(function (e) {
+            alert('Could not find a user with that email. Please enter a different email and try again.')
+        })
+}
+
+export { db, storage, forgotPassword }
 
 
 

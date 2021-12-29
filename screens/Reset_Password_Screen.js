@@ -2,9 +2,14 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText'
+import { forgotPassword } from '../firebase/firestore'
 
 function Reset_Password_Screen(props) {
     const [email, setEmail] = useState('')
+
+    const sendEmail = () => {
+        forgotPassword(email)
+    }
 
     return (
         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -21,7 +26,7 @@ function Reset_Password_Screen(props) {
             <TouchableOpacity >
                 <Text
                     style={styles.resetPasswordBtn}
-                    onPress={() => null}
+                    onPress={() => forgotPassword(email)}
                 >
                     Reset Password
                 </Text>

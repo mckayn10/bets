@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { StyleSheet, Text, Modal, Pressable, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, Pressable, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { createBet } from '../store/actions/bets'
@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button, Switch } from 'react-native-elements';
 import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import MySearchableDropdown from '../components/SearchableDropdown';
 
 
@@ -31,6 +32,25 @@ const Create_Bet_Screen = props => {
         return () => {
 
         }
+    }, [])
+
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerRight: () => {
+                return (
+
+                    <TouchableOpacity {...props}>
+                        <AntDesign
+                            name="close"
+                            size={22}
+                            color="white"
+                            // style={{ paddingBottom: 5 }}
+                            onPress={() => closeModal()}
+                        />
+                    </TouchableOpacity>
+                )
+            }
+        })
     }, [])
     
 
@@ -83,7 +103,6 @@ const createNewBet = () => {
 
     // console.log('props navigate value', props.navigation.getParent().getState().routes[0].name)
     let parentTab = props.navigation.getParent().getState().routes
-    props.navigation.goBack()
     closeModal()
 
 }
@@ -95,6 +114,8 @@ const closeModal = () => {
     setBetComplete(false)
     setBetWon(false)
     setOtherBetterInfo('')
+    props.navigation.goBack()
+
 }
 
 const handleSetUser = (person) => {

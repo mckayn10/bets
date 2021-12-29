@@ -59,13 +59,11 @@ const View_Bet_Screen = props => {
                 )
             },
             headerRight: () => {
-
                 return (
-
                     <TouchableOpacity {...props}>
                         <AntDesign
                             name="close"
-                            size={28}
+                            size={22}
                             color="white"
                             // style={{ paddingBottom: 5 }}
                             onPress={() => closeModal()}

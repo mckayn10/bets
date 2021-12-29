@@ -30,6 +30,9 @@ function Home_Screen(props) {
   const user = useSelector(state => state.auth)
 
   useEffect(() => {
+    
+
+
     dispatch(fetchBets())
     dispatch(getUser())
     dispatch(fetchAllFriends())
@@ -81,7 +84,7 @@ function Home_Screen(props) {
       }
     })
     pending.sort(function (x, y) {
-      return x.date - y.date
+      return y.date - x.date
     })
 
     setPendingBets(pending)

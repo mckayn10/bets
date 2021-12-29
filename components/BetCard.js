@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     },
     descriptionContainer: {
         justifyContent: 'space-between',
-        maxWidth: '75%',
+        maxWidth: '80%',
         height: '100%'
     },
     personContainer: {

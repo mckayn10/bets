@@ -11,7 +11,7 @@ import { sendFriendRequestAccepted } from '../store/actions/notifications';
 
 export default function NotificationCard(props) {
 
-    const { to, from, data, type, date, id, pendingAction } = props.noti
+    const { to, from, data, type, date, id, pendingAction, seen } = props.noti
     var aDay = 24 * 60 * 60 * 1000;
     let timeSince = formatTimeSince(new Date(date - aDay))
     let user = to
@@ -302,7 +302,7 @@ export default function NotificationCard(props) {
 
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, seen ? '' : styles.unseenContainer]}>
             <View style={styles.titleContainer}>
                 <Ionicons name="ios-person-circle-outline" size={60} color="black" />
                 <View style={{ width: '100%', flexWrap: 'wrap' }}>
@@ -329,6 +329,9 @@ const styles = StyleSheet.create({
         width: '100%',
         borderBottomWidth: 1,
         borderBottomColor: Colors.grayDark
+    },
+    unseenContainer: {
+        backgroundColor: 'rgba(238, 240, 255, 1)'
     },
     btnContainer: {
         justifyContent: 'flex-end',

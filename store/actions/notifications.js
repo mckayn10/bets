@@ -29,7 +29,7 @@ export const fetchPendingRequests = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
 
-        notisRef.where("from.id", "==", userId).where("pending", "==", true)
+        notisRef.where("from.id", "==", userId).where("pendingAction", "==", true)
             .onSnapshot((querySnapshot) => {
                 let pendingArr = []
                 querySnapshot.forEach((doc) => {
@@ -53,7 +53,8 @@ export const sendBetOffer = async (betData, type) => {
         to: betData.other_bettor,
         type: type,
         data: betData,
-        pendingAction: true
+        pendingAction: true,
+        seen: false
     }
 
     notisRef.add(notiData)
@@ -73,7 +74,8 @@ export const sendBetUpdate = async (betData, user, other_bettor, type) => {
         to: other_bettor,
         type: type,
         data: betData,
-        pendingAction: true
+        pendingAction: true,
+        seen: false
     }
 
     notisRef.add(notiData)
@@ -93,7 +95,8 @@ export const sendBetDeleteRequest = async (betData, user, other_bettor, type) =>
         to: other_bettor,
         type: type,
         data: betData,
-        pendingAction: true
+        pendingAction: true,
+        seen: false
     }
 
     notisRef.add(notiData)
@@ -113,7 +116,8 @@ export const sendBetDeleteResponse = async (betData, user, other_bettor, type) =
         to: other_bettor,
         type: type,
         data: betData,
-        pendingAction: false
+        pendingAction: false,
+        seen: false
     }
 
     notisRef.add(notiData)
@@ -133,7 +137,8 @@ export const sendBetUpdateResponse = async (betData, user, other_bettor, type) =
         to: other_bettor,
         type: type,
         data: betData,
-        pendingAction: false
+        pendingAction: false,
+        seen: false
     }
 
     notisRef.add(notiData)
@@ -153,7 +158,8 @@ export const sendBetResponse = async (betData, type) => {
         to: betData.creator,
         type: type,
         data: betData,
-        pendingAction: false
+        pendingAction: false,
+        seen: false
     }
 
     notisRef.add(notiData)
@@ -175,6 +181,7 @@ export const sendFriendRequest = async (user, person, type) => {
         type: type,
         data: {},
         pendingAction: true,
+        seen: false
     }
 
 
@@ -196,6 +203,7 @@ export const sendFriendRequestAccepted = async (user, person, type) => {
         type: type,
         data: {},
         pendingAction: false,
+        seen: false
     }
 
 
@@ -213,6 +221,20 @@ export const deleteNotification = (id) => {
     notisRef.doc(id).delete()
         .then(() => {
             console.log('Notification successfully deleted!')
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
+
+
+}
+
+export const markAsSeen = (id) => {
+    let seen = {seen: true}
+
+    notisRef.doc(id).update(seen)
+        .then((res) => {
+            console.log('Marked as Seen')
         })
         .catch((error) => {
             console.error("Error writing document: ", error);

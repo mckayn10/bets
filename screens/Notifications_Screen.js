@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, KeyboardAvoidingView, StyleSheet, Image, TouchableOpacity, Text, FlatList, SafeAreaView } from 'react-native'
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import HeaderText from '../components/HeaderText';
 import colors from '../constants/colors';
@@ -9,17 +9,38 @@ import dummyNoti from '../data/dummyNoti';
 import NotificationCard from '../components/NotificationCard';
 import { ScrollView } from 'react-native-gesture-handler';
 import Colors from '../constants/colors'
+import { markAsSeen } from '../store/actions/notifications';
 
 export default function Notifications_Screen(props) {
     const [notifications, setNotifications] = useState()
+    const isFocused = useIsFocused()
 
     const notis = useSelector(state => state.notifications.notifications)
+
+    if (isFocused) {
+        notis.forEach(noti => {
+            if (!noti.seen) {
+                markAsSeen(noti.id)
+            }
+        })
+    }
+
     useEffect(() => {
-        setNotifications(notis)
+        sortedNotis()
         return () => {
             setNotifications('')
         }
     }, [notis])
+
+
+    const sortedNotis = () => {
+        let sorted = notis
+        sorted.sort(function (x, y) {
+            return y.date - x.date
+          })
+    
+        setNotifications(sorted)
+    }
 
     const renderCompletedBet = noti => {
         return (
