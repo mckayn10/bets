@@ -5,6 +5,8 @@ import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText';
 import { MaterialIcons } from '@expo/vector-icons';
 import BetList from '../components/BetList';
+import { getProfilePic } from '../store/actions/auth';
+import { storage } from '../firebase/firestore'
 import CachedImage from 'react-native-expo-cached-image';
 
 function User_Profile_Screen(props) {
@@ -47,9 +49,8 @@ function User_Profile_Screen(props) {
         <SafeAreaView style={styles.container}>
             <View style={styles.detailsContainer}>
                 <CachedImage
-                    source={{ uri: user.picture }}
-
-                    style={{ width: 110, height: 110, borderRadius: 100 }}
+                    source={{ uri: profPic}}
+                    style={{ width: 150, height: 150, borderRadius: 100 }}
                 />
                 {/* <Image source={{ uri: profileImage }} style={{ width: 200, height: 200 }} /> */}
                 <View style={styles.personInfoConatiner}>
