@@ -18,9 +18,10 @@ export default function BetCard(props) {
     const userId = useSelector(state => state.auth.userId)
     const user = useSelector(state => state.auth.userInfo)
 
-    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id } = props.bet
+    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id, date_complete } = props.bet
     const showNotAccepted = is_verified && !is_accepted
-    const parsedDate = new Date(date)
+    const parsedDateUpdated = new Date(date_complete)
+    const parsedDateCreated = new Date(date)
 
     let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
 
@@ -91,7 +92,7 @@ export default function BetCard(props) {
                 </View>
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.date}>{parsedDate.toLocaleDateString()}</Text>
+                    <Text style={styles.date}>{date_complete ? 'Last Updated: ' + parsedDateUpdated.toLocaleString() : 'Created: ' + parsedDateCreated.toLocaleString()}</Text>
                 </View>
             </View>
             <View style={styles.amountContainer}>

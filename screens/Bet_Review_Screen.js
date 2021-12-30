@@ -42,9 +42,8 @@ export default function Bet_Review_Screen(props) {
     }, [])
 
     const handleAcceptOffer = () => {
-
-        let statusChanged = completedCriteria(bet)
         bet.is_accepted = true
+        let statusChanged = completedCriteria(bet)
         let notificationType = 'betAccept'
 
         try {

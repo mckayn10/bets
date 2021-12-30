@@ -49,6 +49,7 @@ export const createBet = (betData, sendBetNotification) => {
         const userId = getState().auth.userId
 
         betData.date_complete = completedCriteria(betData) ? Date.now() : 0
+        console.log(betData.date_complete)
         betData.date = Date.now()
         betData.creator_id = userId
         betData.is_double_or_nothing = false

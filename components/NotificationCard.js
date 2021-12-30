@@ -16,6 +16,7 @@ export default function NotificationCard(props) {
     let timeSince = formatTimeSince(new Date(date - aDay))
     let user = to
     let person = from
+    let parsedDate = new Date(date)
 
 
     const dispatch = useDispatch()
@@ -314,7 +315,7 @@ export default function NotificationCard(props) {
                 </View>
             </View>
             {notificationCreator().btns}
-            <Text style={styles.date}>{timeSince} ago</Text>
+            <Text style={styles.date}>{parsedDate.toLocaleString()}</Text>
 
         </View>
     );

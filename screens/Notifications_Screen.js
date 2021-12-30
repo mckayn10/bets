@@ -18,11 +18,14 @@ export default function Notifications_Screen(props) {
     const notis = useSelector(state => state.notifications.notifications)
 
     if (isFocused) {
-        notis.forEach(noti => {
-            if (!noti.seen) {
-                markAsSeen(noti.id)
-            }
-        })
+        setTimeout(() => {
+            notis.forEach(noti => {
+                if (!noti.seen) {
+                    markAsSeen(noti.id)
+                }
+            })
+        }, 1000)
+
     }
 
     useEffect(() => {
