@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import Create_Bet_Screen from '../screens/Create_Bet_Screen';
 import Home_Screen from '../screens/Home_Screen';
 import User_Profile_Screen from '../screens/User_Profile_Screen';
+import View_Bet_Navigator from '../navigation/View_Bet_Navigator'
 
 const Stack = createNativeStackNavigator()
 
@@ -46,6 +47,13 @@ const User_Profile_Navigator = (props) => {
                 <Stack.Screen
                     name="Create Bet"
                     component={Create_Bet_Screen}
+                />
+                <Stack.Screen
+                    name="View Bet"
+                    component={View_Bet_Navigator}
+                    options={{
+                        headerShown: false
+                    }}
                 />
             </Stack.Group>
         </Stack.Navigator>

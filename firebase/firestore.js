@@ -1,7 +1,4 @@
 import firebase from 'firebase'
-import firestore from 'firebase/firestore'
-import { getStorage, ref } from 'firebase/storage'
-
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -21,16 +18,8 @@ try {
     console.log('App reloaded, so firebase did not re-initialize');
 }
 
-
-// console.log(firebase.storage(firebase.app()))
-// console.log(firebase.storage())
 const db = firebase.firestore()
 const storage = firebase.storage().ref()
-
-// storage.child('foreup-hs-mckayN.jpg').getDownloadURL()
-// .then((url) => {
-//     console.log(url)
-// })
 
 
 const forgotPassword = (Email) => {

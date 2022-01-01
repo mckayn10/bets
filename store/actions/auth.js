@@ -158,6 +158,19 @@ export const signIn = (email, password) => {
     }
 }
 
+export async function validateUserName(username) {
+    let isValid = false
+    return peopleRef.where("username", "==", username).get()
+        .then((querySnapshot) => {
+            if (querySnapshot.docs.length > 0) {
+                return false
+            } else {
+                return true
+            }
+        })
+
+}
+
 export const updateUser = (userData) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token

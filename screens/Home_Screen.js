@@ -37,7 +37,7 @@ function Home_Screen(props) {
     dispatch(getUser())
     dispatch(fetchAllFriends())
     dispatch(fetchNotifications())
-    dispatch(fetchPendingRequests())
+    // dispatch(fetchPendingRequests())
     dispatch(getUserPic())
 
 

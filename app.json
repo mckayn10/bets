@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "bets",
-    "slug": "bets",
+    "name": "mybetz",
+    "slug": "mybetz",
     "privacy": "public",
     "sdkVersion": "42.0.0",
     "platforms": [
@@ -37,6 +37,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "V1"
   }
 }

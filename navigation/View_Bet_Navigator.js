@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Profile_Screen from '../screens/Profile_Screen';
 import Colors from '../constants/colors'
-import { useSelector } from 'react-redux';
-import Person_Profile_Screen from '../screens/Person_Profile_Screen';
-import Stats_Screen from '../screens/Stats_Screen';
-import Settings_Screen from '../screens/Settings_Screen';
-import User_Profile_Navigator from '../navigation/User_Profile_Navigator'
 import View_Bet_Screen from '../screens/View_Bet_Screen';
-import Create_Bet_Screen from '../screens/Create_Bet_Screen';
 
 const Stack = createNativeStackNavigator()
 

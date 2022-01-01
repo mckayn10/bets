@@ -229,10 +229,10 @@ export const deleteNotification = (id) => {
 
 }
 
-export const markAsSeen = (id) => {
-    let seen = {seen: true}
+export const markAsSeen = (noti) => {
+    noti.seen = true
 
-    notisRef.doc(id).update(seen)
+    notisRef.doc(noti.id).update(noti)
         .then((res) => {
             console.log('Marked as Seen')
         })

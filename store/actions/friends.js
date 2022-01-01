@@ -38,7 +38,11 @@ export const fetchAllFriends = () => {
                 querySnapshot.forEach((doc) => {
                     let friend = doc.data()
                     friend.id = doc.id
-                    friendsArr.unshift(friend)
+
+                    peopleRef.doc(friend.id).get()
+                    .then(friend => {
+                        friendsArr.unshift(friend.data())
+                    })
                 });
                 dispatch({ type: GET_FRIENDS, friends: friendsArr })
             })

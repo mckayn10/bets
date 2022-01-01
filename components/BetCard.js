@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Pressable, Image } from 'react-native';
 import Colors from '../constants/colors';
-import { Ionicons } from '@expo/vector-icons';
-import ViewBetModal from '../modals/ViewBetModal';
-import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getProfilePic } from '../store/actions/auth';
-import FastImage from 'react-native-fast-image';
 import CachedImage from 'react-native-expo-cached-image';
 import { placeholderPic } from '../constants/urls';
 
@@ -74,11 +70,6 @@ export default function BetCard(props) {
         >
             <View style={styles.descriptionContainer}>
                 <View style={styles.personContainer}>
-                    {/* <Ionicons
-                        name="person-circle-outline"
-                        size={24} color="black"
-                        style={{ marginRight: 8 }}
-                    /> */}
                     <CachedImage
                         style={{ width: 35, height: 35, borderRadius: 100, marginRight: 8 }}
                         source={{
@@ -124,12 +115,6 @@ const styles = StyleSheet.create({
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: Colors.grayDark
-        // borderRadius: 10,
-        // shadowColor: '#d9d9d9',
-        // shadowOffset: { width: 0, height: 2 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 2,
-        // elevation: 1,
     },
     notAcceptedContainer: {
         flexDirection: 'row',
@@ -143,12 +128,6 @@ const styles = StyleSheet.create({
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: Colors.grayDark
-        // borderRadius: 10,
-        // shadowColor: '#d9d9d9',
-        // shadowOffset: { width: 0, height: 2 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 2,
-        // elevation: 1,
     },
     descriptionContainer: {
         justifyContent: 'space-between',
@@ -177,7 +156,6 @@ const styles = StyleSheet.create({
     },
     name: {
         fontWeight: '500',
-        // margin: 5
     },
     date: {
         color: 'gray',

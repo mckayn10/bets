@@ -21,7 +21,7 @@ export default function Notifications_Screen(props) {
         setTimeout(() => {
             notis.forEach(noti => {
                 if (!noti.seen) {
-                    markAsSeen(noti.id)
+                    markAsSeen(noti)
                 }
             })
         }, 1000)

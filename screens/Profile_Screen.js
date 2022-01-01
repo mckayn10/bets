@@ -5,7 +5,7 @@ import { Input, Button } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../store/actions/auth';
+import { updateUser, validateUserName } from '../store/actions/auth';
 import { Feather } from '@expo/vector-icons';
 import UploadImage from '../components/UploadImage';
 import { getProfilePic } from '../store/actions/auth';
@@ -100,6 +100,16 @@ export default function Profile_Screen(props) {
             return false
         }
 
+        if (usernameText !== userData.username) {
+            let newUsernameIsValid = await validateUserName(usernameText).then(res => {
+                return res
+            })
+            if (!newUsernameIsValid) {
+                Alert.alert(`The username ${usernameText} is already taken.`)
+                return false
+            }
+        }
+
         if(image){
             upload()
         } else {
@@ -111,6 +121,7 @@ export default function Profile_Screen(props) {
                 picture: userData.picture
             }
             dispatch(updateUser(user))
+            handleGoBack()
         }
 
     }
