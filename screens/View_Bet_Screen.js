@@ -17,7 +17,8 @@ import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 import { sendBetDeleteRequest, sendBetUpdate } from '../store/actions/notifications';
 import { completedCriteria } from '../constants/utils';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import TestComponent from '../components/TestComponent'
+import VenmoBtn from '../components/VenmoBtn';
 
 
 const View_Bet_Screen = props => {
@@ -307,6 +308,11 @@ const View_Bet_Screen = props => {
                     {!editMode
                         ?
                         <View>
+                            <VenmoBtn 
+                                otherPerson={otherPerson}
+                                amount={amount}
+                                description={description}
+                            />
                             <View style={styles.btnContainer}>
                                 <Button
                                     iconRight

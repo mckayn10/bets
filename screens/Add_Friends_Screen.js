@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity } from 'react-native'
 import Colors from '../constants/colors'
 import { AntDesign } from '@expo/vector-icons';
-import dummyFriends from '../data/dummyFriends'
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FriendCard from '../components/FriendCard';

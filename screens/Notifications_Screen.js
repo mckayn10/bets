@@ -5,7 +5,6 @@ import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import HeaderText from '../components/HeaderText';
 import colors from '../constants/colors';
-import dummyNoti from '../data/dummyNoti';
 import NotificationCard from '../components/NotificationCard';
 import { ScrollView } from 'react-native-gesture-handler';
 import Colors from '../constants/colors'

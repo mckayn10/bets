@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "mybetz",
+    "owner": "mnilsdev10",
     "slug": "mybetz",
     "privacy": "public",
     "sdkVersion": "42.0.0",
@@ -38,6 +39,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "V1"
+    "description": "v1.1"
   }
 }
