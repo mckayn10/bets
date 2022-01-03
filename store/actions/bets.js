@@ -13,7 +13,8 @@ export const REMOVE_DATA = 'REMOVE_DATA'
 
 const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 const betsRef = db.collection('bets')
-var peopleRef = db.collection("people")
+
+
 
 export const fetchBets = () => {
     return async (dispatch, getState) => {
@@ -25,35 +26,17 @@ export const fetchBets = () => {
                 querySnapshot.forEach((doc) => {
                     let bet = doc.data()
                     bet.id = doc.id
-                    peopleRef.doc(userId).get().then((person) => {
-                        bet.creator = person.data()
-                        if (!bet.other_bettor) {
-                            peopleRef.doc(bet.other_id).get().then((person) => {
-                                bet.other_bettor = person.data()
-
-                            })
-                        }
-                        betsArr.unshift(bet)
-
-                    })
-
+                    betsArr.unshift(bet)
                 });
                 betsRef.where("other_id", "==", userId).where("is_accepted", "==", true).get()
                     .then(querySnapshot => {
                         querySnapshot.forEach((doc) => {
                             let bet = doc.data()
                             bet.id = doc.id
-                            peopleRef.doc(bet.creator_id).get().then((person) => {
-                                bet.creator = person.data()
-                                peopleRef.doc(bet.other_id).get().then((person) => {
-                                    bet.other_bettor = person.data()
-                                    betsArr.unshift(bet)
-                                    dispatch({ type: GET_BETS, bets: betsArr })
-
-                                })
-                            })
-
+                            betsArr.unshift(bet)
                         });
+
+                        dispatch({ type: GET_BETS, bets: betsArr })
                     })
             })
     }
@@ -64,11 +47,13 @@ export const createBet = (betData, sendBetNotification) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
-        const userInfo = getState().auth.userInfo
 
         betData.date_complete = completedCriteria(betData) ? Date.now() : 0
         betData.date = Date.now()
+        betData.creator_id = userId
         betData.is_double_or_nothing = false
+        betData.other_id = betData.other_bettor.id
+
         betsRef.add(betData)
             .then((docRef) => {
                 betData.id = docRef.id
@@ -77,7 +62,6 @@ export const createBet = (betData, sendBetNotification) => {
                     let notificationType = 'betRequest'
                     sendBetOffer(betData, notificationType)
                 }
-                betData.creator = userInfo
 
                 dispatch({
                     type: CREATE_BET,

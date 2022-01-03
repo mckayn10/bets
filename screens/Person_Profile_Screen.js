@@ -76,6 +76,8 @@ function Person_Profile_Screen(props) {
     // Get all of the person's/friend's bets
     const fetchPersonsBets = () => {
         const betsRef = db.collection('bets')
+        const peopleRef = db.collection("people")
+
         let betsArr = []
 
         betsRef.where("creator_id", "==", id).get()
@@ -83,7 +85,21 @@ function Person_Profile_Screen(props) {
                 querySnapshot.forEach((doc) => {
                     let bet = doc.data()
                     bet.id = doc.id
+                    // peopleRef.doc(id).get().then((person) => {
+                    //     bet.creator = person.data()
+                    //     if (!bet.other_bettor) {
+                    //         peopleRef.doc(bet.other_id).get().then((person) => {
+                    //             bet.other_bettor = person.data()
+                    //             betsArr.push(bet)
+                    //         })
+                    //     } else {
+                    //         betsArr.push(bet)
+                    //     }
+
+
+                    // })
                     betsArr.push(bet)
+
                 });
                 betsRef.where("other_id", "==", id).get()
                     .then(querySnapshot => {
@@ -91,12 +107,22 @@ function Person_Profile_Screen(props) {
                             let bet = doc.data()
                             bet.id = doc.id
                             betsArr.push(bet)
+
+                            // peopleRef.doc(bet.creator_id).get().then((person) => {
+                            //     bet.creator = person.data()
+                            //     peopleRef.doc(bet.other_id).get().then((person) => {
+                            //         bet.other_bettor = person.data()
+                            //         betsArr.push(bet)
+                            //     })
+                            // })
                         });
                         betsArr.sort(function (x, y) {
                             return y.date - x.date;
                         })
                         setPersonsBets(betsArr)
                         getSharedBets(betsArr)
+
+
                     })
             })
     }

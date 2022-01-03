@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontWeight: '500',
+        // margin: 5
     },
     date: {
         color: 'gray',

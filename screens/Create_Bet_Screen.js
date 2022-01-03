@@ -73,26 +73,23 @@ const createNewBet = () => {
         did_accept: false
     }
 
-    const realOtherBettor = otherBettorInfo
+    const otherBettorData = otherBettorInfo
     let other_id = defaultOtherBettor.id
     if (otherBettorInfo) {
-        other_id = realOtherBettor.id
+        other_id = otherBettorData.id
     }
 
     const data = {
         description: description,
         amount: parseInt(betAmount),
-        other_bettor_id: realOtherBettor ? realOtherBettor.id : defaultOtherBettor.id,
-        creator_id: userInfo.id,
+        other_bettor: otherBettorData ? otherBettorData : defaultOtherBettor,
+        creator: userInfo,
         won_bet: betComplete ? (betWon ? userInfo.id : other_id) : 0,
         is_complete: betComplete,
-        is_verified: realOtherBettor ? true : false,
+        is_verified: otherBettorData ? true : false,
         is_accepted: false
     }
-    if(!realOtherBettor){
-        data.other_bettor = defaultOtherBettor
-    }
-    let sendBetNotification = realOtherBettor ? true : false
+    let sendBetNotification = otherBettorData ? true : false
 
     try {
         dispatch(createBet(data, sendBetNotification))
@@ -102,6 +99,10 @@ const createNewBet = () => {
         console.error(err)
     }
 
+    let showComplete = betComplete ? true : false
+
+    // console.log('props navigate value', props.navigation.getParent().getState().routes[0].name)
+    let parentTab = props.navigation.getParent().getState().routes
     closeModal()
 
 }
