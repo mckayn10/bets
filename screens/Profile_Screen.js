@@ -21,6 +21,7 @@ export default function Profile_Screen(props) {
     const [lastNameText, setLastNameText] = useState('')
     const [emailText, setEmailText] = useState('')
     const [usernameText, setUsernameText] = useState('')
+    const [venmoIdText, setVenmoIdText] = useState('')
     const [image, setImage] = useState('')
     const [spinner, setSpinner] = useState(false)
 
@@ -29,6 +30,7 @@ export default function Profile_Screen(props) {
         setLastNameText(userData.lastName)
         setUsernameText(userData.username)
         setEmailText(userData.email)
+        setVenmoIdText(userData.venmo_id)
     }, [])
 
     useLayoutEffect(() => {
@@ -76,7 +78,8 @@ export default function Profile_Screen(props) {
                         lastName: lastNameText,
                         username: usernameText,
                         email: emailText,
-                        picture: url
+                        picture: url,
+                        venmo_id: venmoIdText
                     }
 
                     try {
@@ -110,7 +113,7 @@ export default function Profile_Screen(props) {
             }
         }
 
-        if(image){
+        if (image) {
             upload()
         } else {
             const user = {
@@ -118,7 +121,8 @@ export default function Profile_Screen(props) {
                 lastName: lastNameText,
                 username: usernameText,
                 email: emailText,
-                picture: userData.picture
+                picture: userData.picture,
+                venmo_id: venmoIdText
             }
             dispatch(updateUser(user))
             handleGoBack()
@@ -131,6 +135,7 @@ export default function Profile_Screen(props) {
         setLastNameText(userData.lastName)
         setUsernameText(userData.username)
         setEmailText(userData.email)
+        setVenmoIdText(userData.venmo_id)
         props.navigation.goBack()
     }
 
@@ -146,25 +151,39 @@ export default function Profile_Screen(props) {
             <View style={styles.screen}>
                 <UploadImage setImage={(image) => setImage(image)} />
                 <Input
+                    style={styles.inputText}
+                    labelStyle={styles.labelText}
                     label="first name"
                     defaultValue={userData.firstName}
                     onChangeText={firstNameText => setFirstNameText(firstNameText)}
                 />
                 <Input
+                    style={styles.inputText}
+                    labelStyle={styles.labelText}
                     label="last name"
                     defaultValue={userData.lastName}
                     onChangeText={(lastNameText) => setLastNameText(lastNameText)}
                 />
                 <Input
+                    style={styles.inputText}
+                    labelStyle={styles.labelText}
                     label="username"
                     defaultValue={userData.username}
                     onChangeText={(username) => setUsernameText(username)}
                 />
                 <Input
+                    style={styles.inputText}
+                    labelStyle={styles.labelText}
+                    label="Venmo Username (do NOT include '@')"
+                    defaultValue={userData.venmo_id}
+                    onChangeText={(venmoId) => setVenmoIdText(venmoId)}
+                />
+                <Input
+                    style={styles.inputText}
+                    labelStyle={styles.labelText}
                     label="email (can't be changed)"
                     defaultValue={userData.email}
                     editable={false}
-
                 />
                 <Button
                     icon={
@@ -194,5 +213,11 @@ const styles = StyleSheet.create({
     },
     spinnerTextStyle: {
         color: 'white'
+    },
+    inputText: {
+        fontSize: 14,
+    },
+    labelText: {
+        fontSize: 12,
     }
 })

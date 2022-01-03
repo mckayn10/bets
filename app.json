@@ -39,6 +39,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "v1.1"
+    "description": "v1.2 Venmo Integration"
   }
 }

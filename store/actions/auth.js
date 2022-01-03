@@ -25,6 +25,7 @@ export const authenticate = (userId, token) => {
 
 const createPerson = async (userId, token, userData) => {
     userData.id = userId
+    userData.venmo_id = ''
     delete userData.password
 
     peopleRef.doc(userId).set(userData)

@@ -51,7 +51,7 @@ export default function UploadImage(props) {
     return (
         <View style={styles.container}>
             {
-                image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
+                image && <Image source={{ uri: image }} style={{ width: 120, height: 120 }} />
             }
 
             <View style={styles.uploadBtnContainer}>
@@ -70,8 +70,8 @@ export default function UploadImage(props) {
 const styles = StyleSheet.create({
     container: {
         elevation: 2,
-        height: 150,
-        width: 150,
+        height: 120,
+        width: 120,
         backgroundColor: '#efefef',
         position: 'relative',
         borderRadius: 999,
