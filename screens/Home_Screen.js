@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import NavBar from '../components/NavBar';
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
-import { getUser, getUserPic } from '../store/actions/auth';
+import {getUser, getUserPic, updateUser} from '../store/actions/auth';
 import { fetchAllFriends } from '../store/actions/friends';
 import { fetchNotifications, fetchPendingRequests } from '../store/actions/notifications';
 import HeaderText from '../components/HeaderText';
@@ -15,7 +15,15 @@ import BetList from '../components/BetList';
 import { completedCriteria, pendingCriteria } from '../constants/utils';
 import UploadImage from '../components/UploadImage';
 import { getProfilePic } from '../store/actions/auth';
+import * as Notifications from 'expo-notifications';
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 function Home_Screen(props) {
 
@@ -30,8 +38,6 @@ function Home_Screen(props) {
   const user = useSelector(state => state.auth)
 
   useEffect(() => {
-    
-
 
     dispatch(fetchBets())
     dispatch(getUser())

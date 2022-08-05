@@ -3,6 +3,7 @@ import { storage } from '../../firebase/firestore'
 
 // import { db } from '../../firebase/config';
 import { db } from '../../firebase/firestore';
+import {configurePushNotifications} from "../../push_notifications/push_notifications";
 export const SIGN_UP = 'SIGN_UP'
 export const SIGN_IN = 'SIGN_IN'
 export const AUTHENTICATE = 'AUTHENTICATE'
@@ -67,6 +68,17 @@ export const getUserPic = () => {
 
     }
 }
+const checkForUserPushId = async (user) => {
+    if(!user.pushId){
+        user.pushId = await configurePushNotifications()
+        peopleRef.doc(user.id).update(user)
+            .then(() => {
+                console.log("Updated Push ID");
+            }).catch((error) => {
+            console.error("Error writing document: ", error);
+        });
+    }
+}
 
 export const getUser = () => {
     return async (dispatch, getState) => {
@@ -76,6 +88,8 @@ export const getUser = () => {
             .onSnapshot((doc) => {
                 if (doc.exists) {
                     let user = doc.data()
+
+                    checkForUserPushId(user)
                     dispatch({ type: GET_USER, user: user })
                 } else {
                     console.log("Person document does not exist");
@@ -111,6 +125,8 @@ export const signUp = (userInfo) => {
             throw new Error(message)
         }
         const resData = await response.json()
+        const token = configurePushNotifications()
+        userInfo.pushId = token
 
         await createPerson(resData.localId, resData.idToken, userInfo)
 
@@ -118,7 +134,6 @@ export const signUp = (userInfo) => {
 
         const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000)
         saveDataToStorage(resData.idToken, resData.localId, expirationDate, userInfo)
-
     }
 }
 
@@ -155,7 +170,6 @@ export const signIn = (email, password) => {
 
         const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000)
         saveDataToStorage(resData.idToken, resData.localId, expirationDate)
-
     }
 }
 
@@ -169,7 +183,6 @@ export async function validateUserName(username) {
                 return true
             }
         })
-
 }
 
 export const updateUser = (userData) => {

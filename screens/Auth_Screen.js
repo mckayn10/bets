@@ -36,6 +36,7 @@ function Auth_Screen(props) {
                 picture: placeholderPic
             }
             action = signUp(userInfo)
+
         }
 
         setError(null)

@@ -1,4 +1,5 @@
 import { db } from "../../firebase/firestore";
+import {sendPushNotificationHandler} from "../../push_notifications/push_notifications";
 
 export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS'
 export const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION'
@@ -62,6 +63,13 @@ export const sendBetOffer = async (betData, type) => {
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
+            let pushNotiData = {
+                pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
+                title: 'New Bet Offer',
+                body: `${betData.creator.firstName} has sent you a bet offer for ${betData.amount}`
+            }
+            sendPushNotificationHandler(pushNotiData)
+
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -83,6 +91,12 @@ export const sendBetUpdate = async (betData, user, other_bettor, type) => {
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
+            let pushNotiData = {
+                pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
+                title: 'Bet Update Request',
+                body: `${notiData.from.firstName} has request a change to your bet for ${betData.amount}`
+            }
+            sendPushNotificationHandler(pushNotiData)
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -104,6 +118,12 @@ export const sendBetDeleteRequest = async (betData, user, other_bettor, type) =>
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
+            let pushNotiData = {
+                pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
+                title: 'Bet Delete Request',
+                body: `${notiData.from.firstName} has requested to delete your bet for ${betData.amount}`
+            }
+            sendPushNotificationHandler(pushNotiData)
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -125,6 +145,12 @@ export const sendBetDeleteResponse = async (betData, user, other_bettor, type) =
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
+            let pushNotiData = {
+                pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
+                title: 'Bet Deletion Update',
+                body: `${notiData.from.firstName} responded to your request to delete your bet for ${betData.amount}`
+            }
+            sendPushNotificationHandler(pushNotiData)
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -146,6 +172,12 @@ export const sendBetUpdateResponse = async (betData, user, other_bettor, type) =
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
+            let pushNotiData = {
+                pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
+                title: 'Bet Update Response',
+                body: `${notiData.from.firstName} has responded to your proposal to update your bet for ${betData.amount}`
+            }
+            sendPushNotificationHandler(pushNotiData)
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -167,6 +199,12 @@ export const sendBetResponse = async (betData, type) => {
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
+            let pushNotiData = {
+                pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
+                title: 'Bet Offer Response',
+                body: `${notiData.from.firstName} has responded to your bet offer for ${betData.amount}`
+            }
+            sendPushNotificationHandler(pushNotiData)
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -190,6 +228,12 @@ export const sendFriendRequest = async (user, person, type) => {
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
+            let pushNotiData = {
+                pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
+                title: '',
+                body: `${notiData.from.firstName} has sent you a friend request`
+            }
+            sendPushNotificationHandler(pushNotiData)
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -212,6 +256,12 @@ export const sendFriendRequestAccepted = async (user, person, type) => {
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
+            let pushNotiData = {
+                pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
+                title: '',
+                body: `${notiData.from.firstName} accepted your friend request`
+            }
+            sendPushNotificationHandler(pushNotiData)
         })
         .catch((error) => {
             console.error("Error writing document: ", error);

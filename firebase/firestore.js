@@ -14,9 +14,11 @@ const firebaseConfig = {
 
 try {
     firebase.initializeApp(firebaseConfig);
+    firebase.firestore().settings({ experimentalForceLongPolling: true });
 } catch (e) {
     console.log('App reloaded, so firebase did not re-initialize');
 }
+
 
 const db = firebase.firestore()
 const storage = firebase.storage().ref()

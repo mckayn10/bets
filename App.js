@@ -12,6 +12,7 @@ import * as Font from 'expo-font'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AppNavigator from './navigation/Navigator';
 import peopleReducer from './store/reducers/friends';
+import 'expo-splash-screen';
 
 const rootReducer = combineReducers({
   bets: betsReducer,

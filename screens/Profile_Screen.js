@@ -122,7 +122,7 @@ export default function Profile_Screen(props) {
                 username: usernameText,
                 email: emailText,
                 picture: userData.picture,
-                venmo_id: venmoIdText
+                venmo_id: venmoIdText,
             }
             dispatch(updateUser(user))
             handleGoBack()

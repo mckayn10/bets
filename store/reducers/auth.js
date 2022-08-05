@@ -10,7 +10,7 @@ const initialState = {
     userId: null,
     token: null,
     userInfo: null,
-    profPic: null
+    profPic: null,
 }
 
 const authReducer = (state = initialState, action) => {
