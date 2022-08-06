@@ -66,7 +66,7 @@ export const sendBetOffer = async (betData, type) => {
             let pushNotiData = {
                 pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
                 title: 'New Bet Offer',
-                body: `${betData.creator.firstName} has sent you a bet offer for ${betData.amount}`
+                body: `${betData.creator.firstName} has sent you a bet offer for $${betData.amount}`
             }
             sendPushNotificationHandler(pushNotiData)
 
@@ -94,7 +94,7 @@ export const sendBetUpdate = async (betData, user, other_bettor, type) => {
             let pushNotiData = {
                 pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
                 title: 'Bet Update Request',
-                body: `${notiData.from.firstName} has request a change to your bet for ${betData.amount}`
+                body: `${notiData.from.firstName} has request a change to your bet for $${betData.amount}`
             }
             sendPushNotificationHandler(pushNotiData)
         })
@@ -121,7 +121,7 @@ export const sendBetDeleteRequest = async (betData, user, other_bettor, type) =>
             let pushNotiData = {
                 pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
                 title: 'Bet Delete Request',
-                body: `${notiData.from.firstName} has requested to delete your bet for ${betData.amount}`
+                body: `${notiData.from.firstName} has requested to delete your bet for $${betData.amount}`
             }
             sendPushNotificationHandler(pushNotiData)
         })
@@ -148,7 +148,7 @@ export const sendBetDeleteResponse = async (betData, user, other_bettor, type) =
             let pushNotiData = {
                 pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
                 title: 'Bet Deletion Update',
-                body: `${notiData.from.firstName} responded to your request to delete your bet for ${betData.amount}`
+                body: `${notiData.from.firstName} responded to your request to delete your bet for $${betData.amount}`
             }
             sendPushNotificationHandler(pushNotiData)
         })
@@ -175,7 +175,7 @@ export const sendBetUpdateResponse = async (betData, user, other_bettor, type) =
             let pushNotiData = {
                 pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
                 title: 'Bet Update Response',
-                body: `${notiData.from.firstName} has responded to your proposal to update your bet for ${betData.amount}`
+                body: `${notiData.from.firstName} has responded to your proposal to update your bet for $${betData.amount}`
             }
             sendPushNotificationHandler(pushNotiData)
         })
@@ -202,7 +202,7 @@ export const sendBetResponse = async (betData, type) => {
             let pushNotiData = {
                 pushId: 'ExponentPushToken[VuTCyCGBoGEIuJPtt-orjY]',
                 title: 'Bet Offer Response',
-                body: `${notiData.from.firstName} has responded to your bet offer for ${betData.amount}`
+                body: `${notiData.from.firstName} has responded to your bet offer for $${betData.amount}`
             }
             sendPushNotificationHandler(pushNotiData)
         })

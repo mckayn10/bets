@@ -2,22 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/push_notifications/push_notifications.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/babel.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/babel.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase/firestore.js" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/firestore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/react-native-searchable-dropdown/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/react-native-searchable-dropdown/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/react-native/Libraries/Core/Timers/JSTimers.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/react-native/Libraries/Core/Timers/JSTimers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eas.json" beforeDir="false" afterPath="$PROJECT_DIR$/eas.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Auth_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Auth_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Home_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Home_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Profile_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Profile_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/actions/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/auth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/store/actions/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/reducers/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/reducers/auth.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,17 +27,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "ts.external.directory.path": "/private/var/folders/jm/ht5h1g8j2txd2s90xzk5nd5h0000gn/T/AppTranslocation/309B29B0-8DC2-45C2-BEC2-B34A359618E8/d/PhpStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/private/var/folders/jm/ht5h1g8j2txd2s90xzk5nd5h0000gn/T/AppTranslocation/309B29B0-8DC2-45C2-BEC2-B34A359618E8/d/PhpStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
@@ -60,7 +49,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1627769202356</updated>
-      <workItem from="1659638091605" duration="17712000" />
+      <workItem from="1659638091605" duration="21051000" />
     </task>
     <servers />
   </component>
