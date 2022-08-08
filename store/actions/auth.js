@@ -38,6 +38,17 @@ const createPerson = async (userId, token, userData) => {
         });
 }
 
+const deletePerson = async (userId) => {
+    peopleRef.doc(userId).delete()
+        .then(() => {
+            console.log("Document successfully deleted!");
+        })
+        .catch((error) => {
+            console.error("Error deleting document: ", error);
+        });
+    return;
+}
+
 export const getProfilePic = (userEmail) => {
     return storage.child(`profile_pictures/${userEmail}-profile-picture`).getDownloadURL()
         .then((url) => {
@@ -202,6 +213,32 @@ export const updateUser = (userData) => {
     }
 }
 
+export const deleteAccount = () => {
+    return async () => {
+        let userInfoFromStorage = await (AsyncStorage.getItem('userData'))
+        let token = JSON.parse(userInfoFromStorage)["token"]
+        let data = JSON.stringify({idToken: token})
+        let userId = JSON.parse(userInfoFromStorage)["userId"]
+        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:delete?key=AIzaSyDg8XxgR1uPzhTmEZI3X7h8gmg3r_dVJvI',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'applicaton/json'
+                },
+                body: data
+            })
+
+        if (!response.ok) {
+            const errorResData = await response.json()
+            const errorId = errorResData.error.message
+            let message = `Error deleting this account. Please reach out to mckay.nilsson@gmail.com with help deleting. ` + errorId
+            throw new Error(message)
+        }
+        const resData = await response.json()
+        await deletePerson(userId)
+    }
+}
+
 export const logout = () => {
     AsyncStorage.removeItem('userData')
     return {
@@ -216,4 +253,13 @@ const saveDataToStorage = (token, userId, expirationDate) => {
         expiryDate: expirationDate.toISOString(),
 
     }))
+}
+
+const removeDataFromStorage = () => {
+    AsyncStorage.removeItem('userData').then(() => {
+        console.log('removed user data from storage')
+    }).catch((err) => {
+        console.error('Error removing user data from storage', err)
+    })
+
 }

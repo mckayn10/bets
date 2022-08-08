@@ -100,6 +100,8 @@ function Auth_Screen(props) {
                                 placeholderTextColor='rgba(255, 255, 255, 0.5)'
                                 onChangeText={lastNameText => setLastNameText(lastNameText)}
                                 defaultValue={lastNameText}
+                                secureTextEntry={false}
+
                             />
                             <TextInput
                                 style={styles.textInput}

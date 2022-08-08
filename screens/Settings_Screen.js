@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView, TouchableOpacity, Text } from 'react-native';
-import { logout } from '../store/actions/auth';
+import {StyleSheet, View, SafeAreaView, TouchableOpacity, Text, Alert} from 'react-native';
+import { logout, deleteAccount } from '../store/actions/auth';
 import { removeData } from '../store/actions/bets';
 import { useDispatch } from 'react-redux';
 import HeaderText from '../components/HeaderText';
@@ -18,6 +18,30 @@ export default function Settings_Screen() {
         dispatch(logout())
         dispatch(removeData())
     }
+
+    const handleDelete = () => {
+        dispatch(deleteAccount())
+        dispatch(logout())
+        dispatch(removeData())
+    }
+
+    const showConfirmDialog = () => {
+        return Alert.alert(
+            "You will lose all of your saved data including all stats and bet data. Are you sure you want to delete your account?",
+            "",
+            [
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        handleDelete()
+                    },
+                },
+                {
+                    text: "No",
+                },
+            ]
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -81,6 +105,18 @@ export default function Settings_Screen() {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <MaterialIcons name="logout" size={20} color={Colors.red} />
                         <Text style={[styles.name, { color: Colors.red }]}>Logout</Text>
+                    </View>
+                    <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.cardContainer}
+                onPress={() => showConfirmDialog()}
+            >
+                <View style={styles.descriptionContainer}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <MaterialIcons name="delete" size={20} color={Colors.red} />
+                        <Text style={[styles.name, { color: Colors.red }]}>Delete Account</Text>
                     </View>
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
                 </View>
