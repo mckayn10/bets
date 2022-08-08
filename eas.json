@@ -12,9 +12,18 @@
         "simulator": true
       }
     },
-    "production": {}
+    "production": {
+    }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "mckay.nilsson@gmail.com",
+        "ascAppId": "1638627475",
+        "appleTeamId": "TARTKJ23B6"
+      }
+    }
   }
 }
+
+

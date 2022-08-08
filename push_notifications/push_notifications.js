@@ -31,7 +31,9 @@ export const configurePushNotifications = async () =>{
         return;
     }
 
-    const pushTokenData = await Notifications.getExpoPushTokenAsync();
+    const pushTokenData = await Notifications.getExpoPushTokenAsync({
+        experienceId: '@mnilsdev10/mybetz'
+    });
     console.log({pushTokenData})
     return pushTokenData.data
 }

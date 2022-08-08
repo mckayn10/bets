@@ -17,7 +17,8 @@
       "backgroundColor": "#04d19b"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/a7e188a6-0eb7-4db9-af46-24ed4494de04"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -41,6 +42,9 @@
     "description": "v1.2 Venmo Integration",
     "notification": {
       "icon": "./assets/betz-logo.png"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

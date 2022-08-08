@@ -69,8 +69,10 @@ export const getUserPic = () => {
     }
 }
 const checkForUserPushId = async (user) => {
+    console.log(user)
     if(!user.pushId){
         user.pushId = await configurePushNotifications()
+        console.log(user.pushId)
         peopleRef.doc(user.id).update(user)
             .then(() => {
                 console.log("Updated Push ID");
@@ -85,11 +87,11 @@ export const getUser = () => {
         const userId = getState().auth.userId
 
         peopleRef.doc(userId)
-            .onSnapshot((doc) => {
+            .onSnapshot(async (doc) => {
                 if (doc.exists) {
                     let user = doc.data()
 
-                    checkForUserPushId(user)
+                    await checkForUserPushId(user)
                     dispatch({ type: GET_USER, user: user })
                 } else {
                     console.log("Person document does not exist");
@@ -125,8 +127,6 @@ export const signUp = (userInfo) => {
             throw new Error(message)
         }
         const resData = await response.json()
-        const token = configurePushNotifications()
-        userInfo.pushId = token
 
         await createPerson(resData.localId, resData.idToken, userInfo)
 
@@ -190,6 +190,8 @@ export const updateUser = (userData) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
         userData.id = userId
+        userData.pushId = getState().auth.userInfo.pushId
+        console.log(getState().auth)
 
         peopleRef.doc(userId).set(userData, { merge: true })
             .then(() => {
