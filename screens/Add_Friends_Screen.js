@@ -46,6 +46,15 @@ function Friends_Screen(props) {
     }, [])
 
     const allPeople = useSelector(state => state.people.people)
+    const blockedBy = useSelector(state => state.people.blockedBy)
+
+    const checkIfBlockedByUser = (id) => {
+        var found = blockedBy.find(user => user.id === id);
+        if(found){
+            return true
+        }
+        return false
+    }
 
     const handleSearch = (text) => {
         setSearchText(text)
@@ -58,9 +67,13 @@ function Friends_Screen(props) {
 
 
         const data = allPeople.filter(user => {
-            const userString = (user.firstName + ' ' + user.lastName + ' ' + user.username).toLowerCase()
 
-            return userString.includes(query)
+            let isBlocked = checkIfBlockedByUser(user.id)
+            if(!isBlocked){
+                const userString = (user.firstName + ' ' + user.lastName + ' ' + user.username).toLowerCase()
+
+                return userString.includes(query)
+            }
         })
 
         setPeople(data)

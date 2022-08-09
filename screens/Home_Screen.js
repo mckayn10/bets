@@ -6,7 +6,7 @@ import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBets } from '../store/actions/bets';
 import {getUser, getUserPic, updateUser} from '../store/actions/auth';
-import { fetchAllFriends } from '../store/actions/friends';
+import {fetchAllFriends, fetchBlockedBy, fetchBlockedUsers} from '../store/actions/friends';
 import { fetchNotifications, fetchPendingRequests } from '../store/actions/notifications';
 import HeaderText from '../components/HeaderText';
 import { Ionicons } from '@expo/vector-icons';
@@ -43,6 +43,8 @@ function Home_Screen(props) {
     dispatch(getUser())
     dispatch(fetchAllFriends())
     dispatch(fetchNotifications())
+    dispatch(fetchBlockedBy())
+    dispatch(fetchBlockedUsers())
     // dispatch(fetchPendingRequests())
     dispatch(getUserPic())
 

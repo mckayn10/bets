@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator, Linking } from 'react-native'
+import {CheckBox} from "react-native-elements";
 import Colors from '../constants/colors'
 import { useDispatch } from 'react-redux'
 import { signIn, signUp } from '../store/actions/auth'
@@ -18,6 +19,7 @@ function Auth_Screen(props) {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState()
     const [showResetPassword, setShowResetPassword] = useState(false)
+    const [isSelected, setSelection] = useState(true)
 
     const dispatch = useDispatch()
 
@@ -27,6 +29,10 @@ function Auth_Screen(props) {
         if (isSignIn) {
             action = signIn(emailText, passwordText)
         } else {
+            if(!isSelected){
+                setError('You must agree to the Terms & Conditions before registering')
+                return;
+            }
             let userInfo = {
                 email: emailText,
                 password: passwordText,
@@ -121,6 +127,19 @@ function Auth_Screen(props) {
                                 keyboardType='default'
                                 autoCapitalize='none'
                                 secureTextEntry={true}
+                            />
+                            <Text
+                                style={styles.termsAndConditions}
+                                onPress={() => Linking.openURL('https://mybetz.site/privacy-policy')}
+                            >
+                                Terms & Conditions
+                            </Text>
+                            <CheckBox
+                                title='I agree to the terms & conditions'
+                                checked={isSelected}
+                                containerStyle={styles.checkBoxContainer}
+                                onPress={() => {setSelection(!isSelected)}}
+                                uncheckedColor='white'
                             />
                         </View>
                     }
@@ -219,8 +238,14 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         textAlign: 'center',
         justifyContent: 'center',
-        alignItems: 'center',
         flexDirection: 'row'
+    },
+    termsAndConditions: {
+        color: 'blue'
+    },
+    checkBoxContainer: {
+        backgroundColor: Colors.primaryColor,
+        borderWidth: 0
     }
 })
 

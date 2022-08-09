@@ -5,9 +5,9 @@ import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity, Image, Alert } 
 import { Button } from 'react-native-elements'
 import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText';
-import { FontAwesome5 } from '@expo/vector-icons';
+import {FontAwesome5, MaterialIcons} from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { removeFriend } from '../store/actions/friends';
+import { removeFriend, blockFriend, unblockFriend } from '../store/actions/friends';
 import { sendFriendRequest } from '../store/actions/notifications';
 import { checkIfShared } from '../constants/utils';
 import { getProfilePic } from '../store/actions/auth';
@@ -25,6 +25,7 @@ function Person_Profile_Screen(props) {
     const [requestPending, setRequestPending] = useState(false)
     const [numFriends, setNumFriends] = useState(0)
     const [profileImage, setProfileImage] = useState()
+    const [isBlocked, setBlocked] = useState(false)
 
 
     const person = props.route.params.person
@@ -34,6 +35,17 @@ function Person_Profile_Screen(props) {
     const profPic = useSelector(state => state.auth)
 
     const dispatch = useDispatch()
+    const blockedUsers = useSelector(state => state.people.blockedUsers)
+
+    const isBlockedByUser = () => {
+        console.log(id)
+        console.log('blocked Users', blockedUsers)
+        var found = blockedUsers.find(user => user.id === id);
+        if(found){
+            return true
+        }
+        return false
+    }
 
 
     useEffect(() => {
@@ -51,6 +63,9 @@ function Person_Profile_Screen(props) {
                 setProfileImage(url)
             }
         })
+        if(isBlockedByUser()){
+            setBlocked(true)
+        }
     }, [])
 
 
@@ -171,6 +186,38 @@ function Person_Profile_Screen(props) {
         setRequestPending(true)
     }
 
+    const handleUnblock = () => {
+        return Alert.alert(
+            "Would you like to unblock this person?",
+            "",
+            [
+                {
+                    text: "Unblock",
+                    onPress: () => {
+                        dispatch(unblockFriend(id))
+                        setBlocked(false)
+                    },
+                },
+                {
+                    text: "Report",
+                    onPress: () => {
+                        setBlocked(true)
+                    },
+                },
+                {
+                    text: "Cancel",
+                },
+            ]
+        );
+        setBlocked(false)
+    }
+
+    const handleBlock = () => {
+        dispatch(blockFriend(id))
+        dispatch(removeFriend(id))
+        setBlocked(true)
+    }
+
     const handleRemoveFriend = () => {
         try {
             dispatch(removeFriend(id))
@@ -187,13 +234,31 @@ function Person_Profile_Screen(props) {
             "",
             [
                 {
-                    text: "Yes",
+                    text: "Add Friend",
                     onPress: () => {
-                        handleRemoveFriend(id)
+                        handleAddFriend()
                     },
                 },
                 {
-                    text: "No",
+                    text: "Unfriend",
+                    onPress: () => {
+                        handleRemoveFriend(true)
+                    },
+                },
+                {
+                    text: "Block",
+                    onPress: () => {
+                        handleBlock()
+                    },
+                },
+                {
+                    text: "Report",
+                    onPress: () => {
+                        setBlocked(true)
+                    },
+                },
+                {
+                    text: "Cancel",
                 },
             ]
         );
@@ -217,14 +282,14 @@ function Person_Profile_Screen(props) {
     }
 
     const friendBtn = () => {
-        if (isFriend) {
+        if (isFriend && !isBlocked) {
             return (
                 <Button
-                    icon={<FontAwesome5 name="user-check" size={12} color={Colors.primaryColor} />}
+                    icon={<FontAwesome5 name="user-check" size={12} color={Colors.primaryColor}/>}
                     title='Friends'
                     type="outline"
                     buttonStyle={styles.isFriendBtn}
-                    titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
+                    titleStyle={{fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5}}
                     onPress={() => showConfirmDialog()}
                 />
             )
@@ -233,14 +298,29 @@ function Person_Profile_Screen(props) {
                 <Button
                     title='Pending'
                     type="outline"
-                    buttonStyle={[styles.addFriendBtn, { opacity: 1, backgroundColor: Colors.grayDark }]}
-                    titleStyle={{ fontSize: 13, color: 'white', fontWeight: 'bold', marginLeft: 5 }}
-                    onPress={() => handleAddFriend()}
+                    buttonStyle={[styles.addFriendBtn, {opacity: 1, backgroundColor: Colors.grayDark}]}
+                    titleStyle={{fontSize: 13, color: 'white', fontWeight: 'bold', marginLeft: 5}}
+                    onPress={() => showConfirmDialog()}
                     disabled={true}
-                    disabledTitleStyle={{ color: Colors.grayLight, borderColor: Colors.primaryColor, backgroundColor: Colors.grayDark }}
+                    disabledTitleStyle={{
+                        color: Colors.grayLight,
+                        borderColor: Colors.primaryColor,
+                        backgroundColor: Colors.grayDark
+                    }}
                 />
             )
-        } else {
+        }else if(isBlocked){
+            return (
+                <Button
+                    title='Blocked'
+                    type="outline"
+                    buttonStyle={[styles.addFriendBtn, {opacity: 1, backgroundColor: Colors.red}]}
+                    titleStyle={{fontSize: 13, color: 'white', fontWeight: 'bold', marginLeft: 5}}
+                    onPress={() => handleUnblock()}
+                />
+            )
+
+        }else {
             return (
                 <Button
                     icon={<Ionicons name="person-add" size={13} color='white' />}
@@ -280,7 +360,6 @@ function Person_Profile_Screen(props) {
                         titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
                         onPress={() => handleViewFriends()}
                     />
-
 
                 </View>
                 <TouchableOpacity
@@ -346,6 +425,7 @@ const styles = StyleSheet.create({
     friendsContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
         width: '100%',
         margin: 15
     },
