@@ -7,6 +7,7 @@ import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText';
 import {FontAwesome5, MaterialIcons} from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import {SimpleLineIcons} from "@expo/vector-icons";
 import { removeFriend, blockFriend, unblockFriend } from '../store/actions/friends';
 import { sendFriendRequest } from '../store/actions/notifications';
 import { checkIfShared } from '../constants/utils';
@@ -228,23 +229,24 @@ function Person_Profile_Screen(props) {
         setIsFriend(false)
     }
 
+    const addFriend = isFriend ? {
+        text: "Unfriend",
+        onPress: () => {
+            handleRemoveFriend()
+        }
+    } : {
+        text: "Add Friend",
+        onPress: () => {
+            handleAddFriend()
+        }
+    }
+
     const showConfirmDialog = () => {
         return Alert.alert(
             "Are your sure you want to remove this friend?",
             "",
             [
-                {
-                    text: "Add Friend",
-                    onPress: () => {
-                        handleAddFriend()
-                    },
-                },
-                {
-                    text: "Unfriend",
-                    onPress: () => {
-                        handleRemoveFriend(true)
-                    },
-                },
+                addFriend,
                 {
                     text: "Block",
                     onPress: () => {
@@ -338,6 +340,10 @@ function Person_Profile_Screen(props) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Text style={styles.menuButton} onPress={isBlocked ? () => handleUnblock() : () => showConfirmDialog()}>
+                <SimpleLineIcons name="options" size={23} color='black' />
+            </Text>
+
             <View style={styles.detailsContainer}>
                 <Image
                     source={{uri: profileImage}}
@@ -404,6 +410,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.backgroundColor,
         // alignItems: 'center'
+    },
+    menuButton: {
+        paddingTop: 10,
+        paddingRight: 15,
+        alignSelf: 'flex-end'
     },
     detailsContainer: {
         alignItems: 'center',
