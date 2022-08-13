@@ -19,11 +19,10 @@ import { completedCriteria } from '../constants/utils';
 import { MaterialIcons } from '@expo/vector-icons';
 import TestComponent from '../components/TestComponent'
 import VenmoBtn from '../components/VenmoBtn';
+import {reportItemDialog} from "../utils/utils";
 
 
 const View_Bet_Screen = props => {
-
-
 
     const { description, amount, other_bettor, date, won_bet, is_complete, id, date_complete, is_verified, is_accepted, creator_id, other_id, creator } = props.route.params.bet
     const userId = useSelector(state => state.auth.userId)
@@ -44,7 +43,6 @@ const View_Bet_Screen = props => {
         props.navigation.setOptions({
             title: editMode ? 'Update Bet' : 'Bet Details',
             headerLeft: () => {
-
                 return (
                     editMode ?
                         <TouchableOpacity {...props}>
@@ -56,7 +54,21 @@ const View_Bet_Screen = props => {
                                 onPress={() => setEditMode(false)}
                             />
                         </TouchableOpacity>
-                        : <View></View>
+                        :
+                        <TouchableOpacity {...props}>
+                            <AntDesign
+                                name="exclamationcircleo"
+                                size={22}
+                                color="red"
+                                // style={{ paddingBottom: 5 }}
+                                onPress={() => reportItemDialog({
+                                    item: props.route.params.bet,
+                                    reporter: user,
+                                    type: 'Bet'
+
+                                })}
+                            />
+                        </TouchableOpacity>
                 )
             },
             headerRight: () => {
@@ -71,7 +83,7 @@ const View_Bet_Screen = props => {
                         />
                     </TouchableOpacity>
                 )
-            }
+            },
         })
     }, [editMode])
 

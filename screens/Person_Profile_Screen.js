@@ -13,6 +13,7 @@ import { sendFriendRequest } from '../store/actions/notifications';
 import { checkIfShared } from '../constants/utils';
 import { getProfilePic } from '../store/actions/auth';
 import { placeholderPic } from '../constants/urls';
+import {reportItemDialog} from "../utils/utils";
 
 import BetList from '../components/BetList';
 
@@ -202,7 +203,12 @@ function Person_Profile_Screen(props) {
                 {
                     text: "Report",
                     onPress: () => {
-                        setBlocked(true)
+                        reportItemDialog({
+                            item: person,
+                            reporter: user,
+                            type: 'User'
+
+                        })
                     },
                 },
                 {
@@ -256,7 +262,11 @@ function Person_Profile_Screen(props) {
                 {
                     text: "Report",
                     onPress: () => {
-                        setBlocked(true)
+                        reportItemDialog({
+                            item: person,
+                            reporter: user,
+                            type: 'User'
+                        })
                     },
                 },
                 {

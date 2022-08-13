@@ -2,33 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/utils.js" afterDir="false" />
+      <change beforePath="$USER_HOME$/git/fu/api_rest/auth.json" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/auth.json" afterDir="false" />
+      <change beforePath="$USER_HOME$/git/fu/api_rest/rest/controllers/courses/oco/bagAddPayments.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/rest/controllers/courses/oco/bagAddPayments.php" afterDir="false" />
+      <change beforePath="$USER_HOME$/git/fu/api_rest/rest/models/services/oco/BagPaymentService.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/rest/models/services/oco/BagPaymentService.php" afterDir="false" />
+      <change beforePath="$USER_HOME$/git/fu/api_rest/rest/t/integration/services/oco/BagPaymentServiceTest.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/rest/t/integration/services/oco/BagPaymentServiceTest.php" afterDir="false" />
+      <change beforePath="$USER_HOME$/git/fu/application/auth.json" beforeDir="false" afterPath="$USER_HOME$/git/fu/application/auth.json" afterDir="false" />
+      <change beforePath="$USER_HOME$/git/fu/index.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/bets.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bets.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eas.json" beforeDir="false" afterPath="$PROJECT_DIR$/eas.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/.xcode.env" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile.properties.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz.xcodeproj/project.pbxproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz.xcodeproj/xcshareddata/xcschemes/mybetz.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/AppDelegate.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/AppDelegate.mm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/Contents.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/Contents.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreen.imageset/Contents.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreen.imageset/splashscreen.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreenBackground.imageset/Contents.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreenBackground.imageset/background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Info.plist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/SplashScreen.storyboard" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Supporting/Expo.plist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/main.m" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/push_notifications/push_notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/push_notifications/push_notifications.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Person_Profile_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Person_Profile_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/View_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/View_Bet_Screen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/store/actions/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/notifications.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +37,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="1w6BY93BWo8jMkSyBlag0eI52md" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -54,6 +47,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mckaynilsson/projects/bets&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/private/var/folders/jm/ht5h1g8j2txd2s90xzk5nd5h0000gn/T/AppTranslocation/309B29B0-8DC2-45C2-BEC2-B34A359618E8/d/PhpStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external&quot;,
@@ -78,6 +72,10 @@
       <updated>1627769202356</updated>
       <workItem from="1659638091605" duration="21051000" />
       <workItem from="1659907623940" duration="7046000" />
+      <workItem from="1660003698895" duration="13516000" />
+      <workItem from="1660103989185" duration="4198000" />
+      <workItem from="1660226046284" duration="5469000" />
+      <workItem from="1660345085476" duration="12937000" />
     </task>
     <servers />
   </component>

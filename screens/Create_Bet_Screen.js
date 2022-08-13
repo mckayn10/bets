@@ -59,7 +59,6 @@ const Create_Bet_Screen = props => {
 const dispatch = useDispatch();
 
     function check_val(text) {
-        console.log(BadWords['default'])
         var bad_words = BadWords['default']
         var error = 0;
 

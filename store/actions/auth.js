@@ -80,7 +80,6 @@ export const getUserPic = () => {
     }
 }
 const checkForUserPushId = async (user) => {
-    console.log(user)
     if(!user.pushId){
         user.pushId = await configurePushNotifications()
         console.log(user.pushId)
@@ -202,7 +201,6 @@ export const updateUser = (userData) => {
         const userId = getState().auth.userId
         userData.id = userId
         userData.pushId = getState().auth.userInfo.pushId
-        console.log(getState().auth)
 
         peopleRef.doc(userId).set(userData, { merge: true })
             .then(() => {

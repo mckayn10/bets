@@ -57,9 +57,6 @@ export const sendBetOffer = async (betData, type) => {
         pendingAction: true,
         seen: false
     }
-
-    console.log({notiData})
-
     notisRef.add(notiData)
         .then((docRef) => {
             console.log('Notification successfully sent!')
