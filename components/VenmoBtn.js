@@ -5,11 +5,24 @@ import * as WebBrowser from 'expo-web-browser';
 import { db } from '../firebase/firestore'
 import { Input, Button, Switch } from 'react-native-elements';
 import Colors from '../constants/colors';
+var peopleRef = db.collection("people")
 
 
 const VenmoBtn = (props) => {
     const {amount, description, otherPerson} = props
-    const venmoId = otherPerson.venmo_id ? otherPerson.venmo_id : ''
+    let venmoId = otherPerson.venmo_id ? otherPerson.venmo_id : ''
+
+    if(otherPerson.id != 0 && !venmoId){
+        peopleRef.doc(otherPerson.id)
+            .onSnapshot(async (doc) => {
+                if (doc.exists) {
+                    let user = doc.data()
+                    venmoId = user.venmo_id
+                } else {
+                    console.log("Person document does not exist");
+                }
+            })
+    }
 
     const URLifyDescription = (string) => {
         let urlString = string.replace(/\s+/g, '%20');
