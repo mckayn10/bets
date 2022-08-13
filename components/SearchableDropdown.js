@@ -1,49 +1,62 @@
 import React, { Component, useState } from 'react';
 import { View, Text } from 'react-native';
-import SearchableDropdown from 'react-native-searchable-dropdown';
+import SearchableDropdown from 'react-native-searchable-dropdown'
 import { useSelector } from 'react-redux';
 import Colors from '../constants/colors';
 
 const MySearchableDropdown = (props) => {
-    const friendsList = useSelector(state => state.people.friends)
+    let friendsList = useSelector(state => state.people.friends)
+    let updatedFriends = []
+    friendsList.forEach(friend => {
+        friend.name = friend.firstName + ' ' + friend.lastName
+        updatedFriends.push(friend)
+    })
+
 
     return (
             <SearchableDropdown
                 onTextChange={text => text}
                 onItemSelect={item => props.setUser(item)}
-                containerStyle={{ padding: 10}}
+                containerStyle={{
+                    borderWidth: 1,
+                    margin: 5,
+                    borderRadius: 30,
+                    borderColor: Colors.grayLight,
+                    width: '95%',
+                    alignSelf: 'center',
+
+                }}
                 textInputStyle={{
-                    fontSize: 13
+                    fontSize: 16,
+                    padding: 12
                 }}
                 itemStyle={{
                     paddingTop: 17,
                     paddingBottom: 17,
                     padding: 10,
-                    backgroundColor: 'white',
                     borderColor: Colors.grayLight,
                     borderBottomWidth: 1,
-                    backgroundColor: 'white',
-
+                    fontSize: 19,
+                    color: 'black'
                 }}
                 itemTextStyle={{
-                    fontSize: 16,
+                    fontSize: 19,
                 }}
                 itemsContainerStyle={{
-                    maxHeight: '100%',
+                    maxHeight: 523,
                     position: 'absolute',
-                    top: 67,
+                    top: 50,
                     width: '100%',
                     alignSelf: 'center',
                     borderRadius: 5,
                     borderWidth: 1,
                     borderColor: Colors.grayDark,
                     backgroundColor: 'white',
-
-
                 }}
-                items={friendsList}
-                placeholder="Search for a friend to send them a bet.."
-                placeholderTextColor='gray'
+                items={updatedFriends}
+                placeholder='Search for friends..'
+                placeholderTextColor='lightgray'
+                setSort={(item, searchedText)=> item.firstName.toLowerCase().startsWith(searchedText.toLowerCase())}
 
             />
     );

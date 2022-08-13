@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
     },
     menuButton: {
         paddingTop: 10,
-        paddingRight: 15,
+        paddingRight: 20,
         alignSelf: 'flex-end'
     },
     detailsContainer: {

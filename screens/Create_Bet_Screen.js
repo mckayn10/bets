@@ -162,9 +162,9 @@ return (
 
     <View style={styles.container}>
         {!person
-            ? <SafeAreaView style={{ zIndex: 1 }}>
-                {/*<MySearchableDropdown setUser={(person) => handleSetUser(person)} />*/}
-            </SafeAreaView>
+            ? <View style={{ zIndex: 1 }}>
+                <MySearchableDropdown setUser={(person) => handleSetUser(person)} />
+            </View>
             : null
         }
 
