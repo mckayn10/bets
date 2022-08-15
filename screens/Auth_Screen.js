@@ -79,6 +79,7 @@ function Auth_Screen(props) {
                                 onChangeText={emailText => setEmailText(emailText)}
                                 defaultValue={emailText}
                                 keyboardType='email-address'
+                                textContentType={'emailAddress'}
                                 autoCapitalize='none'
                             />
                             <TextInput
@@ -90,6 +91,7 @@ function Auth_Screen(props) {
                                 keyboardType='default'
                                 autoCapitalize='none'
                                 secureTextEntry={true}
+                                textContentType={'password'}
                             />
                         </View>
                         : <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -117,6 +119,7 @@ function Auth_Screen(props) {
                                 defaultValue={emailText}
                                 keyboardType='email-address'
                                 autoCapitalize='none'
+                                textContentType={"emailAddress"}
                             />
                             <TextInput
                                 style={styles.textInput}
@@ -127,6 +130,7 @@ function Auth_Screen(props) {
                                 keyboardType='default'
                                 autoCapitalize='none'
                                 secureTextEntry={true}
+                                textContentType={'newPassword'}
                             />
                             <Text
                                 style={styles.termsAndConditions}

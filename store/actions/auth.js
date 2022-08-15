@@ -143,6 +143,7 @@ export const signUp = (userInfo) => {
         dispatch(authenticate(resData.localId, resData.idToken))
 
         const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000)
+        console.log({expirationDate})
         saveDataToStorage(resData.idToken, resData.localId, expirationDate, userInfo)
     }
 }
@@ -178,7 +179,7 @@ export const signIn = (email, password) => {
 
         dispatch(authenticate(resData.localId, resData.idToken))
 
-        const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000)
+        const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 10000000)
         saveDataToStorage(resData.idToken, resData.localId, expirationDate)
     }
 }
