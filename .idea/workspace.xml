@@ -2,28 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/utils/utils.js" afterDir="false" />
-      <change beforePath="$USER_HOME$/git/fu/api_rest/auth.json" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/auth.json" afterDir="false" />
       <change beforePath="$USER_HOME$/git/fu/api_rest/rest/controllers/courses/oco/bagAddPayments.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/rest/controllers/courses/oco/bagAddPayments.php" afterDir="false" />
-      <change beforePath="$USER_HOME$/git/fu/api_rest/rest/models/services/oco/BagPaymentService.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/rest/models/services/oco/BagPaymentService.php" afterDir="false" />
-      <change beforePath="$USER_HOME$/git/fu/api_rest/rest/t/integration/services/oco/BagPaymentServiceTest.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/rest/t/integration/services/oco/BagPaymentServiceTest.php" afterDir="false" />
+      <change beforePath="$USER_HOME$/git/fu/api_rest/rest/models/entities/ForeupPeople.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/api_rest/rest/models/entities/ForeupPeople.php" afterDir="false" />
       <change beforePath="$USER_HOME$/git/fu/application/auth.json" beforeDir="false" afterPath="$USER_HOME$/git/fu/application/auth.json" afterDir="false" />
-      <change beforePath="$USER_HOME$/git/fu/index.php" beforeDir="false" afterPath="$USER_HOME$/git/fu/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/bets.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bets.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/SearchableDropdown.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/SearchableDropdown.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/VenmoBtn.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/VenmoBtn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/push_notifications/push_notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/push_notifications/push_notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Person_Profile_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Person_Profile_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/View_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/View_Bet_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/actions/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/actions/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/notifications.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/mybetz/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Info.plist" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +62,7 @@
       <workItem from="1660003698895" duration="13516000" />
       <workItem from="1660103989185" duration="4198000" />
       <workItem from="1660226046284" duration="5469000" />
-      <workItem from="1660345085476" duration="27174000" />
+      <workItem from="1660345085476" duration="54354000" />
     </task>
     <servers />
   </component>
