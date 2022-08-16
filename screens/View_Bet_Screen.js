@@ -400,7 +400,6 @@ const styles = StyleSheet.create({
     pageTitle: {
         fontSize: 20,
         color: 'white',
-        alignSelf: 'center',
         padding: 15,
         alignSelf: 'center'
     },

@@ -45,7 +45,7 @@ const VenmoBtn = (props) => {
             <Button
                 title="Open in Venmo    "
                 type="solid"
-                buttonStyle={styles.deleteButton}
+                buttonStyle={styles.venmoButton}
                 onPress={() => openWithVenmo()}
             />
 
@@ -54,8 +54,8 @@ const VenmoBtn = (props) => {
 }
 
 const styles = StyleSheet.create({
-    deleteButton: {
-        backgroundColor: '#3D95CE',
+    venmoButton: {
+        backgroundColor: Colors.venmoBlue,
         width: '90%',
         alignSelf: 'center'
 

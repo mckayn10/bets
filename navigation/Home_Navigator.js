@@ -12,6 +12,7 @@ import View_Bet_Screen from '../screens/View_Bet_Screen';
 import View_Bet_Navigator from './View_Bet_Navigator';
 import Profile_Navigator from '../navigation/Profile_Navigator'
 import Friends_Navigator from './Friends_Navigator';
+import Add_Venmo_Screen from "../screens/Add_Venmo_Screen";
 
 const Stack = createNativeStackNavigator()
 
@@ -52,6 +53,10 @@ const Home_Navigator = (props) => {
                     options={{
                         headerShown: false
                     }}
+                />
+                <Stack.Screen
+                    name="Add Venmo"
+                    component={Add_Venmo_Screen}
                 />
             </Stack.Group>
         </Stack.Navigator>

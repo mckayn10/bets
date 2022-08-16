@@ -116,13 +116,14 @@ export default function Profile_Screen(props) {
         if (image) {
             upload()
         } else {
+            let venmoId = venmoIdText.replace('@','')
             const user = {
                 firstName: firstNameText,
                 lastName: lastNameText,
                 username: usernameText,
                 email: emailText,
                 picture: userData.picture,
-                venmo_id: venmoIdText,
+                venmo_id: venmoId
             }
             dispatch(updateUser(user))
             handleGoBack()

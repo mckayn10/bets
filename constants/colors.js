@@ -4,5 +4,6 @@ export default {
     grayDark: '#d4d4d4',
     grayDarker: '#ababab',
     backgroundColor: '#fafafa',
-    red: '#f74343'
+    red: '#f74343',
+    venmoBlue: '#008cff'
 }

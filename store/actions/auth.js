@@ -202,7 +202,6 @@ export const updateUser = (userData) => {
         const userId = getState().auth.userId
         userData.id = userId
         userData.pushId = getState().auth.userInfo.pushId
-
         peopleRef.doc(userId).set(userData, { merge: true })
             .then(() => {
                 dispatch({ type: UPDATE_USER, userData: userData })

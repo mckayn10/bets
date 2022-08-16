@@ -35,7 +35,19 @@ function Home_Screen(props) {
 
   const bets = useSelector(state => state.bets.bets)
   const userId = useSelector(state => state.auth.userId)
-  const user = useSelector(state => state.auth)
+
+  const user = useSelector(state => state.auth.userInfo)
+  const promptAddVenmo = () => {
+    if(user){
+      if(!user.venmo_id){
+        props.navigation.navigate('Add Venmo')
+      }
+    }
+  }
+
+  useEffect(() => {
+    promptAddVenmo()
+  }, [user])
 
   useEffect(() => {
 
@@ -48,6 +60,9 @@ function Home_Screen(props) {
     // dispatch(fetchPendingRequests())
     dispatch(getUserPic())
 
+  }, [])
+
+  useEffect(() => {
 
   }, [])
 
