@@ -48,11 +48,20 @@ export default function BetCard(props) {
 
     const openPersonProfile = () => {
 
+        console.log(props.route.name)
         if(infoToDisplayBasedOnUser.opponent.id){
-            props.navigation.navigate('Person Profile', {
-                person: infoToDisplayBasedOnUser.opponent,
-                isUser: false
-            })
+            if(props.route.name === 'Home'){
+                props.navigation.push('Person Profile', {
+                    person: infoToDisplayBasedOnUser.opponent,
+                    isUser: false
+                })
+            } else {
+                props.navigation.push('Person', {
+                    person: infoToDisplayBasedOnUser.opponent,
+                    isUser: false
+                })
+            }
+
         }
     }
 
@@ -79,7 +88,7 @@ export default function BetCard(props) {
             onPress={() => openViewBet()}
         >
             <View style={styles.descriptionContainer} onPress={() => openPersonProfile()}>
-                <View style={styles.personContainer} onPress={() => openPersonProfile()}>
+                <Pressable style={styles.personContainer} onPress={() => openPersonProfile()}>
                     <CachedImage
                         onPress={() => openPersonProfile()}
                         style={{ width: 35, height: 35, borderRadius: 100, marginRight: 8 }}
@@ -91,7 +100,7 @@ export default function BetCard(props) {
                     <Pressable style={{ flexDirection: 'row' }} onPress={() => openPersonProfile()}>
                         {getBetTitle()}
                     </Pressable>
-                </View>
+                </Pressable>
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.date}>{date_complete ? 'Last Updated: ' + parsedDateUpdated.toLocaleString() : 'Created: ' + parsedDateCreated.toLocaleString()}</Text>
@@ -119,7 +128,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 8,
-        height: 120,
+        height: 110,
         width: '95%',
         alignSelf: 'center',
         backgroundColor: Colors.backgroundColor,

@@ -48,7 +48,7 @@ export default function NotificationCard(props) {
     }
 
     const openPersonProfile = () => {
-        props.navigation.navigate('Person', {
+        props.navigation.push('Person', {
             person: person,
             isUser: false
         })

@@ -193,14 +193,15 @@ const styles = StyleSheet.create({
   toggleScreenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: Colors.grayLight,
     borderWidth: 1,
     borderColor: Colors.grayLight,
     width: '80%',
     borderRadius: 30,
-    padding: 3,
+    padding: 2,
     margin: 5,
-    alignSelf: 'center'
+    alignSelf: 'center',
+
 
   },
   btnContainer: {
@@ -236,15 +237,17 @@ const styles = StyleSheet.create({
     paddingBottom: 13,
     fontSize: 12,
     textAlign: 'center',
+    zIndex:20000
   },
   animatedToggle: {
     position: 'absolute',
-    height: '98%',
-    width: '49%',
-    backgroundColor: Colors.grayDark,
-    opacity: 0.4,
-    borderRadius: 20,
-    margin: 5,
+    height: '100%',
+    width: '50%',
+    backgroundColor: 'white',
+    opacity: 0.9,
+    borderRadius: 30,
+    zIndex: 10000,
+    marginLeft: 2
 
   }
 

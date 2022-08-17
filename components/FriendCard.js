@@ -32,7 +32,7 @@ export default function FriendCard(props) {
     return (
         <TouchableOpacity
             style={styles.container}
-            onPress={() => props.navigation.navigate('Person',
+            onPress={() => props.navigation.push('Person',
                 {
                     person: props.person,
                     isUser: isUser

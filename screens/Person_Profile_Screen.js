@@ -275,7 +275,6 @@ function Person_Profile_Screen(props) {
     };
 
     const handleSendBetOffer = () => {
-        console.log("HELLOOOOO")
         props.navigation.navigate('Create Bet', { person: person })
     }
     const handleViewFriends = () => {

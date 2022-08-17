@@ -13,6 +13,7 @@ import View_Bet_Navigator from './View_Bet_Navigator';
 import Profile_Navigator from '../navigation/Profile_Navigator'
 import Friends_Navigator from './Friends_Navigator';
 import Add_Venmo_Screen from "../screens/Add_Venmo_Screen";
+import Person_Profile_Navigator from "./Person_Profile_Navigator";
 
 const Stack = createNativeStackNavigator()
 
@@ -33,6 +34,10 @@ const Home_Navigator = (props) => {
                 <Stack.Screen
                     name="User"
                     component={Friends_Navigator}
+                />
+                <Stack.Screen
+                    name="Person Profile"
+                    component={Person_Profile_Navigator}
                 />
             </Stack.Group>
             <Stack.Group
