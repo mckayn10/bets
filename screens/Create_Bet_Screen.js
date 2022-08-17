@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, Pressable, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, Keyboard, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { createBet } from '../store/actions/bets'
@@ -158,9 +158,14 @@ const clearInput = () => {
 
 }
 
+const dismissKeyboard = () => {
+        console.log("HEY HEY")
+        Keyboard.dismiss()
+}
+
 return (
 
-    <View style={styles.container}>
+    <View style={styles.container} >
         {!person
             ? <View style={{ zIndex: 1 }}>
                 <MySearchableDropdown setUser={(person) => handleSetUser(person)} />
@@ -168,7 +173,7 @@ return (
             : null
         }
 
-        <View style={styles.inputContainer}>
+        <ScrollView style={styles.inputContainer} scrollEnabled={false} >
             <Input
                 onKeyPress={({ nativeEvent }) => {
                     if (nativeEvent.key === 'Backspace') {
@@ -220,7 +225,7 @@ return (
                         onValueChange={() => setBetWon(!betWon)}
                     />
                 </View> : null}
-        </View>
+        </ScrollView>
         <View style={styles.btnContainer}>
             <Button
                 icon={

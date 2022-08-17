@@ -1,8 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, TouchableWithoutFeedback} from 'react-native';
 
 export default function HeaderText (props)  {
-    return <Text {...props} style={[styles.defaultText, props.style]}>{props.children}</Text>
+    return (
+        <TouchableWithoutFeedback>
+            <Text {...props} style={[styles.defaultText, props.style]}>{props.children}</Text>
+        </TouchableWithoutFeedback>
+)
 
 }
 

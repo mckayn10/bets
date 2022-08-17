@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Alert, Animated, Keyboard } from 'react-native';
 import { Button } from 'react-native-elements';
 import NavBar from '../components/NavBar';
 import Colors from '../constants/colors'
@@ -30,6 +30,31 @@ function Home_Screen(props) {
   const [showComplete, setShowComplete] = useState(true);
   const [completedBets, setCompletedBets] = useState([]);
   const [pendingBets, setPendingBets] = useState([]);
+  const [activeAnimation, setActiveAnimation] = useState(new Animated.Value(0))
+
+  const activeWidthInterpolate = activeAnimation.interpolate({
+    inputRange: [0,1],
+    outputRange: ['0%', '50%'],
+  })
+
+  const activeAnimatedStyle = {
+    left: activeWidthInterpolate
+  }
+
+  const animatePending = () => {
+
+    Animated.timing(activeAnimation, {
+      toValue: 1,
+      duration: 220
+    }).start()
+  }
+
+  const animateComplete = () => {
+    Animated.timing(activeAnimation, {
+      toValue: 0,
+      duration: 220
+    }).start()
+  }
 
   const dispatch = useDispatch()
 
@@ -109,8 +134,17 @@ function Home_Screen(props) {
     pending.sort(function (x, y) {
       return y.date - x.date
     })
-
     setPendingBets(pending)
+  }
+
+  const toggleButtons = (screen) => {
+    if(screen == 'complete'){
+      setShowComplete(true)
+      animateComplete()
+    } else {
+        setShowComplete(false)
+        animatePending()
+    }
   }
 
   return (
@@ -118,8 +152,9 @@ function Home_Screen(props) {
     <View style={styles.container}>
       <NavBar props={props} />
       <View style={styles.toggleScreenContainer}>
-        <HeaderText style={showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(true)}>COMPLETE</HeaderText>
-        <HeaderText style={!showComplete ? styles.activeToggleText : styles.toggleText} onPress={() => setShowComplete(false)}>PENDING</HeaderText>
+          <HeaderText style={[styles.toggleBtn, styles.toggleText]} onPress={() => toggleButtons('complete')}>COMPLETE</HeaderText>
+          <HeaderText style={[styles.toggleBtn, styles.toggleText]} onPress={() => toggleButtons('pending')} >PENDING</HeaderText>
+        <Animated.View style={[styles.animatedToggle, activeAnimatedStyle]} />
       </View>
       {/* <UploadImage /> */}
       {/* <TestComponent /> */}
@@ -153,15 +188,20 @@ function Home_Screen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.backgroundColor
   },
   toggleScreenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.grayDarker,
-    borderTopWidth: 1,
-    borderTopColor: Colors.backgroundColor,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.grayDark
+    backgroundColor: Colors.backgroundColor,
+    borderWidth: 1,
+    borderColor: Colors.grayLight,
+    width: '80%',
+    borderRadius: 30,
+    padding: 3,
+    margin: 5,
+    alignSelf: 'center'
+
   },
   btnContainer: {
     // position: 'absolute',
@@ -169,11 +209,11 @@ const styles = StyleSheet.create({
     // right: 15,
     borderTopWidth: 1,
     borderTopColor: Colors.grayLight,
-    paddingTop: 30,
-    paddingBottom: 30,
+    paddingTop: 15,
+    paddingBottom: 15,
     width: '100%',
     alignSelf: 'center',
-    backgroundColor: Colors.backgroundColor
+    backgroundColor: Colors.backgroundColor,
   },
   createBetBtn: {
     width: '80%',
@@ -184,22 +224,28 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 15
   },
+  toggleBtn: {
+    width: '50%',
+    paddingTop: 3,
+    paddingBottom: 3,
+    borderRadius: 20,
+  },
   toggleText: {
-    flex: 1,
-    color: Colors.backgroundColor,
+    color: Colors.primaryColor,
     paddingTop: 12,
     paddingBottom: 13,
     fontSize: 12,
     textAlign: 'center',
   },
-  activeToggleText: {
-    flex: 1,
-    color: Colors.primaryColor,
-    backgroundColor: Colors.backgroundColor,
-    paddingTop: 12,
-    paddingBottom: 13,
-    fontSize: 12,
-    textAlign: 'center',
+  animatedToggle: {
+    position: 'absolute',
+    height: '98%',
+    width: '49%',
+    backgroundColor: Colors.grayDark,
+    opacity: 0.4,
+    borderRadius: 20,
+    margin: 5,
+
   }
 
 });
