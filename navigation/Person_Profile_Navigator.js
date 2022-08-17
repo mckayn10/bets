@@ -11,7 +11,7 @@ import View_Bet_Navigator from './View_Bet_Navigator';
 
 const Stack = createNativeStackNavigator()
 
-const Friends_Navigator = (props) => {
+const Person_Profile_Navigator = (props) => {
     return (
         <Stack.Navigator
             screenOptions={{
@@ -22,6 +22,11 @@ const Friends_Navigator = (props) => {
             }}
         >
             <Stack.Group>
+                <Stack.Screen
+                    name="Person"
+                    component={Person_Profile_Screen}
+                    initialParams={{person: props.route.params ? props.route.params.person : null}}
+                />
                 <Stack.Screen
                     name="My Friends"
                     component={Friends_Screen}
@@ -45,11 +50,6 @@ const Friends_Navigator = (props) => {
                             color: 'white'
                         },
                     }}
-                />
-                <Stack.Screen
-                    name="Person"
-                    component={Person_Profile_Screen}
-                    initialParams={{person: props.route.params ? props.route.params.person : null}}
                 />
                 <Stack.Screen
                     name="Stats Screen"
@@ -95,4 +95,4 @@ const Friends_Navigator = (props) => {
     )
 }
 
-export default Friends_Navigator
+export default Person_Profile_Navigator

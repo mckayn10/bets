@@ -46,6 +46,16 @@ export default function BetCard(props) {
         })
     }
 
+    const openPersonProfile = () => {
+
+        if(infoToDisplayBasedOnUser.opponent.id){
+            props.navigation.navigate('Person Profile', {
+                person: infoToDisplayBasedOnUser.opponent,
+                isUser: false
+            })
+        }
+    }
+
     const getBetTitle = () => {
         return <Text style={{fontWeight: 'bold'}}>{infoToDisplayBasedOnUser.otherBettorname}</Text>
     }
@@ -68,18 +78,19 @@ export default function BetCard(props) {
             style={!showNotAccepted ? styles.container : styles.notAcceptedContainer}
             onPress={() => openViewBet()}
         >
-            <View style={styles.descriptionContainer}>
-                <View style={styles.personContainer}>
+            <View style={styles.descriptionContainer} onPress={() => openPersonProfile()}>
+                <View style={styles.personContainer} onPress={() => openPersonProfile()}>
                     <CachedImage
+                        onPress={() => openPersonProfile()}
                         style={{ width: 35, height: 35, borderRadius: 100, marginRight: 8 }}
                         source={{
                             uri: profileImage, 
                             // headers: { Authorization: 'token' }
                         }}
                     />
-                    <View style={{ flexDirection: 'row' }}>
+                    <Pressable style={{ flexDirection: 'row' }} onPress={() => openPersonProfile()}>
                         {getBetTitle()}
-                    </View>
+                    </Pressable>
                 </View>
                 <Text style={styles.description} numberOfLines={1}>{description}</Text>
                 <View style={{ flexDirection: 'row' }}>

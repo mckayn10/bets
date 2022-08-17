@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, Keyboard, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Platform, Alert, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { createBet } from '../store/actions/bets'
@@ -55,7 +55,6 @@ const Create_Bet_Screen = props => {
     }, [])
     
 
-
 const dispatch = useDispatch();
 
     function check_val(text) {
@@ -73,9 +72,6 @@ const dispatch = useDispatch();
             return true
         }
     }
-
-
-
 
     const createNewBet = () => {
 
@@ -158,11 +154,6 @@ const clearInput = () => {
 
 }
 
-const dismissKeyboard = () => {
-        console.log("HEY HEY")
-        Keyboard.dismiss()
-}
-
 return (
 
     <View style={styles.container} >
@@ -173,7 +164,7 @@ return (
             : null
         }
 
-        <ScrollView style={styles.inputContainer} scrollEnabled={false} >
+        <ScrollView style={styles.inputContainer}   scrollEnabled={false}>
             <Input
                 onKeyPress={({ nativeEvent }) => {
                     if (nativeEvent.key === 'Backspace') {

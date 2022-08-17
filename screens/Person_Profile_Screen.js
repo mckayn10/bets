@@ -40,9 +40,7 @@ function Person_Profile_Screen(props) {
     const blockedUsers = useSelector(state => state.people.blockedUsers)
 
     const isBlockedByUser = () => {
-        console.log(id)
-        console.log('blocked Users', blockedUsers)
-        var found = blockedUsers.find(user => user.id === id);
+        let found = blockedUsers.find(user => user.id === id);
         if(found){
             return true
         }
@@ -277,6 +275,7 @@ function Person_Profile_Screen(props) {
     };
 
     const handleSendBetOffer = () => {
+        console.log("HELLOOOOO")
         props.navigation.navigate('Create Bet', { person: person })
     }
     const handleViewFriends = () => {
