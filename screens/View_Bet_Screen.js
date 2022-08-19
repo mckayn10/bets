@@ -137,7 +137,7 @@ const View_Bet_Screen = props => {
     const handleUpdateBet = async () => {
         const betData = props.route.params.bet
         betData.other_bettor.firstName = nameOfBettor
-        betData.amount = parseInt(betAmount)
+        betData.amount = parseFloat(betAmount)
         betData.is_complete = betComplete
         betData.won_bet = betWon ? userId : otherPersonId
         betData.description = betDescription

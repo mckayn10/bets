@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     searchBar: {
-        backgroundColor: 'white',
         borderColor: 'white',
         borderRadius: 20,
         margin: 5,

@@ -102,7 +102,7 @@ const dispatch = useDispatch();
 
     const data = {
         description: description,
-        amount: parseInt(betAmount),
+        amount: parseFloat(betAmount),
         other_bettor: otherBettorData ? otherBettorData : defaultOtherBettor,
         creator: userInfo,
         won_bet: betComplete ? (betWon ? userInfo.id : other_id) : 0,
@@ -120,7 +120,6 @@ const dispatch = useDispatch();
         console.error(err)
     }
 
-    let showComplete = betComplete ? true : false
 
     // console.log('props navigate value', props.navigation.getParent().getState().routes[0].name)
     let parentTab = props.navigation.getParent().getState().routes

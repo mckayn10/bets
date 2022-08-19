@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         width: '100%',
-        height: 150,
+        height: 130,
         backgroundColor: Colors.primaryColor,
     },
     totalText: {

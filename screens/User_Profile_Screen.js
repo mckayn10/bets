@@ -3,43 +3,53 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
 import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText';
-import { MaterialIcons } from '@expo/vector-icons';
+import {FontAwesome5, MaterialIcons} from '@expo/vector-icons';
 import BetList from '../components/BetList';
 import CachedImage from 'react-native-expo-cached-image';
+import {Button} from "react-native-elements";
 
 function User_Profile_Screen(props) {
 
-    const [showBetsfeed, setShowBetsFeed] = useState(true)
-    const [bets, setBets] = useState([])
+    // const [showBetsfeed, setShowBetsFeed] = useState(true)
+    // const [bets, setBets] = useState([])
+    const [numFriends, setNumFriends] = useState(0)
+
 
     const user = useSelector(state => state.auth.userInfo)
     const userBets = useSelector(state => state.bets.bets)
+    let friendsList = useSelector(state => state.people.friends)
+
 
     useEffect(() => {
-        setBets(userBets)
+        setNumFriends(friendsList.length)
     }, [])
 
-    useLayoutEffect(() => {
-        props.navigation.setOptions({
-            title: 'My Profile',
-            headerRight: () => {
-                return (
-                    <TouchableOpacity {...props}>
-                        <MaterialIcons
-                            name="edit"
-                            size={24}
-                            color="white"
-                            style={{ paddingBottom: 5 }}
-                            onPress={() => props.navigation.navigate('Edit Profile')}
-                        />
-                    </TouchableOpacity>
-                )
-            }
-        })
-    }, [])
+    // useLayoutEffect(() => {
+    //     props.navigation.setOptions({
+    //         title: 'My Profile',
+    //         headerRight: () => {
+    //             return (
+    //                 <TouchableOpacity {...props}>
+    //                     <MaterialIcons
+    //                         name="edit"
+    //                         size={24}
+    //                         color="white"
+    //                         style={{ paddingBottom: 5 }}
+    //                         onPress={() => props.navigation.navigate('Edit Profile')}
+    //                     />
+    //                 </TouchableOpacity>
+    //             )
+    //         }
+    //     })
+    // }, [])
 
     const handleCreateBetOffer = () => {
         props.navigation.navigate('Create Bet')
+    }
+
+    const handleViewFriends = () => {
+
+        props.navigation.navigate('Friends List')
     }
 
 
@@ -54,27 +64,47 @@ function User_Profile_Screen(props) {
                 {/* <Image source={{ uri: profileImage }} style={{ width: 200, height: 200 }} /> */}
                 <View style={styles.personInfoConatiner}>
                     <HeaderText style={styles.name}>{user.firstName} {user.lastName}</HeaderText>
-                    <Text>@{user.username}</Text>
+                    <Text style={{marginBottom: 5}}>Username: @{user.username}</Text>
+                    <Text>Venmo ID: @{user.venmo_id}</Text>
                 </View>
                 <View style={styles.friendsContainer}>
-
+                    <Button
+                        icon={
+                            <FontAwesome5 name="edit" size={12} color={Colors.primaryColor} />
+                        }
+                        title='Edit Profile'
+                        type="outline"
+                        buttonStyle={styles.isFriendBtn}
+                        titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
+                        onPress={() => props.navigation.push('Edit Profile')}
+                    />
+                    {/*<Button*/}
+                    {/*    icon={*/}
+                    {/*        <FontAwesome5 name="user-friends" size={12} color={Colors.primaryColor} />*/}
+                    {/*    }*/}
+                    {/*    title={numFriends + ' ' + (numFriends === 1 ? 'friend' : 'friends')}*/}
+                    {/*    type="outline"*/}
+                    {/*    buttonStyle={styles.isFriendBtn}*/}
+                    {/*    titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}*/}
+                    {/*    onPress={() => handleViewFriends()}*/}
+                    {/*/>*/}
                 </View>
-                <TouchableOpacity
-                    onPress={() => handleCreateBetOffer()}
-                    style={styles.sendBetBtn}
-                >
-                    <HeaderText style={styles.sendBetBtn}>{'Create New Bet'}</HeaderText>
-                </TouchableOpacity>
+                {/*<TouchableOpacity*/}
+                {/*    onPress={() => handleCreateBetOffer()}*/}
+                {/*    style={styles.sendBetBtn}*/}
+                {/*>*/}
+                {/*    <HeaderText style={styles.sendBetBtn}>{'Create New Bet'}</HeaderText>*/}
+                {/*</TouchableOpacity>*/}
             </View>
-            <View style={styles.toggleButtonsContainer}>
-                <Text style={showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(true)}>Bets Feed</Text>
-            </View>
-            <BetList
-                {...props}
-                bets={bets}
-                permissions={true}
-                personId={user.id}
-            />
+            {/*<View style={styles.toggleButtonsContainer}>*/}
+            {/*    <Text style={showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(true)}>Bets Feed</Text>*/}
+            {/*</View>*/}
+            {/*<BetList*/}
+            {/*    {...props}*/}
+            {/*    bets={bets}*/}
+            {/*    permissions={true}*/}
+            {/*    personId={user.id}*/}
+            {/*/>*/}
         </SafeAreaView>
     )
 

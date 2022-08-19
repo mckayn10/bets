@@ -30,6 +30,19 @@ export const fetchAllPeople = () => {
     }
 }
 
+export const fetchAllFriendsIds = (userId) => {
+    let idsList = []
+
+    friendsRef.doc(userId).collection('friendsList')
+        .onSnapshot((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                idsList.unshift(doc.id)
+            });
+            console.log({idsList})
+
+        })
+}
+
 export const fetchAllFriends = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId

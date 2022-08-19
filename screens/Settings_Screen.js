@@ -5,12 +5,12 @@ import { removeData } from '../store/actions/bets';
 import { useDispatch } from 'react-redux';
 import HeaderText from '../components/HeaderText';
 import Colors from '../constants/colors';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import {MaterialCommunityIcons, SimpleLineIcons} from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 
 
-export default function Settings_Screen() {
+export default function Settings_Screen(props) {
 
     const dispatch = useDispatch()
 
@@ -23,6 +23,10 @@ export default function Settings_Screen() {
         dispatch(deleteAccount())
         dispatch(logout())
         dispatch(removeData())
+    }
+
+    const handleMyProfile = () => {
+        props.navigation.navigate('User Profile')
     }
 
     const showConfirmDialog = () => {
@@ -45,19 +49,19 @@ export default function Settings_Screen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* <TouchableOpacity
+            { <TouchableOpacity
                 style={styles.cardContainer}
-            // onPress={() => handleLogout()}
+                onPress={() => handleMyProfile()}
             >
                 <View style={styles.descriptionContainer}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Octicons name="settings" size={20} color="black" />
-                        <Text style={[styles.name]}>Account Settings</Text>
+                        <MaterialCommunityIcons name="account" size={20} color="black" />
+                        <Text style={[styles.name]}>My Profile</Text>
                     </View>
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
 
                 </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity> }
             {/* <TouchableOpacity
                 style={styles.cardContainer}
             // onPress={() => handleLogout()}
@@ -84,7 +88,7 @@ export default function Settings_Screen() {
 
                 </View>
             </TouchableOpacity> */}
-            {/* <TouchableOpacity
+            { <TouchableOpacity
                 style={styles.cardContainer}
             // onPress={() => handleLogout()}
             >
@@ -96,7 +100,7 @@ export default function Settings_Screen() {
                     <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
 
                 </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity> }
             <TouchableOpacity
                 style={styles.cardContainer}
                 onPress={() => handleLogout()}

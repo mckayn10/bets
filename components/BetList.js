@@ -27,6 +27,11 @@ function BetList(props) {
         setIsRefreshing(false)
     }
 
+    const endReached = () => {
+        console.log('end reached')
+        // props.onEndReached()
+    }
+
     const renderCompletedBet = betData => {
         let pendingStyle = betData.item.is_verified && !betData.item.is_accepted ? { opacity: 1 } : { opacity: 1 }
         return (
@@ -46,6 +51,8 @@ function BetList(props) {
         <SafeAreaView style={styles.container}>
             {props.bets.length > 0
                 ? <FlatList
+                    onEndReached={() => endReached()}
+                    onEndReachedThreshold={.7}
                     onRefresh={loadBets}
                     refreshing={isRefreshing}
                     data={props.bets}

@@ -19,8 +19,10 @@ const User_Profile_Navigator = (props) => {
                 headerTintColor: 'white',
                 headerStyle: {
                     backgroundColor: Colors.primaryColor
-                }
+                },
+                headerShown: false
             }}
+
         >
             <Stack.Group>
                 <Stack.Screen

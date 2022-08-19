@@ -4,11 +4,23 @@
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/BetCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/FriendCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/FriendCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/NotificationCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/NotificationCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/BetList.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/NavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/NavBar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigation/Home_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Home_Navigator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigation/Notifications_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Notifications_Navigator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigation/Settings_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Settings_Navigator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigation/Stats_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Stats_Navigator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigation/Tab_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Tab_Navigator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigation/User_Profile_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/User_Profile_Navigator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Friends_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Friends_Screen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/Home_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Home_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Person_Profile_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Person_Profile_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Settings_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Settings_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/User_Profile_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/User_Profile_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/View_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/View_Bet_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/bets.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/bets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/friends.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/friends.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/reducers/bets.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/reducers/bets.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

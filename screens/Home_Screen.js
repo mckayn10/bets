@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert, Animated, Keyboard } from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Alert, Animated, Keyboard, Pressable} from 'react-native';
 import { Button } from 'react-native-elements';
 import NavBar from '../components/NavBar';
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBets } from '../store/actions/bets';
+import {fetchBets, fetchFeedBets} from '../store/actions/bets';
 import {getUser, getUserPic, updateUser} from '../store/actions/auth';
 import {fetchAllFriends, fetchBlockedBy, fetchBlockedUsers} from '../store/actions/friends';
 import { fetchNotifications, fetchPendingRequests } from '../store/actions/notifications';
 import HeaderText from '../components/HeaderText';
-import { Ionicons } from '@expo/vector-icons';
+import {AntDesign, FontAwesome, Ionicons, SimpleLineIcons} from '@expo/vector-icons';
 import TestComponent from '../components/TestComponent';
 import BetList from '../components/BetList';
 import { completedCriteria, pendingCriteria } from '../constants/utils';
@@ -27,14 +27,19 @@ Notifications.setNotificationHandler({
 
 function Home_Screen(props) {
 
-  const [showComplete, setShowComplete] = useState(true);
+  const [showScreen, setShowScreen] = useState('feed');
+  const [hasRun, setHasRun] = useState(false);
   const [completedBets, setCompletedBets] = useState([]);
+  const [limitedCompleted, setLimitedCompletedBets] = useState([]);
   const [pendingBets, setPendingBets] = useState([]);
+  const [feedBets, setFeedBets] = useState([]);
+  const [startIndex, setStartIndex] = useState(0)
+  const [endIndex, setEndIndex] = useState(8)
   const [activeAnimation, setActiveAnimation] = useState(new Animated.Value(0))
 
   const activeWidthInterpolate = activeAnimation.interpolate({
     inputRange: [0,1],
-    outputRange: ['0%', '50%'],
+    outputRange: ['0.5%', '67.3%'],
   })
 
   const activeAnimatedStyle = {
@@ -45,20 +50,31 @@ function Home_Screen(props) {
 
     Animated.timing(activeAnimation, {
       toValue: 1,
-      duration: 220
+      duration: 220,
+      useNativeDriver: false
     }).start()
   }
 
   const animateComplete = () => {
     Animated.timing(activeAnimation, {
+      toValue: 0.5,
+      duration: 220,
+      useNativeDriver: false
+    }).start()
+  }
+
+  const animateFeed = () => {
+    Animated.timing(activeAnimation, {
       toValue: 0,
-      duration: 220
+      duration: 220,
+      useNativeDriver: false
     }).start()
   }
 
   const dispatch = useDispatch()
 
   const bets = useSelector(state => state.bets.bets)
+  const friendsBets = useSelector(state => state.bets.feedBets)
   const userId = useSelector(state => state.auth.userId)
 
   const user = useSelector(state => state.auth.userInfo)
@@ -75,8 +91,9 @@ function Home_Screen(props) {
   }, [user])
 
   useEffect(() => {
-
+    console.log('mount home', bets.length)
     dispatch(fetchBets())
+    dispatch(fetchFeedBets())
     dispatch(getUser())
     dispatch(fetchAllFriends())
     dispatch(fetchNotifications())
@@ -88,27 +105,16 @@ function Home_Screen(props) {
   }, [])
 
   useEffect(() => {
-
-  }, [])
-
-  useEffect(() => {
-    try {
-      if (props.route.params) {
-        setShowComplete(props.route.params.showComplete)
-      }
-    }
-    catch (err) {
-      console.error(err)
-    }
-
-  }, [props.route.params])
-
-  useEffect(() => {
-    getCompletedBets()
     getPendingBets()
-  }, [bets])
+    getCompletedBets()
+    getFeedBets()
+  }, [bets, friendsBets])
+
 
   const getCompletedBets = () => {
+    if(bets.length <= 0){
+      return
+    }
     let completed = []
     bets.forEach((bet) => {
       let isComplete = completedCriteria(bet)
@@ -121,9 +127,38 @@ function Home_Screen(props) {
     })
 
     setCompletedBets(completed)
+    getLimitedCompletedBets()
+  }
+
+  const getLimitedCompletedBets = (getMore = false) => {
+    console.log('completed bets length', completedBets.length)
+    if(completedBets.length > 0){
+      // let limited = completedBets.splice(0, endIndex)
+      // setCompletedBets(completedBets)
+      // console.log('length after slice', completedBets.length)
+      // setLimitedCompletedBets([...limitedCompleted, ...limited])
+      setLimitedCompletedBets(completedBets)
+    }
+
+  }
+
+  const getFeedBets = () => {
+    if(friendsBets.length <= 0){
+      return
+    }
+
+    friendsBets.sort(function (x, y) {
+      return y.date - x.date;
+    })
+
+    setFeedBets(friendsBets)
+
   }
 
   const getPendingBets = () => {
+    if(bets.length <= 0){
+      return
+    }
     let pending = []
     bets.forEach((bet) => {
       let isPending = pendingCriteria(bet)
@@ -139,12 +174,14 @@ function Home_Screen(props) {
 
   const toggleButtons = (screen) => {
     if(screen == 'complete'){
-      setShowComplete(true)
       animateComplete()
-    } else {
-        setShowComplete(false)
-        animatePending()
+    } else if(screen == 'pending') {
+      animatePending()
+    } else if (screen == 'feed') {
+      animateFeed()
     }
+
+    setShowScreen(screen)
   }
 
   return (
@@ -152,34 +189,54 @@ function Home_Screen(props) {
     <View style={styles.container}>
       <NavBar props={props} />
       <View style={styles.toggleScreenContainer}>
-          <HeaderText style={[styles.toggleBtn, styles.toggleText]} onPress={() => toggleButtons('complete')}>COMPLETE</HeaderText>
-          <HeaderText style={[styles.toggleBtn, styles.toggleText]} onPress={() => toggleButtons('pending')} >PENDING</HeaderText>
+        {/*<FontAwesome*/}
+        {/*    name="globe"*/}
+        {/*    style={[styles.toggleBtn, styles.toggleText]}*/}
+        {/*    onPress={() => toggleButtons('feed')}*/}
+        {/*/>*/}
+        {/*<FontAwesome*/}
+        {/*    name="check-circle"*/}
+        {/*    style={[styles.toggleBtn, styles.toggleText]}*/}
+        {/*    onPress={() => toggleButtons('complete')}*/}
+        {/*/>*/}
+        {/*<FontAwesome*/}
+        {/*    name="clock-o"*/}
+        {/*    style={[styles.toggleBtn, styles.toggleText]}*/}
+        {/*    onPress={() => toggleButtons('pending')}*/}
+
+        {/*/>*/}
+        <Pressable  style={[styles.toggleBtn]}  onPress={() => toggleButtons('feed')}>
+          <HeaderText style={styles.toggleText} >FEED</HeaderText>
+        </Pressable>
+        <Pressable  style={[styles.toggleBtn]} onPress={() => toggleButtons('complete')}>
+          <HeaderText style={[styles.toggleText]} >COMPLETE</HeaderText>
+        </Pressable>
+        <Pressable  style={[styles.toggleBtn]} onPress={() => toggleButtons('pending')} >
+          <HeaderText style={[styles.toggleText]} >PENDING</HeaderText>
+        </Pressable>
         <Animated.View style={[styles.animatedToggle, activeAnimatedStyle]} />
       </View>
-      {/* <UploadImage /> */}
-      {/* <TestComponent /> */}
-      {showComplete
-        ? <BetList {...props} bets={completedBets} permissions={true} personId={userId} />
-        : <BetList {...props} bets={pendingBets} permissions={true} personId={userId} />
-      }
-
-      <TouchableOpacity
-        style={styles.btnContainer}
-      >
-        {/* <Ionicons
-          name="create-outline"
-          size={26}
-          color='green'
-          onPress={() => props.navigation.navigate('Create Bet')}
-        /> */}
-        <Button
-          title="Create New Bet"
-          type="solid"
-          buttonStyle={styles.createBetBtn}
-          titleStyle={styles.createBetBtn}
-          onPress={() => props.navigation.navigate('Create Bet')}
-        />
-      </TouchableOpacity>
+      {showScreen == 'complete' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={limitedCompleted} permissions={true} personId={userId} /> : null}
+      {showScreen == 'pending' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={pendingBets} permissions={true} personId={userId} /> : null}
+      {showScreen == 'feed' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={feedBets} feed={true} permissions={true} personId={userId} /> : null}
+      {/*<TouchableOpacity*/}
+      {/*  style={styles.btnContainer}*/}
+      {/*>*/}
+      {/*  <Button*/}
+      {/*    title="Create New Bet"*/}
+      {/*    type="solid"*/}
+      {/*    buttonStyle={styles.createBetBtn}*/}
+      {/*    titleStyle={styles.createBetBtn}*/}
+      {/*    onPress={() => props.navigation.navigate('Create Bet')}*/}
+      {/*  />*/}
+      {/*</TouchableOpacity>*/}
+      {/*{ <AntDesign*/}
+      {/*    name="pluscircle"*/}
+      {/*    size={50}*/}
+      {/*    color={Colors.primaryColor}*/}
+      {/*    style={styles.addIcon}*/}
+      {/*    onPress={() => props.navigation.navigate('Create Bet')}*/}
+      {/*/> }*/}
     </View>
 
   );
@@ -188,7 +245,7 @@ function Home_Screen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.backgroundColor
+    backgroundColor: Colors.backgroundColor,
   },
   toggleScreenContainer: {
     flexDirection: 'row',
@@ -201,8 +258,6 @@ const styles = StyleSheet.create({
     padding: 2,
     margin: 5,
     alignSelf: 'center',
-
-
   },
   btnContainer: {
     // position: 'absolute',
@@ -210,47 +265,55 @@ const styles = StyleSheet.create({
     // right: 15,
     borderTopWidth: 1,
     borderTopColor: Colors.grayLight,
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: 12,
+    paddingBottom: 13,
     width: '100%',
     alignSelf: 'center',
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: Colors.primaryColor,
   },
   createBetBtn: {
-    width: '80%',
-    fontSize: 18,
+    width: '60%',
+    fontSize: 15,
     alignSelf: 'center',
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: Colors.backgroundColor,
+    color: Colors.primaryColor,
     fontWeight: 'bold',
     borderRadius: 50,
-    padding: 15
+    paddingTop: 9,
+    paddingBottom: 9,
+    paddingLeft: 0,
+    paddingRight: 0
   },
   toggleBtn: {
-    width: '50%',
-    paddingTop: 3,
-    paddingBottom: 3,
+    width: '33.3333%',
     borderRadius: 20,
+    zIndex: 20000
+
   },
   toggleText: {
     color: Colors.primaryColor,
-    paddingTop: 12,
-    paddingBottom: 13,
-    fontSize: 12,
+    paddingTop: 7,
+    paddingBottom: 7,
     textAlign: 'center',
-    zIndex:20000
+    fontSize: 12,
   },
   animatedToggle: {
     position: 'absolute',
     height: '100%',
-    width: '50%',
+    width: '33.3333%',
     backgroundColor: 'white',
     opacity: 0.9,
-    borderRadius: 30,
+    borderRadius: 20,
     zIndex: 10000,
-    marginLeft: 2
-
+    marginLeft: 0
+  },
+  addIcon: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    backgroundColor: 'white',
+    borderRadius: 100
   }
-
 });
 
 export default Home_Screen

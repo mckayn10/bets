@@ -4,11 +4,12 @@ import {
     GET_BETS,
     UPDATE_BET,
     CREATE_BET,
-    REMOVE_DATA
+    REMOVE_DATA, GET_FEED_BETS
 } from '../actions/bets';
 
 const initialState = {
     bets: [],
+    feedBets: []
 }
 
 const betsReducer = (state = initialState, action) => {
@@ -19,7 +20,8 @@ const betsReducer = (state = initialState, action) => {
         }
         case GET_BETS:
             return { ...state, bets: action.bets }
-
+        case GET_FEED_BETS:
+            return {...state, feedBets: action.bets }
         case CREATE_BET:
             updatedArr.unshift(action.bet)
             return { ...state, bets: updatedArr }

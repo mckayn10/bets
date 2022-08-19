@@ -9,6 +9,7 @@ import Friends_Screen from '../screens/Friends_Screen';
 import Stats_Screen from '../screens/Stats_Screen';
 import Add_Friends_Screen from '../screens/Add_Friends_Screen'
 import Home_Screen from '../screens/Home_Screen';
+import Create_Bet_Screen from "../screens/Create_Bet_Screen";
 
 const Stack = createStackNavigator()
 
@@ -91,6 +92,19 @@ const Notifications_Navigator = (props) => {
                     options={{
                         headerShown: false
                     }}
+                />
+            </Stack.Group>
+            <Stack.Group
+                screenOptions={{
+                    presentation: 'modal',
+                    headerShown: true,
+                    headerStyle: { backgroundColor: Colors.primaryColor },
+                    headerTitleStyle: { color: 'white' },
+
+                }}>
+                <Stack.Screen
+                    name="Create Bet"
+                    component={Create_Bet_Screen}
                 />
             </Stack.Group>
         </Stack.Navigator>

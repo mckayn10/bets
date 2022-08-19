@@ -3,16 +3,20 @@ import { db } from "../../firebase/firestore";
 import { useDispatch } from "react-redux";
 import { sendBetOffer } from "./notifications";
 import { completedCriteria } from "../../constants/utils";
+import {fetchAllFriendsIds} from "./friends";
 
 export const CREATE_BET = 'CREATE_BET';
 export const UPDATE_MODAL = 'UPDATE_MODAL';
 export const UPDATE_BET = 'UPDATE_BET';
 export const DELETE_BET = 'DELETE_BET';
 export const GET_BETS = 'GET_BETS';
+export const GET_FEED_BETS = 'GET_FEED_BETS';
 export const REMOVE_DATA = 'REMOVE_DATA'
 
 const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 const betsRef = db.collection('bets')
+const friendsRef = db.collection('friends')
+
 
 
 
@@ -38,6 +42,64 @@ export const fetchBets = () => {
 
                         dispatch({ type: GET_BETS, bets: betsArr })
                     })
+            })
+    }
+}
+
+export const fetchFeedBets = () => {
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId
+        let idsList = []
+        friendsRef.doc(userId).collection('friendsList')
+            .onSnapshot((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    idsList.unshift(doc.id)
+                });
+
+                function sliceIntoChunks(arr, chunkSize) {
+                    const res = [];
+                    for (let i = 0; i < arr.length; i += chunkSize) {
+                        const chunk = arr.slice(i, i + chunkSize);
+                        res.push(chunk);
+                    }
+                    return res;
+                }
+                let chunkedArr = sliceIntoChunks(idsList, 10)
+
+                let betsArr = []
+                let arrUniq = []
+                chunkedArr.forEach(chunk => {
+                    betsRef.where('creator_id', 'in', chunk).get()
+                        .then(querySnapshot => {
+                            querySnapshot.forEach(doc => {
+                                let bet = doc.data()
+                                bet.id = doc.id
+                                betsArr.unshift(bet)
+                            })
+                            betsRef.where('other_id', 'in', chunk).get()
+                                .then(querySnapshot => {
+                                    querySnapshot.forEach(doc => {
+                                        let bet = doc.data()
+                                        bet.id = doc.id
+                                        betsArr.unshift(bet)
+                                    })
+                                    let uniqueIds = []
+                                    arrUniq = betsArr.filter(element => {
+                                        const isDuplicate = uniqueIds.includes(element.id);
+
+                                        if (!isDuplicate) {
+                                            uniqueIds.push(element.id);
+                                            return true;
+                                        }
+                                        return false;
+                                    });
+                                    dispatch({
+                                        type: GET_FEED_BETS,
+                                        bets: arrUniq
+                                    })
+                                })
+                        })
+                })
             })
     }
 }
