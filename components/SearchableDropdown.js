@@ -55,7 +55,7 @@ const MySearchableDropdown = (props) => {
                 }}
                 items={updatedFriends}
                 placeholder='Search for friends..'
-                placeholderTextColor='lightgray'
+                placeholderTextColor={Colors.grayDarker}
                 setSort={(item, searchedText)=> item.firstName.toLowerCase().startsWith(searchedText.toLowerCase())}
 
             />

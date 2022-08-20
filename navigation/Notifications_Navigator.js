@@ -94,19 +94,6 @@ const Notifications_Navigator = (props) => {
                     }}
                 />
             </Stack.Group>
-            <Stack.Group
-                screenOptions={{
-                    presentation: 'modal',
-                    headerShown: true,
-                    headerStyle: { backgroundColor: Colors.primaryColor },
-                    headerTitleStyle: { color: 'white' },
-
-                }}>
-                <Stack.Screen
-                    name="Create Bet"
-                    component={Create_Bet_Screen}
-                />
-            </Stack.Group>
         </Stack.Navigator>
     )
 }

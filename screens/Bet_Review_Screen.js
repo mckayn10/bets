@@ -54,7 +54,6 @@ export default function Bet_Review_Screen(props) {
         sendBetResponse(bet, notificationType)
         deleteNotification(notiId)
         props.navigation.navigate('Notifications')
-
     }
     const handleAccept = () => {
         if(notiData.type === 'betUpdate'){

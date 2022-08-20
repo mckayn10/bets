@@ -17,6 +17,7 @@ import UploadImage from '../components/UploadImage';
 import { getProfilePic } from '../store/actions/auth';
 import * as Notifications from 'expo-notifications';
 
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -50,7 +51,7 @@ function Home_Screen(props) {
 
     Animated.timing(activeAnimation, {
       toValue: 1,
-      duration: 220,
+      duration: 400,
       useNativeDriver: false
     }).start()
   }
@@ -58,7 +59,7 @@ function Home_Screen(props) {
   const animateComplete = () => {
     Animated.timing(activeAnimation, {
       toValue: 0.5,
-      duration: 220,
+      duration: 400,
       useNativeDriver: false
     }).start()
   }
@@ -66,7 +67,7 @@ function Home_Screen(props) {
   const animateFeed = () => {
     Animated.timing(activeAnimation, {
       toValue: 0,
-      duration: 220,
+      duration: 400,
       useNativeDriver: false
     }).start()
   }
@@ -74,7 +75,7 @@ function Home_Screen(props) {
   const dispatch = useDispatch()
 
   const bets = useSelector(state => state.bets.bets)
-  const friendsBets = useSelector(state => state.bets.feedBets)
+  const allFeedBets = useSelector(state => state.bets.feedBets)
   const userId = useSelector(state => state.auth.userId)
 
   const user = useSelector(state => state.auth.userInfo)
@@ -91,7 +92,6 @@ function Home_Screen(props) {
   }, [user])
 
   useEffect(() => {
-    console.log('mount home', bets.length)
     dispatch(fetchBets())
     dispatch(fetchFeedBets())
     dispatch(getUser())
@@ -108,7 +108,7 @@ function Home_Screen(props) {
     getPendingBets()
     getCompletedBets()
     getFeedBets()
-  }, [bets, friendsBets])
+  }, [bets, allFeedBets])
 
 
   const getCompletedBets = () => {
@@ -131,7 +131,6 @@ function Home_Screen(props) {
   }
 
   const getLimitedCompletedBets = (getMore = false) => {
-    console.log('completed bets length', completedBets.length)
     if(completedBets.length > 0){
       // let limited = completedBets.splice(0, endIndex)
       // setCompletedBets(completedBets)
@@ -143,15 +142,15 @@ function Home_Screen(props) {
   }
 
   const getFeedBets = () => {
-    if(friendsBets.length <= 0){
+    if(allFeedBets.length <= 0){
       return
     }
 
-    friendsBets.sort(function (x, y) {
+    allFeedBets.sort(function (x, y) {
       return y.date - x.date;
     })
 
-    setFeedBets(friendsBets)
+    setFeedBets(allFeedBets)
 
   }
 
@@ -185,26 +184,9 @@ function Home_Screen(props) {
   }
 
   return (
-
     <View style={styles.container}>
       <NavBar props={props} />
       <View style={styles.toggleScreenContainer}>
-        {/*<FontAwesome*/}
-        {/*    name="globe"*/}
-        {/*    style={[styles.toggleBtn, styles.toggleText]}*/}
-        {/*    onPress={() => toggleButtons('feed')}*/}
-        {/*/>*/}
-        {/*<FontAwesome*/}
-        {/*    name="check-circle"*/}
-        {/*    style={[styles.toggleBtn, styles.toggleText]}*/}
-        {/*    onPress={() => toggleButtons('complete')}*/}
-        {/*/>*/}
-        {/*<FontAwesome*/}
-        {/*    name="clock-o"*/}
-        {/*    style={[styles.toggleBtn, styles.toggleText]}*/}
-        {/*    onPress={() => toggleButtons('pending')}*/}
-
-        {/*/>*/}
         <Pressable  style={[styles.toggleBtn]}  onPress={() => toggleButtons('feed')}>
           <HeaderText style={styles.toggleText} >FEED</HeaderText>
         </Pressable>
@@ -219,24 +201,6 @@ function Home_Screen(props) {
       {showScreen == 'complete' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={limitedCompleted} permissions={true} personId={userId} /> : null}
       {showScreen == 'pending' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={pendingBets} permissions={true} personId={userId} /> : null}
       {showScreen == 'feed' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={feedBets} feed={true} permissions={true} personId={userId} /> : null}
-      {/*<TouchableOpacity*/}
-      {/*  style={styles.btnContainer}*/}
-      {/*>*/}
-      {/*  <Button*/}
-      {/*    title="Create New Bet"*/}
-      {/*    type="solid"*/}
-      {/*    buttonStyle={styles.createBetBtn}*/}
-      {/*    titleStyle={styles.createBetBtn}*/}
-      {/*    onPress={() => props.navigation.navigate('Create Bet')}*/}
-      {/*  />*/}
-      {/*</TouchableOpacity>*/}
-      {/*{ <AntDesign*/}
-      {/*    name="pluscircle"*/}
-      {/*    size={50}*/}
-      {/*    color={Colors.primaryColor}*/}
-      {/*    style={styles.addIcon}*/}
-      {/*    onPress={() => props.navigation.navigate('Create Bet')}*/}
-      {/*/> }*/}
     </View>
 
   );

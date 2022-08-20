@@ -64,6 +64,7 @@ export const fetchFeedBets = () => {
                     }
                     return res;
                 }
+                idsList.push(userId)
                 let chunkedArr = sliceIntoChunks(idsList, 10)
 
                 let betsArr = []

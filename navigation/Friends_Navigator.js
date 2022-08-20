@@ -75,22 +75,6 @@ const Friends_Navigator = (props) => {
                     }}
                 />
             </Stack.Group>
-            <Stack.Group
-                screenOptions={{
-                    presentation: 'modal'
-                }}>
-                <Stack.Screen
-                    name="Create Bet"
-                    component={Create_Bet_Screen}
-                />
-                <Stack.Screen
-                    name="View Bet"
-                    component={View_Bet_Navigator}
-                    options={{
-                        headerShown: false
-                    }}
-                />
-            </Stack.Group>
         </Stack.Navigator>
     )
 }

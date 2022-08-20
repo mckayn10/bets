@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import Colors from '../constants/colors'
 import BetCard from './BetCard'
 import { MaterialIcons } from '@expo/vector-icons';
-import { fetchBets } from '../store/actions/bets';
+import {fetchBets, fetchFeedBets} from '../store/actions/bets';
 import HeaderText from './HeaderText'
 import colors from '../constants/colors'
 
@@ -19,7 +19,11 @@ function BetList(props) {
     const loadBets = () => {
         setIsRefreshing(true)
         try {
-            dispatch(fetchBets())
+            if(props.feed){
+                dispatch(fetchFeedBets())
+            }else {
+                dispatch(fetchBets())
+            }
         }
         catch (err) {
             console.error(err)
@@ -28,7 +32,6 @@ function BetList(props) {
     }
 
     const endReached = () => {
-        console.log('end reached')
         // props.onEndReached()
     }
 

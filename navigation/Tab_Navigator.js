@@ -36,14 +36,17 @@ export default function Tab_Navigator() {
         setUnseenNotis(unseenArr.length)
         
     }, [notifications])
+    let tabColor = Colors.backgroundColor
+    let navSecondaryColor = Colors.primaryColor
+
 
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
-                tabBarActiveTintColor: Colors.backgroundColor,
-                tabBarInactiveTintColor: Colors.backgroundColor,
+                tabBarActiveTintColor: tabColor,
+                tabBarInactiveTintColor: tabColor,
                 tabBarStyle: {
-                    backgroundColor: Colors.primaryColor,
+                    backgroundColor: navSecondaryColor,
                     height: 100,
                     paddingLeft: 10,
                     paddingRight: 10
@@ -64,51 +67,51 @@ export default function Tab_Navigator() {
                     }
 
                     if (route.name === 'Home Tab') {
-                        myStyles.borderTopColor = focused ? Colors.backgroundColor : 'transparent'
+                        myStyles.borderTopColor = focused ? tabColor : 'transparent'
                         iconName = focused
                             ? 'home'
                             : 'ios-home-outline';
-                        color = Colors.backgroundColor
+                        color = tabColor
                         size = 28
 
                     } else if (route.name === 'Friends Tab') {
-                        myStyles.borderTopColor = focused ? Colors.backgroundColor : 'transparent'
+                        myStyles.borderTopColor = focused ? tabColor : 'transparent'
                         iconName = focused ? 'md-people' : 'people-outline';
                         size = 30
-                        color = Colors.backgroundColor
+                        color = tabColor
 
                     }
                     else if (route.name === 'Notifications Tab') {
-                        myStyles.borderTopColor = focused ? Colors.backgroundColor : 'transparent'
+                        myStyles.borderTopColor = focused ? tabColor : 'transparent'
                         iconName = focused ? 'notifications-sharp' : 'notifications-outline';
-                        color = Colors.backgroundColor
+                        color = tabColor
                         size = 28
 
                     }
                     else if (route.name === 'Add Tab') {
-                        myStyles.borderTopColor = focused ? Colors.backgroundColor : 'transparent'
+                        myStyles.borderTopColor = focused ? tabColor : 'transparent'
                         iconName = 'add-circle';
                         size = 60
-                        color = Colors.backgroundColor
+                        color = tabColor
 
                     }
                     else if (route.name === 'Profile Tab') {
                         size = 28
-                        myStyles.borderTopColor = focused ? Colors.backgroundColor : 'transparent'
+                        myStyles.borderTopColor = focused ? tabColor : 'transparent'
                         iconName = focused ? 'person-circle-sharp' : 'person-circle-outline';
-                        color = Colors.backgroundColor
+                        color = tabColor
                     }
                     else if (route.name === 'Settings Tab') {
-                        myStyles.borderTopColor = focused ? Colors.backgroundColor : 'transparent'
+                        myStyles.borderTopColor = focused ? tabColor : 'transparent'
                         iconName = focused ? 'settings' : 'settings-outline';
-                        color = Colors.backgroundColor
+                        color = tabColor
                         size = 28
 
                     }
                     else if (route.name === 'Stats Tab') {
                         myStyles.borderTopColor = focused ? Colors.backgroundColor : 'transparent'
                         iconName = focused ? 'stats-chart' : 'stats-chart-outline';
-                        color = Colors.backgroundColor
+                        color = tabColor
                         size = 28
 
                     }
@@ -152,7 +155,6 @@ export default function Tab_Navigator() {
                 listeners={({navigation}) => ({
                     tabPress: event => {
                         event.preventDefault()
-                        console.log("HELLO HELLO")
                         navigation.navigate('Create Bet')
                     }
                 })}

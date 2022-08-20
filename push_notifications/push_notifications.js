@@ -2,7 +2,6 @@ import * as Notifications from "expo-notifications";
 import {Alert} from "react-native";
 
 export const sendPushNotificationHandler = async (data) => {
-    console.log(data)
     fetch("https://exp.host/--/api/v2/push/send", {
         method: 'POST',
         headers: {
@@ -20,7 +19,6 @@ export const sendPushNotificationHandler = async (data) => {
                    response.data.id
                ]
            }
-           console.log('data to send', data)
            fetch("https://exp.host/--/api/v2/push/getReceipts", {
                method: 'POST',
                headeers: {
@@ -41,7 +39,6 @@ export const sendPushNotificationHandler = async (data) => {
 }
 
 export const configurePushNotifications = async () =>{
-    console.log('HAHAHAHAHAH')
     const {status} = await Notifications.getPermissionsAsync();
     let finalStatus = status;
 
@@ -49,7 +46,6 @@ export const configurePushNotifications = async () =>{
         const {status} = await Notifications.requestPermissionsAsync();
         finalStatus = status;
     }
-    console.log({finalStatus})
     if(finalStatus !== 'granted'){
         Alert.alert(
             'Permission Required',
@@ -61,6 +57,5 @@ export const configurePushNotifications = async () =>{
     const pushTokenData = await Notifications.getExpoPushTokenAsync({
         experienceId: '@mnilsdev10/mybetz'
     });
-    console.log({pushTokenData})
     return pushTokenData.data
 }

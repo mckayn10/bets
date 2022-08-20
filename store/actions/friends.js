@@ -38,8 +38,6 @@ export const fetchAllFriendsIds = (userId) => {
             querySnapshot.forEach((doc) => {
                 idsList.unshift(doc.id)
             });
-            console.log({idsList})
-
         })
 }
 
@@ -147,7 +145,6 @@ export const blockFriend = (friendId) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
 
-        console.log('hello hello hello ')
         friendsRef.doc(friendId).collection('blockedBy').doc(userId).set({id: userId})
             .then(() => {
                 console.log("Person blockedBy list successfully updated");
@@ -169,7 +166,6 @@ export const unblockFriend = (friendId) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
 
-        console.log('hello hello hello ')
         friendsRef.doc(friendId).collection('blockedBy').doc(userId).delete()
             .then(() => {
                 console.log("Person blockedBy list successfully updated");

@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Pressable, Image } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Pressable, Image, Alert} from 'react-native';
 import Colors from '../constants/colors';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {AntDesign, MaterialCommunityIcons} from '@expo/vector-icons';
 import { getProfilePic } from '../store/actions/auth';
 import CachedImage from 'react-native-expo-cached-image';
 import { placeholderPic } from '../constants/urls';
-
+import {Button} from "react-native-elements";
+import {completedCriteria} from "../constants/utils";
+import {updateBet} from "../store/actions/bets";
+import {deleteNotification, sendBetResponse} from "../store/actions/notifications";
 
 
 export default function BetCard(props) {
     const [profileImage, setProfileImage] = useState()
     const userId = useSelector(state => state.auth.userId)
     const user = useSelector(state => state.auth.userInfo)
+    const dispatch = useDispatch()
 
-    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id, date_complete } = props.bet
+
+    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id, date_complete, is_open } = props.bet
     const showNotAccepted = is_verified && !is_accepted
     const parsedDateUpdated = new Date(date_complete)
     const parsedDateCreated = new Date(date)
@@ -79,19 +84,93 @@ export default function BetCard(props) {
         if(props.feed){
             if(is_complete){
                 if(creator_id == won_bet){
-                    return 'won a bet with'
+                    return ' won a bet with '
                 } else {
-                    return 'lost a bet with'
+                    return ' lost a bet with '
                 }
             } else {
                 if(is_accepted || !is_verified){
-                    return 'bet with'
+                    return ' bet with '
                 } else {
-                    return 'sent a bet to'
+                    return ' sent a bet to '
                 }
             }
         }
 
+    }
+    const handleAcceptOpenBetOffer = () => {
+        let updatedBet = props.bet
+        updatedBet.is_accepted = true
+        updatedBet.other_id = userId
+        updatedBet.other_bettor = user
+        updatedBet.is_open = false
+        updatedBet.is_verified = true
+        let statusChanged = completedCriteria(updatedBet)
+        let notificationType = 'betAccept'
+
+        try {
+            dispatch(updateBet(updatedBet, statusChanged))
+        } catch (err) {
+            console.error(err)
+        }
+        sendBetResponse(updatedBet, notificationType)
+    }
+
+    const confirmAcceptOpenBet = () => {
+        return Alert.alert(
+            "Are you sure you want to accept this bet offer?",
+            "",
+            [
+                {
+                    text: "No",
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        handleAcceptOpenBetOffer()
+                    },
+                },
+            ]
+        );
+    };
+
+    const getOpenBetTitle = () => {
+        if(props.feed){
+            return (
+                <View>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                            <Text onPress={() => openPersonProfile(creator)} style={{fontWeight: 'bold'}}>{creator_id === userId ? 'You' : `${creator.firstName}` } </Text>
+                            <Text>{creator_id === userId ? 'have' : 'has' } </Text>
+                            <Text>posted a bet offer</Text>
+                        </Text>
+                    </View>
+                    <Text style={styles.date}>{parsedDateCreated.toLocaleDateString()}</Text>
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                            <Text onPress={() => openPersonProfile(creator)} style={{fontWeight: 'bold'}}>Open Bet Offer</Text>
+                        </Text>
+                    </View>
+                    <Text style={styles.date}>{parsedDateCreated.toLocaleDateString()}</Text>
+                </View>
+            )
+        }
+    }
+
+    const openBetButtons = () => {
+        return (
+            <Button
+                title='Accept'
+                buttonStyle={[styles.btn]}
+                titleStyle={{ color: 'white', fontSize: 14 }}
+                onPress={() => confirmAcceptOpenBet()}
+            />
+        )
     }
 
     const getBetTitle = () => {
@@ -100,12 +179,17 @@ export default function BetCard(props) {
                 <View>
                     <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         {is_verified
-                            ? <AntDesign name='checkcircle' size={13} color={Colors.primaryColor} style={{marginRight: 3}}/>
+                            ? <AntDesign name='checkcircle' size={13} color={Colors.primaryColor} style={{marginRight: 3, alignSelf: 'flex-start', marginTop: 2}}/>
                             : null
                         }
-                        <Pressable onPress={() => openPersonProfile(creator)}><Text style={{fontWeight: 'bold'}}>{creator_id === userId ? 'You' : creator.firstName } </Text></Pressable>
-                        <Pressable style={{fontWeight: 'light'}}><Text>{getBetTitleResult()}</Text></Pressable>
-                        <Pressable onPress={() => openPersonProfile(other_bettor)}><Text style={{fontWeight: 'bold'}}> {other_id === userId ? 'You' : other_bettor.firstName } </Text></Pressable>
+                        <Text style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                            <Text onPress={() => openPersonProfile(creator)} style={{fontWeight: 'bold'}}>{creator_id === userId ? 'You' : creator.firstName }</Text>
+                             {getBetTitleResult()}
+                            <Text onPress={() => openPersonProfile(other_bettor)} style={is_verified ? {fontWeight: 'bold'} : {fontWeight: 'normal'}}>{other_id === userId ? 'You' : `${other_bettor.firstName}` }</Text>
+                        </Text>
+                        {/*<Pressable onPress={() => openPersonProfile(creator)}><Text style={{fontWeight: 'bold'}}>{creator_id === userId ? 'You' : creator.firstName } </Text></Pressable>*/}
+                        {/*<Pressable style={{fontWeight: 'light'}}><Text>{getBetTitleResult()}</Text></Pressable>*/}
+                        {/*<Pressable onPress={() => openPersonProfile(other_bettor)}><Text style={{fontWeight: 'bold', flexWrap: 'wrap'}}> {other_id === userId ? 'You' : other_bettor.firstName } </Text></Pressable>*/}
                     </View>
                     <Text style={styles.date}>{parsedDateCreated.toLocaleDateString()}</Text>
                 </View>
@@ -118,7 +202,7 @@ export default function BetCard(props) {
                             ? <AntDesign name='checkcircle' size={13} color={Colors.primaryColor} style={{marginRight: 3}}/>
                             : null
                         }
-                        <Text style={{fontWeight: 'bold'}} onPress={() => openPersonProfile(infoToDisplayBasedOnUser.opponent)}>{infoToDisplayBasedOnUser.otherBettorname}</Text>
+                        <Text style={is_verified ? {fontWeight: 'bold'} : {fontWeight: 'normal'}} onPress={() => openPersonProfile(infoToDisplayBasedOnUser.opponent)}>{infoToDisplayBasedOnUser.otherBettorname}</Text>
                     </View>
                     <View >
                         <Text style={styles.date}>{parsedDateCreated.toLocaleDateString()}</Text>
@@ -131,9 +215,22 @@ export default function BetCard(props) {
 
 
     const displayStatus = () => {
-        if (!is_accepted) {
+        if(is_open){
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, marginTop: 3 }}>Open</Text>
+        }
+        else if (!is_accepted && is_verified) {
             // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-minus-outline" size={22} color={Colors.red} />
             return <Text style={{ alignSelf: 'flex-end', fontSize: 10, marginTop: 3 }}>Pending</Text>
+        }
+        else if (!is_verified && !is_complete) {
+            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.primaryColor, marginTop: 3 }}>Pending</Text>
+
+        }
+        else if (!is_accepted && !is_verified && is_complete) {
+            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.primaryColor, marginTop: 3 }}>Complete</Text>
+
         }
         else if (is_accepted && !is_complete) {
             // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
@@ -149,21 +246,20 @@ export default function BetCard(props) {
     return (
         <Pressable style={styles.container} onPress={() => openViewBet()}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                <View style={{flexDirection: 'row', width: '75%'}}>
-                    <View>
+                <View style={{flexDirection: 'row', width: '70%'}}>
+                    <Pressable onPress={() => openPersonProfile(creator)}>
                         <CachedImage
-                            onPress={() => openPersonProfile(creator)}
                             style={styles.image}
                             source={{
                                 uri: profileImage,
                                 // headers: { Authorization: 'token' }
                             }}
                         />
-                    </View>
+                    </Pressable>
                     <View style={styles.descriptionContainer}>
                         <Pressable style={styles.personContainer}>
-                            <View style={{ flexDirection: 'row' }}>
-                                {getBetTitle()}
+                            <View style={{ flexDirection: 'row', paddingRight: 12}}>
+                                {is_open ? getOpenBetTitle() : getBetTitle()}
                             </View>
                         </Pressable>
                         <Text style={styles.description} numberOfLines={5}>{description}</Text>
@@ -171,7 +267,7 @@ export default function BetCard(props) {
                 </View>
 
                 <View style={styles.amountContainer}>
-                    {creator_id === userId || other_id === userId
+                    {creator_id === userId || other_id === userId || is_open
                         ? <Text style={[ styles.amount, !isPending ? (won_bet != props.personId ? styles.negative : styles.positive) : '']}>
                             {!isPending ? (won_bet != props.personId ? '-' : '+') : ''}${parseFloat(Math.abs(amount)).toFixed(2)}
                           </Text>
@@ -180,6 +276,7 @@ export default function BetCard(props) {
                     {displayStatus()}
                 </View>
             </View>
+            {is_open && creator_id != userId ? openBetButtons() : null}
             {/*<View style={styles.bottomContainer}>*/}
 
             {/*</View>*/}
@@ -245,9 +342,14 @@ const styles = StyleSheet.create({
     },
     image: {
         alignSelf: 'flex-start',
-        width: 40,
-        height: 40,
+        width: 50,
+        height: 50,
         borderRadius: 100,
         marginRight: 8,
+    },
+    btn: {
+        width: 100,
+        alignSelf: 'flex-end',
+        fontSize: 12
     }
 });

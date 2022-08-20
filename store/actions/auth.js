@@ -82,7 +82,6 @@ export const getUserPic = () => {
 const checkForUserPushId = async (user) => {
     if(!user.pushId){
         user.pushId = await configurePushNotifications()
-        console.log(user.pushId)
         peopleRef.doc(user.id).update(user)
             .then(() => {
                 console.log("Updated Push ID");
@@ -143,7 +142,6 @@ export const signUp = (userInfo) => {
         dispatch(authenticate(resData.localId, resData.idToken))
 
         const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000)
-        console.log({expirationDate})
         saveDataToStorage(resData.idToken, resData.localId, expirationDate, userInfo)
     }
 }
