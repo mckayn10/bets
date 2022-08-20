@@ -10,7 +10,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import MySearchableDropdown from '../components/SearchableDropdown';
 import * as BadWords from 'badwords/array'
-import Bet_Type_Screen from "./Bet_Type_Screen";
 
 
 const Create_Bet_Screen = props => {
@@ -257,7 +256,7 @@ return (
                 : null
             }
 
-            <ScrollView style={styles.inputContainer}   scrollEnabled={false}>
+            <ScrollView style={styles.inputContainer} scrollEnabled={false}>
                 <View style={openBet ? {display: 'none'} : null}>
                     <Input
                         onKeyPress={({ nativeEvent }) => {

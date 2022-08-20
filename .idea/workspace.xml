@@ -2,20 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/screens/Bet_Type_Screen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/BetCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/BetList.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/SearchableDropdown.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/SearchableDropdown.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigation/Friends_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Friends_Navigator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigation/Notifications_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Notifications_Navigator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigation/Settings_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Settings_Navigator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigation/Tab_Navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/Tab_Navigator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Bet_Review_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Bet_Review_Screen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Home_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Home_Screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/actions/bets.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/bets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/View_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/View_Bet_Screen.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

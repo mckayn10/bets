@@ -18,7 +18,6 @@ export default function BetCard(props) {
     const user = useSelector(state => state.auth.userInfo)
     const dispatch = useDispatch()
 
-
     const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id, date_complete, is_open } = props.bet
     const showNotAccepted = is_verified && !is_accepted
     const parsedDateUpdated = new Date(date_complete)
@@ -77,7 +76,6 @@ export default function BetCard(props) {
                     isUser: false
                 })
             }
-
         }
     }
     const getBetTitleResult = () => {
