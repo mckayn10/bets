@@ -4,7 +4,6 @@ import Colors from '../constants/colors';
 import { useSelector, useDispatch } from 'react-redux';
 import {AntDesign, MaterialCommunityIcons} from '@expo/vector-icons';
 import { getProfilePic } from '../store/actions/auth';
-import CachedImage from 'react-native-expo-cached-image';
 import { placeholderPic } from '../constants/urls';
 import {Button} from "react-native-elements";
 import {completedCriteria} from "../constants/utils";

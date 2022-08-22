@@ -34,6 +34,7 @@ function Home_Screen(props) {
   const [limitedCompleted, setLimitedCompletedBets] = useState([]);
   const [pendingBets, setPendingBets] = useState([]);
   const [feedBets, setFeedBets] = useState([]);
+  const [usersBets, setUsersBets] = useState([]);
   const [startIndex, setStartIndex] = useState(0)
   const [endIndex, setEndIndex] = useState(8)
   const [activeAnimation, setActiveAnimation] = useState(new Animated.Value(0))
@@ -92,7 +93,7 @@ function Home_Screen(props) {
   }, [user])
 
   useEffect(() => {
-    dispatch(fetchBets())
+    // dispatch(fetchBets())
     dispatch(fetchFeedBets())
     dispatch(getUser())
     dispatch(fetchAllFriends())
@@ -105,21 +106,24 @@ function Home_Screen(props) {
   }, [])
 
   useEffect(() => {
-    getPendingBets()
-    getCompletedBets()
-    getFeedBets()
-  }, [bets, allFeedBets])
+    setPendingUserBets()
+    setCompletedUserBets()
+    setUserFeedBets()
+
+  }, [allFeedBets])
 
 
-  const getCompletedBets = () => {
-    if(bets.length <= 0){
+  const setCompletedUserBets = () => {
+    if(feedBets.length <= 0){
       return
     }
     let completed = []
-    bets.forEach((bet) => {
-      let isComplete = completedCriteria(bet)
-      if (isComplete) {
-        completed.push(bet)
+    feedBets.forEach((bet) => {
+      if(bet.creator_id == userId || bet.other_id === userId){
+        let isComplete = completedCriteria(bet)
+        if (isComplete) {
+          completed.push(bet)
+        }
       }
     })
     completed.sort(function (x, y) {
@@ -141,7 +145,7 @@ function Home_Screen(props) {
 
   }
 
-  const getFeedBets = () => {
+  const setUserFeedBets = () => {
     if(allFeedBets.length <= 0){
       return
     }
@@ -154,15 +158,17 @@ function Home_Screen(props) {
 
   }
 
-  const getPendingBets = () => {
-    if(bets.length <= 0){
+  const setPendingUserBets = () => {
+    if(feedBets.length <= 0){
       return
     }
     let pending = []
-    bets.forEach((bet) => {
-      let isPending = pendingCriteria(bet)
-      if (isPending) {
-        pending.push(bet)
+    feedBets.forEach((bet) => {
+      if(bet.creator_id == userId || bet.other_id === userId) {
+        let isPending = pendingCriteria(bet)
+        if (isPending) {
+          pending.push(bet)
+        }
       }
     })
     pending.sort(function (x, y) {

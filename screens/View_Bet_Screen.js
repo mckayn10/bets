@@ -20,6 +20,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import TestComponent from '../components/TestComponent'
 import VenmoBtn from '../components/VenmoBtn';
 import {reportItemDialog} from "../utils/utils";
+import Edit_Bet_Screen from "./Edit_Bet_Screen";
 
 
 const View_Bet_Screen = props => {
@@ -43,6 +44,7 @@ const View_Bet_Screen = props => {
         props.navigation.setOptions({
             title: editMode ? 'Update Bet' : 'Bet Details',
             headerLeft: () => {
+
                 return (
                     editMode ?
                         <TouchableOpacity {...props}>
@@ -54,21 +56,7 @@ const View_Bet_Screen = props => {
                                 onPress={() => setEditMode(false)}
                             />
                         </TouchableOpacity>
-                        :
-                        <TouchableOpacity {...props}>
-                            <AntDesign
-                                name="exclamationcircleo"
-                                size={22}
-                                color="red"
-                                // style={{ paddingBottom: 5 }}
-                                onPress={() => reportItemDialog({
-                                    item: props.route.params.bet,
-                                    reporter: user,
-                                    type: 'Bet'
-
-                                })}
-                            />
-                        </TouchableOpacity>
+                        : <View></View>
                 )
             },
             headerRight: () => {
@@ -83,7 +71,7 @@ const View_Bet_Screen = props => {
                         />
                     </TouchableOpacity>
                 )
-            },
+            }
         })
     }, [editMode])
 
@@ -229,62 +217,34 @@ const View_Bet_Screen = props => {
     };
 
     return (
-        <View style={[styles.container]}>
-            {/* <View style={styles.titleContainer}>
+        !editMode
+            ?
+            <View style={[styles.container]}>
+                {/* <View style={styles.titleContainer}>
 
                 <Text style={styles.pageTitle}>Bet Details</Text>
             </View> */}
-            <View style={styles.detailsContainer}>
-                {!is_open
-                    ?
-                    <View style={editMode ? [styles.editDetailRow] : [styles.detailRow]}>
-                        <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bettors: </Text>
-                        {!editMode
-                            ? <Text style={styles.betText}>{creator.firstName} vs. {other_bettor.firstName}</Text>
-                            :
-                            <Input
-                                style={styles.input}
-                                leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
-                                onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
-                                defaultValue={other_bettor.firstName + ' ' + other_bettor.lastName}
-                                disabled={hasPermission ? false : true}
-                            />
-                        }
-                    </View>
-                    : null
-                }
-
-                <View style={editMode ? styles.editDetailRow : styles.detailRow}>
-                    <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bet Amount: </Text>
-                    {!editMode
-                        ? <Text style={styles.betText}>${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
-                        : <Input
-                            style={styles.input}
-                            placeholder='0.00'
-                            leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={Colors.primaryColor} />}
-                            keyboardType='numeric'
-                            onChangeText={betAmount => setBetAmount(betAmount)}
-                            defaultValue={amount.toString() + '.00'}
-                        />
+                <View style={styles.detailsContainer}>
+                    {!is_open
+                        ?
+                        <View style={[styles.detailRow]}>
+                            <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bettors: </Text>
+                            <Text style={styles.betText}>{creator.firstName} vs. {other_bettor.firstName}</Text>
+                        </View>
+                        : null
                     }
 
-                </View>
-                <View behavior='position'>
-                    <View style={editMode ? styles.editDetailRow : styles.detailRow}>
-                        <Text style={[styles.betText, { fontWeight: 'bold', width: '30%' }]} >Description: </Text>
-                        {!editMode
-                            ? <Text style={[styles.betText, styles.description]} numberOfLines={4}>{description}</Text>
-                            : <Input
-                                style={styles.input}
-                                onChangeText={betDescription => setBetDescription(betDescription)}
-                                defaultValue={description}
-                            />
-                        }
-
+                    <View style={styles.detailRow}>
+                        <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bet Amount: </Text>
+                        <Text style={styles.betText}>${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
                     </View>
-                </View>
-                {!editMode
-                    ? <View>
+                    <View behavior='position'>
+                        <View style={styles.detailRow}>
+                            <Text style={[styles.betText, { fontWeight: 'bold', width: '30%' }]} >Description: </Text>
+                            <Text style={[styles.betText, styles.description]} numberOfLines={4}>{description}</Text>
+                        </View>
+                    </View>
+                    <View>
                         <View style={[styles.detailRow, styles.betStatusContainer]}>
                             <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Status: </Text>
                             <Text style={[styles.coloredCompleteText, styles.statusText]}>{betStatusText}</Text>
@@ -297,38 +257,10 @@ const View_Bet_Screen = props => {
                             </View>
                             : null
                         }
-
-
-
                     </View>
-                    : <View style={is_open ? {display: 'none'} : null}>
-                        <View style={[styles.detailRow, styles.betStatusContainer]}>
-                            <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Is this bet complete? </Text>
-                            <Switch
-                                value={betComplete}
-                                color={Colors.primaryColor}
-                                onValueChange={() => setBetComplete(!betComplete)}
-                            />
-                        </View>
-                        {betComplete
-                            ? <View style={[styles.detailRow, styles.betStatusContainer]}>
-                                <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Did you win this bet? </Text>
-                                <Switch
-                                    value={betWon}
-                                    color={Colors.primaryColor}
-                                    onValueChange={() => setBetWon(!betWon)}
-                                />
-                            </View>
-                            : null
-                        }
-
-                    </View>
-                }
-            </View>
-            {userId == creator_id || userId == other_id
-                ? <View style={styles.btnsPosition}>
-                    {!editMode
-                        ?
+                </View>
+                {userId == creator_id || userId == other_id
+                    ? <View style={styles.btnsPosition}>
                         <View>
                             <VenmoBtn
                                 otherPerson={otherPerson}
@@ -353,24 +285,16 @@ const View_Bet_Screen = props => {
                                 />
                             </View>
                         </View>
-                        : <View style={styles.btnContainer}>
-                            <Button
-                                icon={
-                                    <Feather name="check-circle" size={24} color='white' />
-                                }
-                                iconRight
-                                title={hasPermission ? 'Save Changes  ' : 'Request Changes  '}
-                                type="solid"
-                                buttonStyle={styles.updateButton}
-                                onPress={() => hasPermission ? handleUpdateBet() : showUpdateAlert()}
-                            />
-                        </View>
-                    }
-                </View>
-                : null
-            }
+                    </View>
+                    : null
+                }
 
-        </View>
+            </View>
+            : <Edit_Bet_Screen
+                {...props}
+                bet={props.route.params.bet}
+                permissions={props.route.params.permissions}
+            />
     )
 
 }

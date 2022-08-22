@@ -14,6 +14,7 @@ const initialState = {
 
 const betsReducer = (state = initialState, action) => {
     let updatedArr = [...state.bets]
+    let updatedFeedArr = [...state.feedBets]
     switch (action.type) {
         case REMOVE_DATA: {
             return initialState
@@ -24,7 +25,8 @@ const betsReducer = (state = initialState, action) => {
             return {...state, feedBets: action.bets }
         case CREATE_BET:
             updatedArr.unshift(action.bet)
-            return { ...state, bets: updatedArr }
+            updatedFeedArr.unshift(action.bet)
+            return { ...state, bets: updatedArr, feedBets: updatedFeedArr }
 
         case DELETE_BET:
             updatedArr.forEach((bet, index) => {
@@ -32,7 +34,12 @@ const betsReducer = (state = initialState, action) => {
                     updatedArr.splice(index, 1)
                 }
             })
-            return { ...state, bets: updatedArr }
+            updatedFeedArr.forEach((bet, index) => {
+                if (bet.id === action.id) {
+                    updatedFeedArr.splice(index, 1)
+                }
+            })
+            return { ...state, bets: updatedArr, feedBets: updatedFeedArr }
 
         case UPDATE_BET:
 
@@ -42,8 +49,13 @@ const betsReducer = (state = initialState, action) => {
                     bet = newData
                 }
             })
+            updatedFeedArr.forEach((bet, index) => {
+                if (bet.id === newData.id) {
+                    bet = newData
+                }
+            })
+            return { ...state, bets: updatedArr, feedBets: updatedFeedArr }
 
-            return { ...state, bets: updatedArr }
         default:
             return state
     }

@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
 import Colors from '../constants/colors'
 import HeaderText from '../components/HeaderText';
-import {FontAwesome5, MaterialIcons} from '@expo/vector-icons';
+import {FontAwesome5, Ionicons, MaterialIcons} from '@expo/vector-icons';
 import BetList from '../components/BetList';
 import CachedImage from 'react-native-expo-cached-image';
 import {Button} from "react-native-elements";
+import Stats_Screen from "./Stats_Screen";
 
 function User_Profile_Screen(props) {
 
@@ -76,17 +77,17 @@ function User_Profile_Screen(props) {
                         type="outline"
                         buttonStyle={styles.isFriendBtn}
                         titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
-                        onPress={() => props.navigation.push('Edit Profile')}
+                        onPress={() => props.navigation.navigate('Edit Profile')}
                     />
                     {/*<Button*/}
                     {/*    icon={*/}
-                    {/*        <FontAwesome5 name="user-friends" size={12} color={Colors.primaryColor} />*/}
+                    {/*        <Ionicons name="stats-chart" size={15} color={Colors.primaryColor} />*/}
                     {/*    }*/}
-                    {/*    title={numFriends + ' ' + (numFriends === 1 ? 'friend' : 'friends')}*/}
+                    {/*    title='Stats'*/}
                     {/*    type="outline"*/}
                     {/*    buttonStyle={styles.isFriendBtn}*/}
                     {/*    titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}*/}
-                    {/*    onPress={() => handleViewFriends()}*/}
+                    {/*    onPress={() => props.navigation.navigate('Stats Screen')}*/}
                     {/*/>*/}
                 </View>
                 {/*<TouchableOpacity*/}
@@ -96,6 +97,9 @@ function User_Profile_Screen(props) {
                 {/*    <HeaderText style={styles.sendBetBtn}>{'Create New Bet'}</HeaderText>*/}
                 {/*</TouchableOpacity>*/}
             </View>
+            <Stats_Screen
+                useProp={true}
+            />
             {/*<View style={styles.toggleButtonsContainer}>*/}
             {/*    <Text style={showBetsfeed ? styles.activeToggleBtn : styles.toggleBtn} onPress={() => setShowBetsFeed(true)}>Bets Feed</Text>*/}
             {/*</View>*/}

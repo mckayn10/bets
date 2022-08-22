@@ -6,7 +6,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import HeaderText from '../components/HeaderText';
 import colors from '../constants/colors';
 import NotificationCard from '../components/NotificationCard';
-import { ScrollView } from 'react-native-gesture-handler';
 import Colors from '../constants/colors'
 import { markAsSeen } from '../store/actions/notifications';
 

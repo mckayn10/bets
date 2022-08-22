@@ -9,7 +9,7 @@ import colors from '../constants/colors';
 
 
 function Stats_Screen(props) {
-    let bets = props.route.params ? props.route.params.bets : useSelector(state => state.bets.bets)
+    let bets = !props.useProp ? props.route.params.bets : useSelector(state => state.bets.bets)
     const userId = useSelector(state => state.auth.userId)
 
     const totalBets = bets.length
@@ -107,12 +107,9 @@ function Stats_Screen(props) {
     const lostPercentage = !lostBetsCount() / completedBetsCount() ? 0 : parseFloat((lostBetsCount() / completedBetsCount()) * 100).toFixed(2)
     const perBetAvg = !averageWinningsPerBet() ? 0 : parseFloat(Math.abs(averageWinningsPerBet())).toFixed(2)
 
-    let totalAmountTitle = props.route.params ? `You've fleeced ` + props.route.params.person.firstName + ' for:' : 'Net Profit/Loss'
-
-
     return (
         <ScrollView>
-            <HeaderText style={styles.pageTitle}>{props.route.params ? 'You vs ' + props.route.params.person.firstName : 'My Stats'}</HeaderText>
+            <HeaderText style={styles.pageTitle}>{!props.useProp ? 'You vs ' + props.route.params.person.firstName : 'My Stats'}</HeaderText>
             <MyLineChart data={getChartData()}/>
 
             <View style={styles.container}>
