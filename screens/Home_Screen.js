@@ -34,7 +34,6 @@ function Home_Screen(props) {
   const [limitedCompleted, setLimitedCompletedBets] = useState([]);
   const [pendingBets, setPendingBets] = useState([]);
   const [feedBets, setFeedBets] = useState([]);
-  const [usersBets, setUsersBets] = useState([]);
   const [startIndex, setStartIndex] = useState(0)
   const [endIndex, setEndIndex] = useState(8)
   const [activeAnimation, setActiveAnimation] = useState(new Animated.Value(0))
@@ -110,7 +109,7 @@ function Home_Screen(props) {
     setCompletedUserBets()
     setUserFeedBets()
 
-  }, [allFeedBets])
+  }, [allFeedBets, bets])
 
 
   const setCompletedUserBets = () => {
@@ -118,13 +117,11 @@ function Home_Screen(props) {
       return
     }
     let completed = []
-    feedBets.forEach((bet) => {
-      if(bet.creator_id == userId || bet.other_id === userId){
+    bets.forEach((bet) => {
         let isComplete = completedCriteria(bet)
         if (isComplete) {
           completed.push(bet)
         }
-      }
     })
     completed.sort(function (x, y) {
       return y.date_complete - x.date_complete;
@@ -163,12 +160,10 @@ function Home_Screen(props) {
       return
     }
     let pending = []
-    feedBets.forEach((bet) => {
-      if(bet.creator_id == userId || bet.other_id === userId) {
+    bets.forEach((bet) => {
         let isPending = pendingCriteria(bet)
         if (isPending) {
           pending.push(bet)
-        }
       }
     })
     pending.sort(function (x, y) {

@@ -46,6 +46,17 @@ export const fetchBets = () => {
     }
 }
 
+const setUserBets = (allFeedBets, userId) => {
+        let betsArr = []
+
+        allFeedBets.forEach(bet => {
+            if(bet.creator_id === userId || bet.other_id === userId){
+                betsArr.push(bet)
+            }
+        })
+        dispatch({ type: GET_BETS, bets: betsArr })
+}
+
 export const fetchFeedBets = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
@@ -68,7 +79,8 @@ export const fetchFeedBets = () => {
                 let chunkedArr = sliceIntoChunks(idsList, 10)
 
                 let betsArr = []
-                let arrUniq = []
+                let feedBets = []
+                let userBets = []
                 chunkedArr.forEach(chunk => {
                     betsRef.where('creator_id', 'in', chunk).get()
                         .then(querySnapshot => {
@@ -76,6 +88,9 @@ export const fetchFeedBets = () => {
                                 let bet = doc.data()
                                 bet.id = doc.id
                                 betsArr.unshift(bet)
+                                if(bet.creator_id === userId || bet.other_id === userId){
+                                    userBets.unshift(bet)
+                                }
                             })
                             betsRef.where('other_id', 'in', chunk).get()
                                 .then(querySnapshot => {
@@ -83,9 +98,12 @@ export const fetchFeedBets = () => {
                                         let bet = doc.data()
                                         bet.id = doc.id
                                         betsArr.unshift(bet)
+                                        if(bet.creator_id === userId || bet.other_id === userId){
+                                            userBets.unshift(bet)
+                                        }
                                     })
                                     let uniqueIds = []
-                                    arrUniq = betsArr.filter(element => {
+                                    feedBets = betsArr.filter(element => {
                                         const isDuplicate = uniqueIds.includes(element.id);
 
                                         if (!isDuplicate) {
@@ -96,7 +114,8 @@ export const fetchFeedBets = () => {
                                     });
                                     dispatch({
                                         type: GET_FEED_BETS,
-                                        bets: arrUniq
+                                        feedBets: feedBets,
+                                        userBets: userBets
                                     })
                                 })
                         })

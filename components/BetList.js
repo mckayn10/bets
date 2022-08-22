@@ -19,11 +19,7 @@ function BetList(props) {
     const loadBets = () => {
         setIsRefreshing(true)
         try {
-            if(props.feed){
-                dispatch(fetchFeedBets())
-            }else {
-                dispatch(fetchBets())
-            }
+            dispatch(fetchFeedBets())
         }
         catch (err) {
             console.error(err)
