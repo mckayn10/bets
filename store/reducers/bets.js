@@ -22,7 +22,6 @@ const betsReducer = (state = initialState, action) => {
         case GET_BETS:
             return { ...state, bets: action.bets }
         case GET_FEED_BETS:
-
             return {...state, bets: action.userBets, feedBets: action.feedBets }
         case CREATE_BET:
             updatedArr.unshift(action.bet)

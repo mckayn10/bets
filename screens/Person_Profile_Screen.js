@@ -405,9 +405,6 @@ function Person_Profile_Screen(props) {
                     personId={person.id}
                 />
             }
-
-
-
         </SafeAreaView>
     )
 

@@ -113,7 +113,7 @@ function Home_Screen(props) {
 
 
   const setCompletedUserBets = () => {
-    if(feedBets.length <= 0){
+    if(bets.length <= 0){
       return
     }
     let completed = []
@@ -156,7 +156,7 @@ function Home_Screen(props) {
   }
 
   const setPendingUserBets = () => {
-    if(feedBets.length <= 0){
+    if(bets.length <= 0){
       return
     }
     let pending = []
@@ -174,6 +174,7 @@ function Home_Screen(props) {
 
   const toggleButtons = (screen) => {
     if(screen == 'complete'){
+
       animateComplete()
     } else if(screen == 'pending') {
       animatePending()
@@ -196,10 +197,11 @@ function Home_Screen(props) {
         </Pressable>
         <Pressable  style={[styles.toggleBtn]} onPress={() => toggleButtons('pending')} >
           <HeaderText style={[styles.toggleText]} >PENDING</HeaderText>
+
         </Pressable>
         <Animated.View style={[styles.animatedToggle, activeAnimatedStyle]} />
       </View>
-      {showScreen == 'complete' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={limitedCompleted} permissions={true} personId={userId} /> : null}
+      {showScreen == 'complete' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={completedBets} permissions={true} personId={userId} /> : null}
       {showScreen == 'pending' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={pendingBets} permissions={true} personId={userId} /> : null}
       {showScreen == 'feed' ? <BetList {...props} onEndReached={() => getLimitedCompletedBets(true)} bets={feedBets} feed={true} permissions={true} personId={userId} /> : null}
     </View>
