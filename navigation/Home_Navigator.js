@@ -44,6 +44,13 @@ const Home_Navigator = (props) => {
                     name="User Profile"
                     component={User_Profile_Navigator}
                 />
+                <Stack.Screen
+                    name="View Bet"
+                    component={View_Bet_Navigator}
+                    options={{
+                        headerShown: false
+                    }}
+                />
             </Stack.Group>
             <Stack.Group
                 screenOptions={{
@@ -57,13 +64,7 @@ const Home_Navigator = (props) => {
                     name="Create Bet"
                     component={Create_Bet_Screen}
                 />
-                <Stack.Screen
-                    name="View Bet"
-                    component={View_Bet_Navigator}
-                    options={{
-                        headerShown: false
-                    }}
-                />
+
                 <Stack.Screen
                     name="Add Venmo"
                     component={Add_Venmo_Screen}

@@ -54,6 +54,13 @@ export default function NotificationCard(props) {
         })
     }
 
+    const openViewBet = () => {
+        props.navigation.navigate('View Bet', {
+            bet: data.bet,
+            permissions: props.permissions
+        })
+    }
+
     const notificationCreator = () => {
         let notiPackage = {}
         switch (type) {
@@ -297,6 +304,28 @@ export default function NotificationCard(props) {
                     </View>
                 notiPackage.betDescription = data.description
                 notiPackage.message = " has offered to go double or nothing on your bet:"
+                return notiPackage
+
+            case 'commentAdded':
+                notiPackage.btns =
+                    <View style={styles.btnContainer}>
+                        <Button
+                            title='View Comment'
+                            buttonStyle={[styles.btnAccept, styles.btn]}
+                            titleStyle={styles.btnTitle}
+                            type='outline'
+                            onPress={() => openViewBet()}
+                        />
+                        <Button
+                            title='Dismiss'
+                            buttonStyle={[styles.btnDismiss, styles.btn]}
+                            titleStyle={[styles.btnTitle, { color: Colors.red }]}
+                            type='outline'
+                            onPress={() => dismissNotification()}
+                        />
+                    </View>
+                notiPackage.betDescription = data.description
+                notiPackage.message = " left a comment on your bet"
                 return notiPackage
         }
     }

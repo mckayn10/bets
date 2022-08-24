@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Pressable, Image, Alert} from 'react-native';
 import Colors from '../constants/colors';
 import { useSelector, useDispatch } from 'react-redux';
-import {AntDesign, MaterialCommunityIcons} from '@expo/vector-icons';
+import {AntDesign, FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons';
 import { getProfilePic } from '../store/actions/auth';
 import CachedImage from 'react-native-expo-cached-image';
 import { placeholderPic } from '../constants/urls';
@@ -10,15 +10,19 @@ import {Button} from "react-native-elements";
 import {completedCriteria} from "../constants/utils";
 import {updateBet} from "../store/actions/bets";
 import {deleteNotification, sendBetResponse} from "../store/actions/notifications";
+import {getBetComments} from "../utils/utils";
+import {FontAwesome} from "@expo/vector-icons";
 
 
 export default function BetCard(props) {
     const [profileImage, setProfileImage] = useState()
+    const [numComments, setNumComments] = useState(0)
     const userId = useSelector(state => state.auth.userId)
     const user = useSelector(state => state.auth.userInfo)
+    const comments = useSelector(state => state.bets.comments)
     const dispatch = useDispatch()
 
-    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id, date_complete, is_open } = props.bet
+    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id, date_complete, is_open, id } = props.bet
     const showNotAccepted = is_verified && !is_accepted
     const parsedDateUpdated = new Date(date_complete)
     const parsedDateCreated = new Date(date)
@@ -49,6 +53,13 @@ export default function BetCard(props) {
         })
     }, [props])
 
+    useEffect(() =>{
+        let numberOfComments = getBetComments(id, comments)
+        setNumComments(numberOfComments.length)
+    }, [comments])
+
+
+
     const openViewBet = () => {
         props.navigation.navigate('View Bet', {
             bet: props.bet,
@@ -65,6 +76,8 @@ export default function BetCard(props) {
             props.navigation.push('User Profile')
         }
         else if(infoToDisplayBasedOnUser.opponent.id){
+            console.log(props.route.name)
+
             if(props.route.name === 'Home'){
                 props.navigation.push('Person Profile', {
                     person: person,
@@ -260,7 +273,7 @@ export default function BetCard(props) {
                                 {is_open ? getOpenBetTitle() : getBetTitle()}
                             </View>
                         </Pressable>
-                        <Text style={styles.description} numberOfLines={5}>{description}</Text>
+                        <Text style={styles.description} numberOfLines={5}>{props.bet.description}</Text>
                     </View>
                 </View>
 
@@ -274,10 +287,14 @@ export default function BetCard(props) {
                     {displayStatus()}
                 </View>
             </View>
-            {is_open && creator_id != userId ? openBetButtons() : null}
-            {/*<View style={styles.bottomContainer}>*/}
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 8}}>
+                <Text style={{marginLeft: 59, fontSize: 15}}>{numComments} </Text>
+                <FontAwesome name="comments-o" size={20}  />
+                {is_open && creator_id != userId ? openBetButtons() : null}
+                {/*<View style={styles.bottomContainer}>*/}
 
-            {/*</View>*/}
+                {/*</View>*/}
+            </View>
 
         </Pressable>
 

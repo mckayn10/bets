@@ -4,21 +4,27 @@ import {
     GET_BETS,
     UPDATE_BET,
     CREATE_BET,
-    REMOVE_DATA, GET_FEED_BETS
+    REMOVE_DATA, GET_FEED_BETS,
+    ADD_COMMENT,
+    GET_COMMENTS
 } from '../actions/bets';
 
 const initialState = {
     bets: [],
-    feedBets: []
+    feedBets: [],
+    comments: []
 }
 
 const betsReducer = (state = initialState, action) => {
     let updatedArr = [...state.bets]
     let updatedFeedArr = [...state.feedBets]
+    let commentsArr = [...state.comments]
     switch (action.type) {
         case REMOVE_DATA: {
             return initialState
         }
+        case GET_COMMENTS:
+            return { ...state, comments: action.comments }
         case GET_BETS:
             return { ...state, bets: action.bets }
         case GET_FEED_BETS:
@@ -55,7 +61,9 @@ const betsReducer = (state = initialState, action) => {
                 }
             })
             return { ...state, bets: updatedArr, feedBets: updatedFeedArr }
-
+        case ADD_COMMENT:
+            commentsArr.unshift(action.comment)
+            return { ...state,  comments: commentsArr}
         default:
             return state
     }

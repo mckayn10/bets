@@ -1,9 +1,9 @@
 // import { db } from "../../firebase/config";
 import { db } from "../../firebase/firestore";
 import { useDispatch } from "react-redux";
-import { sendBetOffer } from "./notifications";
+import {sendBetOffer, sendCommentAddedNotification} from "./notifications";
 import { completedCriteria } from "../../constants/utils";
-import {fetchAllFriendsIds} from "./friends";
+import {ADD_FRIEND, fetchAllFriendsIds} from "./friends";
 
 export const CREATE_BET = 'CREATE_BET';
 export const UPDATE_MODAL = 'UPDATE_MODAL';
@@ -12,13 +12,13 @@ export const DELETE_BET = 'DELETE_BET';
 export const GET_BETS = 'GET_BETS';
 export const GET_FEED_BETS = 'GET_FEED_BETS';
 export const REMOVE_DATA = 'REMOVE_DATA'
+export const ADD_COMMENT = 'ADD_COMMENT'
+export const GET_COMMENTS = 'GET_COMMENTS'
 
 const url = `https://mybets-f9188-default-rtdb.firebaseio.com`
 const betsRef = db.collection('bets')
 const friendsRef = db.collection('friends')
-
-
-
+const commentsRef = db.collection('comments')
 
 export const fetchBets = () => {
     return async (dispatch, getState) => {
@@ -43,6 +43,24 @@ export const fetchBets = () => {
                         dispatch({ type: GET_BETS, bets: betsArr })
                     })
             })
+    }
+}
+
+export const fetchComments = () => {
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId
+        let commentsArr = []
+
+        commentsRef.get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    let comment = doc.data()
+                    comment.id = doc.id
+                    commentsArr.unshift(comment)
+                });
+            })
+        dispatch({ type: GET_COMMENTS, comments: commentsArr })
+
     }
 }
 
@@ -81,6 +99,7 @@ export const fetchFeedBets = () => {
                 let betsArr = []
                 let feedBets = []
                 let userBets = []
+                let userBetsArr = []
                 chunkedArr.forEach(chunk => {
                     betsRef.where('creator_id', 'in', chunk).get()
                         .then(querySnapshot => {
@@ -102,12 +121,22 @@ export const fetchFeedBets = () => {
                                             userBets.unshift(bet)
                                         }
                                     })
-                                    let uniqueIds = []
+                                    let uniqueFeedIds = []
                                     feedBets = betsArr.filter(element => {
-                                        const isDuplicate = uniqueIds.includes(element.id);
+                                        const isDuplicate = uniqueFeedIds.includes(element.id);
 
                                         if (!isDuplicate) {
-                                            uniqueIds.push(element.id);
+                                            uniqueFeedIds.push(element.id);
+                                            return true;
+                                        }
+                                        return false;
+                                    });
+                                    let uniqueUserIds = []
+                                    userBetsArr = userBets.filter(element => {
+                                        const isDuplicate = uniqueUserIds.includes(element.id);
+
+                                        if (!isDuplicate) {
+                                            uniqueUserIds.push(element.id);
                                             return true;
                                         }
                                         return false;
@@ -115,7 +144,7 @@ export const fetchFeedBets = () => {
                                     dispatch({
                                         type: GET_FEED_BETS,
                                         feedBets: feedBets,
-                                        userBets: userBets
+                                        userBets: userBetsArr
                                     })
                                 })
                         })
@@ -196,6 +225,30 @@ export const deleteBet = (betId) => {
             });
     }
 }
+
+export const addComment = (data) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const userId = getState().auth.userId
+
+        commentsRef.add(data)
+            .then((docRef) => {
+                data.id = docRef.id
+
+                let notificationType = 'commentAdded'
+                sendCommentAddedNotification(data, notificationType)
+
+                dispatch({
+                    type: ADD_COMMENT,
+                    comment: data
+                })
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });
+    }
+}
+
 
 export const removeData = () => {
     return {

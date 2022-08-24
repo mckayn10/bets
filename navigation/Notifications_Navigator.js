@@ -10,6 +10,7 @@ import Stats_Screen from '../screens/Stats_Screen';
 import Add_Friends_Screen from '../screens/Add_Friends_Screen'
 import Home_Screen from '../screens/Home_Screen';
 import Create_Bet_Screen from "../screens/Create_Bet_Screen";
+import View_Bet_Navigator from "./View_Bet_Navigator";
 
 const Stack = createStackNavigator()
 
@@ -37,6 +38,13 @@ const Notifications_Navigator = (props) => {
                 <Stack.Screen
                     name="Bet Review"
                     component={Bet_Review_Screen}
+                />
+                <Stack.Screen
+                    name="View Bet"
+                    component={View_Bet_Navigator}
+                    options={{
+                        headerShown: false
+                    }}
                 />
                 <Stack.Screen
                     name="Person"

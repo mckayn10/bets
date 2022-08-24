@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { StyleSheet, Text, View, Platform, Alert, TouchableOpacity } from 'react-native'
+import {
+    StyleSheet,
+    Text,
+    View,
+    Platform,
+    Alert,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard
+} from 'react-native'
 import Colors from '../constants/colors'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -21,6 +30,8 @@ import TestComponent from '../components/TestComponent'
 import VenmoBtn from '../components/VenmoBtn';
 import {reportItemDialog} from "../utils/utils";
 import Edit_Bet_Screen from "./Edit_Bet_Screen";
+import BetCard from "../components/BetCard";
+import BetComments from "../components/BetComments";
 
 
 const View_Bet_Screen = props => {
@@ -144,6 +155,7 @@ const View_Bet_Screen = props => {
 
     }
 
+
     const handleDeleteBet = () => {
         let betData = props.route.params.bet
         if (!hasPermission) {
@@ -219,77 +231,62 @@ const View_Bet_Screen = props => {
     return (
         !editMode
             ?
-            <View style={[styles.container]}>
-                {/* <View style={styles.titleContainer}>
-
-                <Text style={styles.pageTitle}>Bet Details</Text>
-            </View> */}
-                <View style={styles.detailsContainer}>
-                    {!is_open
-                        ?
-                        <View style={[styles.detailRow]}>
-                            <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bettors: </Text>
-                            <Text style={styles.betText}>{creator.firstName} vs. {other_bettor.firstName}</Text>
+            <View
+                onPress={() => Keyboard.dismiss()}
+            >
+                <View style={[styles.container]}  scrollEnabled={false}>
+                    <BetCard
+                        {...props}
+                        bet={props.route.params.bet}
+                        permissions={props.route.params.permissions}
+                        personId={userId}
+                        feed={true}
+                    />
+                    {userId == creator_id || userId == other_id
+                        ? <View style={styles.btnsPosition}>
+                            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                                <VenmoBtn
+                                    otherPerson={otherPerson}
+                                    amount={amount}
+                                    description={description}
+                                />
+                                <View style={styles.btnContainer}>
+                                    <Button
+                                        icon={
+                                            <Feather name="edit" size={14} color='white' />
+                                        }
+                                        iconRight
+                                        title=""
+                                        type="solid"
+                                        buttonStyle={[styles.updateButton, styles.btn]}
+                                        onPress={() => setEditMode(!editMode)}
+                                    />
+                                </View>
+                                <View style={styles.btnContainer}>
+                                    <Button
+                                        icon={
+                                            <Feather name="trash" size={14} color='white' />
+                                        }
+                                        iconRight
+                                        title=""
+                                        type="solid"
+                                        buttonStyle={[styles.deleteButton, styles.btn]}
+                                        titleStyle={[styles.btnTitle]}
+                                        onPress={() => hasPermission ? showConfirmDialog() : showDeleteAlert()}
+                                    />
+                                </View>
+                            </View>
                         </View>
                         : null
                     }
-
-                    <View style={styles.detailRow}>
-                        <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bet Amount: </Text>
-                        <Text style={styles.betText}>${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
-                    </View>
-                    <View behavior='position'>
-                        <View style={styles.detailRow}>
-                            <Text style={[styles.betText, { fontWeight: 'bold', width: '30%' }]} >Description: </Text>
-                            <Text style={[styles.betText, styles.description]} numberOfLines={4}>{description}</Text>
-                        </View>
-                    </View>
-                    <View>
-                        <View style={[styles.detailRow, styles.betStatusContainer]}>
-                            <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Status: </Text>
-                            <Text style={[styles.coloredCompleteText, styles.statusText]}>{betStatusText}</Text>
-                        </View>
-                        {!is_open
-                            ?
-                            <View style={[styles.detailRow, styles.betStatusContainer]}>
-                                <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Bet Won: </Text>
-                                <Text style={[styles.coloredWonText, styles.statusText]}>{betWonText}</Text>
-                            </View>
-                            : null
-                        }
-                    </View>
+                    <BetComments
+                        {...props}
+                        permissions={userId == creator_id || userId == other_id ? true : false}
+                        bet={props.route.params.bet}
+                    />
                 </View>
-                {userId == creator_id || userId == other_id
-                    ? <View style={styles.btnsPosition}>
-                        <View>
-                            <VenmoBtn
-                                otherPerson={otherPerson}
-                                amount={amount}
-                                description={description}
-                            />
-                            <View style={styles.btnContainer}>
-                                <Button
-                                    iconRight
-                                    title="Update"
-                                    type="solid"
-                                    buttonStyle={styles.updateButton}
-                                    onPress={() => setEditMode(!editMode)}
-                                />
-                            </View>
-                            <View style={styles.btnContainer}>
-                                <Button
-                                    title="Delete"
-                                    type="solid"
-                                    buttonStyle={styles.deleteButton}
-                                    onPress={() => hasPermission ? showConfirmDialog() : showDeleteAlert()}
-                                />
-                            </View>
-                        </View>
-                    </View>
-                    : null
-                }
-
             </View>
+
             : <Edit_Bet_Screen
                 {...props}
                 bet={props.route.params.bet}
@@ -301,15 +298,11 @@ const View_Bet_Screen = props => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        // position: 'absolute',
-        // bottom: -20,
-        width: '100%',
-        backgroundColor: 'white',
-        alignSelf: 'center',
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20
-
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 10,
+        backgroundColor: 'white'
     },
     // titleContainer: {
     //     width: '100%',
@@ -321,7 +314,6 @@ const styles = StyleSheet.create({
     //     borderTopRightRadius: 20
     // },
     detailsContainer: {
-        padding: 10,
         flex: 1
     },
     input: {
@@ -369,29 +361,24 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexWrap: 'wrap',
     },
-    btnContainer: {
-        marginTop: 15,
-    },
     btnsPosition: {
-        position: 'absolute',
-        bottom: 50,
         width: '100%',
+        position: 'absolute',
+        top: 85
     },
     statusText: {
         paddingBottom: 10,
         fontSize: 14,
-
     },
     updateButton: {
         backgroundColor: Colors.primaryColor,
-        width: '90%',
-        alignSelf: 'center'
     },
     deleteButton: {
         backgroundColor: Colors.red,
-        width: '90%',
-        alignSelf: 'center'
-
+    },
+    btn: {
+        marginRight: 10,
+        width: 40
     },
     avoidKeyboardContainer: {
         width: '100%',

@@ -74,6 +74,13 @@ const Person_Profile_Navigator = (props) => {
                         headerShown: false
                     }}
                 />
+                <Stack.Screen
+                    name="View Bet"
+                    component={View_Bet_Navigator}
+                    options={{
+                        headerShown: false
+                    }}
+                />
             </Stack.Group>
             <Stack.Group
                 screenOptions={{
@@ -82,13 +89,6 @@ const Person_Profile_Navigator = (props) => {
                 <Stack.Screen
                     name="Create Bet"
                     component={Create_Bet_Screen}
-                />
-                <Stack.Screen
-                    name="View Bet"
-                    component={View_Bet_Navigator}
-                    options={{
-                        headerShown: false
-                    }}
                 />
             </Stack.Group>
         </Stack.Navigator>

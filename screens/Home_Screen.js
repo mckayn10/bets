@@ -4,7 +4,7 @@ import { Button } from 'react-native-elements';
 import NavBar from '../components/NavBar';
 import Colors from '../constants/colors'
 import { useDispatch, useSelector } from 'react-redux';
-import {fetchBets, fetchFeedBets} from '../store/actions/bets';
+import {fetchBets, fetchComments, fetchFeedBets} from '../store/actions/bets';
 import {getUser, getUserPic, updateUser} from '../store/actions/auth';
 import {fetchAllFriends, fetchBlockedBy, fetchBlockedUsers} from '../store/actions/friends';
 import { fetchNotifications, fetchPendingRequests } from '../store/actions/notifications';
@@ -93,6 +93,7 @@ function Home_Screen(props) {
 
   useEffect(() => {
     // dispatch(fetchBets())
+    dispatch(fetchComments())
     dispatch(fetchFeedBets())
     dispatch(getUser())
     dispatch(fetchAllFriends())

@@ -9,7 +9,7 @@ import { Input, Button, Switch } from 'react-native-elements';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import MySearchableDropdown from '../components/SearchableDropdown';
-import * as BadWords from 'badwords/array'
+import {check_val} from "../utils/utils";
 
 
 const Create_Bet_Screen = props => {
@@ -63,23 +63,7 @@ const Create_Bet_Screen = props => {
     }, [])
     
 
-const dispatch = useDispatch();
-
-    function check_val(text) {
-        var bad_words = BadWords['default']
-        var error = 0;
-
-        if (text.toLowerCase().split(' ').some(part => bad_words.includes(part))) {
-            error = error + 1;
-        }
-
-        if (error > 0) {
-            return false
-        }
-        else {
-            return true
-        }
-    }
+    const dispatch = useDispatch();
 
     const createOpenBet = () => {
         if (betAmount === '' || description === '') {

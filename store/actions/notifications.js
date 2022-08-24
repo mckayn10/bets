@@ -73,6 +73,61 @@ export const sendBetOffer = async (betData, type) => {
         });
 }
 
+export const sendCommentAddedNotification = async (data, type) => {
+
+    let notiData = {
+        date: Date.now(),
+        from: data.commentor,
+        to: data.creator,
+        type: type,
+        data: data,
+        pendingAction: true,
+        seen: false
+    }
+    if(data.commentor.id != data.creator.id){
+        notisRef.add(notiData)
+            .then((docRef) => {
+                console.log('Notification successfully sent!')
+                let pushNotiData = {
+                    pushId: notiData.to.pushId,
+                    title: 'New Comment',
+                    body: `${data.commentor.firstName} has commented on your bet`
+                }
+                sendPushNotificationHandler(pushNotiData)
+
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });
+    }
+
+    if(data.other_bettor.id != 0){
+        let notiData2 = {
+            date: Date.now(),
+            from: data.commentor,
+            to: data.other_bettor,
+            type: type,
+            data: data,
+            pendingAction: true,
+            seen: false
+        }
+        notisRef.add(notiData2)
+            .then((docRef) => {
+                console.log('Notification successfully sent!')
+                let pushNotiData = {
+                    pushId: notiData2.to.pushId,
+                    title: 'New Comment',
+                    body: `${data.commentor.firstName} has commented on your bet`
+                }
+                sendPushNotificationHandler(pushNotiData)
+
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });
+    }
+}
+
 export const sendBetUpdate = async (betData, user, other_bettor, type) => {
 
     let notiData = {

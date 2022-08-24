@@ -1,6 +1,7 @@
 import {sendPushNotificationHandler} from "../push_notifications/push_notifications";
 import { db } from "../firebase/firestore";
 import {Alert} from "react-native";
+import * as BadWords from 'badwords/array'
 
 const reportsRef = db.collection('reports')
 
@@ -36,4 +37,30 @@ export const reportItem = (data) => {
         .catch((error) => {
             console.error("Error writing document: ", error);
         });
+}
+
+export const check_val = (text) => {
+    var bad_words = BadWords['default']
+    var error = 0;
+
+    if (text.toLowerCase().split(' ').some(part => bad_words.includes(part))) {
+        error = error + 1;
+    }
+
+    if (error > 0) {
+        return false
+    }
+    else {
+        return true
+    }
+}
+
+export const getBetComments = (betId, comments) => {
+    let commentsArr = []
+    comments.forEach(comment => {
+        if(comment.bet_id == betId){
+            commentsArr.unshift(comment)
+        }
+    })
+    return commentsArr
 }
