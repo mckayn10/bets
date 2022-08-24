@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import Colors from '../constants/colors';
@@ -8,6 +8,7 @@ import { addFriend } from '../store/actions/friends';
 import { useDispatch } from 'react-redux';
 import { deleteNotification } from '../store/actions/notifications';
 import { sendFriendRequestAccepted } from '../store/actions/notifications';
+import {fetchComments} from "../store/actions/bets";
 
 export default function NotificationCard(props) {
 
@@ -18,6 +19,14 @@ export default function NotificationCard(props) {
     let person = from
     let parsedDate = new Date(date)
 
+    useEffect(() => {
+        console.log('out', type)
+
+        if(type == 'commentAdded'){
+            console.log('in')
+            dispatch(fetchComments())
+        }
+    }, [])
 
     const dispatch = useDispatch()
 

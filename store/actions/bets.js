@@ -48,6 +48,8 @@ export const fetchBets = () => {
 
 export const fetchComments = () => {
     return async (dispatch, getState) => {
+
+        console.log("fetch COMMENTS")
         const userId = getState().auth.userId
         let commentsArr = []
 

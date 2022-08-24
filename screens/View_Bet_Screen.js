@@ -245,27 +245,24 @@ const View_Bet_Screen = props => {
                     {userId == creator_id || userId == other_id
                         ? <View style={styles.btnsPosition}>
                             <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                                <VenmoBtn
-                                    otherPerson={otherPerson}
-                                    amount={amount}
-                                    description={description}
-                                />
                                 <View style={styles.btnContainer}>
                                     <Button
                                         icon={
-                                            <Feather name="edit" size={14} color='white' />
+                                            <Feather name="edit" size={20} color={Colors.primaryColor} />
                                         }
                                         iconRight
                                         title=""
                                         type="solid"
                                         buttonStyle={[styles.updateButton, styles.btn]}
                                         onPress={() => setEditMode(!editMode)}
+                                        containerStyle={{borderRadius: 0}}
+
                                     />
                                 </View>
                                 <View style={styles.btnContainer}>
                                     <Button
                                         icon={
-                                            <Feather name="trash" size={14} color='white' />
+                                            <Feather name="trash" size={20} color={Colors.red} />
                                         }
                                         iconRight
                                         title=""
@@ -273,8 +270,14 @@ const View_Bet_Screen = props => {
                                         buttonStyle={[styles.deleteButton, styles.btn]}
                                         titleStyle={[styles.btnTitle]}
                                         onPress={() => hasPermission ? showConfirmDialog() : showDeleteAlert()}
+                                        containerStyle={{borderRadius: 0}}
                                     />
                                 </View>
+                                <VenmoBtn
+                                    otherPerson={otherPerson}
+                                    amount={amount}
+                                    description={description}
+                                />
                             </View>
                         </View>
                         : null
@@ -364,21 +367,23 @@ const styles = StyleSheet.create({
     btnsPosition: {
         width: '100%',
         position: 'absolute',
-        top: 85
+        top: 82
     },
     statusText: {
         paddingBottom: 10,
         fontSize: 14,
     },
     updateButton: {
-        backgroundColor: Colors.primaryColor,
+        backgroundColor: 'white',
+
     },
     deleteButton: {
-        backgroundColor: Colors.red,
+        backgroundColor: 'white',
     },
     btn: {
-        marginRight: 10,
-        width: 40
+        marginRight: 0,
+        width: 40,
+        borderRadius: 0
     },
     avoidKeyboardContainer: {
         width: '100%',

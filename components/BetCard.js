@@ -178,7 +178,7 @@ export default function BetCard(props) {
             <Button
                 title='Accept'
                 buttonStyle={[styles.btn]}
-                titleStyle={{ color: 'white', fontSize: 14 }}
+                titleStyle={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}
                 onPress={() => confirmAcceptOpenBet()}
             />
         )
@@ -287,9 +287,11 @@ export default function BetCard(props) {
                     {displayStatus()}
                 </View>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 8}}>
-                <Text style={{marginLeft: 59, fontSize: 15}}>{numComments} </Text>
-                <FontAwesome name="comments-o" size={20}  />
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8}}>
+                    <Text style={{marginLeft: 59, fontSize: 15}}>{numComments} </Text>
+                    <FontAwesome name="comments-o" size={23}  />
+                </View>
                 {is_open && creator_id != userId ? openBetButtons() : null}
                 {/*<View style={styles.bottomContainer}>*/}
 
@@ -363,8 +365,7 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     btn: {
-        width: 100,
+        width: 80,
         alignSelf: 'flex-end',
-        fontSize: 12
     }
 });

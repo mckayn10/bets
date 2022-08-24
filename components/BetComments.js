@@ -44,6 +44,9 @@ function BetComments(props) {
     useEffect(() =>{
         if(comments.length > 0){
             let betComments = getBetComments(id, comments)
+            betComments.sort(function (x, y) {
+                return x.date - y.date;
+            })
             setCommentsState(betComments)
             console.log('length', betComments.length)
         }
@@ -123,7 +126,7 @@ function BetComments(props) {
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : null}
             style={[styles.container]}
-            keyboardVerticalOffset={120}
+            keyboardVerticalOffset={100}
         >
             {commentsState.length > 0
                 ?
