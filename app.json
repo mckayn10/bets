@@ -10,11 +10,11 @@
     ],
     "version": "1.0.5",
     "orientation": "portrait",
-    "icon": "./assets/betz-logo.png",
+    "icon": "./assets/new-splash-logo.png",
     "splash": {
-      "image": "./assets/betz-logo.png",
+      "image": "./new-splash-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#04d19b"
+      "backgroundColor": "#1c2e4a"
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
@@ -41,7 +41,7 @@
     },
     "description": "v1.2 Venmo Integration",
     "notification": {
-      "icon": "./assets/betz-logo.png"
+      "icon": "./assets/new-splash-logo.png"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"

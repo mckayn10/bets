@@ -37,13 +37,15 @@ function Friends_Screen(props) {
     useEffect(() => {
         if (props.route.params) {
             setFriends(props.route.params.personsFriends)
+            setPeople(props.route.params.personsFriends)
         } else {
             setFriends(friendsList)
+            setPeople(friendsList)
         }
         return () => {
             friendsList = []
         }
-    }, [friendsList])
+    }, [friendsList, props.route.params, allPeople])
 
     // useLayoutEffect(() => {
     //     props.navigation.setOptions({
@@ -91,7 +93,8 @@ function Friends_Screen(props) {
             return;
         }
 
-        const data = allPeople.filter(user => {
+        let arrayToSearch = props.route.params ? friendsList : allPeople
+        const data = arrayToSearch.filter(user => {
             const userString = (user.firstName + ' ' + user.lastName + ' ' + user.username).toLowerCase()
             if (userFriends.some(person => person.id == user.id)) {
                 user.isFriend = true
