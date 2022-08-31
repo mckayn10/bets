@@ -18,6 +18,7 @@ import Home_Navigator from './Home_Navigator';
 import User_Profile_Screen from '../screens/User_Profile_Screen';
 import User_Profile_Navigator from './User_Profile_Navigator';
 import Create_Bet_Screen from "../screens/Create_Bet_Screen";
+import Sports_Navigator from "./Sports_Navigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +48,7 @@ export default function Tab_Navigator() {
                 tabBarInactiveTintColor: tabColor,
                 tabBarStyle: {
                     backgroundColor: navSecondaryColor,
-                    height: 100,
+                    height: 95,
                     paddingLeft: 10,
                     paddingRight: 10
                 },
@@ -74,10 +75,10 @@ export default function Tab_Navigator() {
                         color = tabColor
                         size = 28
 
-                    } else if (route.name === 'Friends Tab') {
+                    } else if (route.name === 'Odds') {
                         myStyles.borderTopColor = focused ? tabColor : 'transparent'
-                        iconName = focused ? 'md-people' : 'people-outline';
-                        size = 30
+                        iconName = focused ? 'american-football' : 'american-football-outline';
+                        size = 28
                         color = tabColor
 
                     }
@@ -95,19 +96,18 @@ export default function Tab_Navigator() {
                         color = tabColor
 
                     }
-                    else if (route.name === 'Profile Tab') {
-                        size = 28
+                    else if (route.name === 'User Profile Tab') {
+                        size = 35
                         myStyles.borderTopColor = focused ? tabColor : 'transparent'
                         iconName = focused ? 'person-circle-sharp' : 'person-circle-outline';
                         color = tabColor
                     }
-                    else if (route.name === 'Settings Tab') {
-                        myStyles.borderTopColor = focused ? tabColor : 'transparent'
-                        iconName = focused ? 'settings' : 'settings-outline';
-                        color = tabColor
-                        size = 28
-
-                    }
+                    // else if (route.name === 'Settings Tab') {
+                    //     myStyles.borderTopColor = focused ? tabColor : 'transparent'
+                    //     iconName = focused ? 'settings' : 'settings-outline';
+                    //     color = tabColor
+                    //     size = 28
+                    // }
                     else if (route.name === 'Stats Tab') {
                         myStyles.borderTopColor = focused ? Colors.backgroundColor : 'transparent'
                         iconName = focused ? 'stats-chart' : 'stats-chart-outline';
@@ -168,8 +168,8 @@ export default function Tab_Navigator() {
             {/*    }}*/}
             {/*/>*/}
             <Tab.Screen
-                name="Friends Tab"
-                component={Friends_Navigator}
+                name="Odds"
+                component={Sports_Navigator}
                 options={{
                     headerShown: false,
                     tabBarShowLabel: false
@@ -184,7 +184,7 @@ export default function Tab_Navigator() {
             {/*    }}*/}
             {/*/>*/}
             <Tab.Screen
-                name="Settings Tab"
+                name="User Profile Tab"
                 component={Settings_Navigator}
                 options={{
                     headerShown: false,

@@ -248,7 +248,7 @@ const View_Bet_Screen = props => {
                                 <View style={styles.btnContainer}>
                                     <Button
                                         icon={
-                                            <Feather name="edit" size={20} color={Colors.primaryColor} />
+                                            <Feather name="edit" size={20} color={Colors.green} />
                                         }
                                         iconRight
                                         title=""
@@ -366,8 +366,9 @@ const styles = StyleSheet.create({
     },
     btnsPosition: {
         width: '100%',
-        position: 'absolute',
-        top: 82
+        margin: 10
+        // position: 'absolute',
+        // top: 82
     },
     statusText: {
         paddingBottom: 10,

@@ -71,7 +71,7 @@ export default function Profile_Screen(props) {
             contentType: blob.type
         })
             .then((snapshot) => {
-                url = userData.picture
+                let url = userData.picture
                 getProfilePic(userData.email).then(url => {
                     const user = {
                         firstName: firstNameText,

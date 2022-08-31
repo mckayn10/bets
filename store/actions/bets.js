@@ -217,6 +217,13 @@ export const deleteBet = (betId) => {
 
         betsRef.doc(betId).delete()
             .then(() => {
+                commentsRef.where("bet_id", "==", betId).get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            doc.ref.delete();
+                            console.log('comment deleted')
+                        });
+                    })
                 console.log("Document successfully deleted!");
                 dispatch({
                     type: DELETE_BET,

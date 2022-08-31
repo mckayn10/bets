@@ -71,17 +71,17 @@ function User_Profile_Screen(props) {
                 <View style={styles.friendsContainer}>
                     <Button
                         icon={
-                            <FontAwesome5 name="edit" size={12} color={Colors.primaryColor} />
+                            <FontAwesome5 name="edit" size={12} color={Colors.green} />
                         }
                         title='Edit Profile'
                         type="outline"
                         buttonStyle={styles.isFriendBtn}
-                        titleStyle={{ fontSize: 13, color: Colors.primaryColor, fontWeight: 'bold', marginLeft: 5 }}
+                        titleStyle={{ fontSize: 13, color: Colors.green, fontWeight: 'bold', marginLeft: 5 }}
                         onPress={() => props.navigation.navigate('Edit Profile')}
                     />
                     {/*<Button*/}
                     {/*    icon={*/}
-                    {/*        <Ionicons name="stats-chart" size={15} color={Colors.primaryColor} />*/}
+                    {/*        <Ionicons name="stats-chart" size={15} color={Colors.green} />*/}
                     {/*    }*/}
                     {/*    title='Stats'*/}
                     {/*    type="outline"*/}

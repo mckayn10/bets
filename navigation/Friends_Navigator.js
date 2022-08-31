@@ -23,7 +23,7 @@ const Friends_Navigator = (props) => {
         >
             <Stack.Group>
                 <Stack.Screen
-                    name="My Friends"
+                    name="Search Users"
                     component={Friends_Screen}
                     options={{
                         headerStyle: {

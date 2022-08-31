@@ -20,10 +20,8 @@ export default function NotificationCard(props) {
     let parsedDate = new Date(date)
 
     useEffect(() => {
-        console.log('out', type)
 
         if(type == 'commentAdded'){
-            console.log('in')
             dispatch(fetchComments())
         }
     }, [])

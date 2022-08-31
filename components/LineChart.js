@@ -45,7 +45,7 @@ const MyLineChart = (props) => {
                     backgroundGradientFrom: colors.backgroundColor,
                     backgroundGradientTo: colors.backgroundColor,
                     decimalPlaces: 2, // optional, defaults to 2dp
-                    color: (opacity = 1) => colors.primaryColor,
+                    color: (opacity = 1) => colors.green,
                     labelColor: (opacity = 1) => 'gray',
                     style: {
                         borderRadius: 0,

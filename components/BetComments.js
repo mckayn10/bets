@@ -22,7 +22,6 @@ import BetCard from './BetCard'
 import { MaterialIcons } from '@expo/vector-icons';
 import {createBet, fetchBets, fetchFeedBets, addComment, fetchComments} from '../store/actions/bets';
 import HeaderText from './HeaderText'
-import colors from '../constants/colors'
 import Icon from "react-native-vector-icons/FontAwesome";
 import {check_val, getBetComments} from "../utils/utils";
 import keyboard from "react-native-web/dist/exports/Keyboard";
@@ -48,7 +47,6 @@ function BetComments(props) {
                 return x.date - y.date;
             })
             setCommentsState(betComments)
-            console.log('length', betComments.length)
         }
     }, [comments])
 
@@ -112,10 +110,10 @@ function BetComments(props) {
                     }}
                     onPress={() => openPersonProfile(newComment.commentor)}
                 />
-                <View style={{width: '100%',borderBottomWidth: 1, borderBottomColor: Colors.grayLight, paddingBottom: 5}}>
-                    <Text onPress={() => openPersonProfile(newComment.commentor)} style={{fontSize: 13, fontWeight: 'bold'}}>{newComment.commentor.firstName} {newComment.commentor.lastName}</Text>
+                <View style={{width: '100%',borderBottomWidth: 1, borderBottomColor: Colors.grayLight, paddingBottom: 5, flexWrap: 'wrap'}}>
+                    <Text onPress={() => openPersonProfile(newComment.commentor)} style={{fontSize: 13, fontWeight: 'bold', marginBottom: 3}}>{newComment.commentor.firstName} {newComment.commentor.lastName}</Text>
                     <Text style={styles.date}>{new Date(newComment.date).toLocaleString()}</Text>
-                    <Text style={{marginTop: 10, fontSize: 13}}>{newComment.description}</Text>
+                    <Text style={{marginTop: 10, fontSize: 13, width: '95%'}}>{newComment.description}</Text>
                 </View>
             </View>
         );
@@ -217,8 +215,7 @@ const styles = StyleSheet.create({
     date: {
         color: 'gray',
         fontSize: 8,
-        marginTop: 5,
-        marginLeft: 2
+        marginLeft: 1
     },
     emptyText: {
         color: Colors.grayDark

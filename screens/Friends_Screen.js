@@ -6,16 +6,33 @@ import { Entypo } from '@expo/vector-icons';
 import FriendCard from '../components/FriendCard';
 import { SearchBar } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons';
+import {fetchAllPeople} from "../store/actions/friends";
 
 
 function Friends_Screen(props) {
-    let friendsList = useSelector(state => state.people.friends)
+    const dispatch = useDispatch();
+    const userFriends = useSelector(state => state.people.friends)
+    const userId = useSelector(state => state.auth.userId)
 
-    const [searchText, setSearchText] = useState()
-    const [friends, setFriends] = useState([])
+    useEffect(() => {
+        try {
+            dispatch(fetchAllPeople())
+        }
+        catch (err){
+            console.error(err)
+        }
+    }, [])
 
+    useEffect(() => {
+        try {
+            setPeople(friendsList)
+        }
+        catch (err){
+            console.error(err)
+        }
+    }, [])
 
     useEffect(() => {
         if (props.route.params) {
@@ -28,54 +45,81 @@ function Friends_Screen(props) {
         }
     }, [friendsList])
 
-    useLayoutEffect(() => {
-        props.navigation.setOptions({
-            title: props.route.params ? props.route.params.title : 'My Friends',
-            headerRight: () => {
-                return (
-                    <TouchableOpacity {...props}>
-                        <MaterialIcons
-                            name="person-add-alt-1"
-                            size={28} color="black"
-                            style={{ color: 'white', marginBottom: 3, padding: 0 }}
-                            onPress={() => props.navigation.navigate('Add Friends')}
-                        />
-                    </TouchableOpacity>
-                )
-            },
-        })
+    // useLayoutEffect(() => {
+    //     props.navigation.setOptions({
+    //         title: props.route.params ? props.route.params.title : 'My Friends',
+    //         headerRight: () => {
+    //             return (
+    //                 <TouchableOpacity {...props}>
+    //                     <MaterialIcons
+    //                         name="person-add-alt-1"
+    //                         size={28} color="black"
+    //                         style={{ color: 'white', marginBottom: 3, padding: 0 }}
+    //                         onPress={() => props.navigation.navigate('Add Friends')}
+    //                     />
+    //                 </TouchableOpacity>
+    //             )
+    //         },
+    //     })
+    //
+    // }, [props.navigation])
 
-    }, [props.navigation])
+
+    let friendsList = useSelector(state => state.people.friends)
+
+    const [searchText, setSearchText] = useState()
+    const [friends, setFriends] = useState([])
+    const [people, setPeople] = useState([])
+
+    const allPeople = useSelector(state => state.people.people)
+    const blockedBy = useSelector(state => state.people.blockedBy)
+
+    const checkIfBlockedByUser = (id) => {
+        var found = blockedBy.find(user => user.id === id);
+        if(found){
+            return true
+        }
+        return false
+    }
 
     const handleSearch = (text) => {
         setSearchText(text)
         const query = text.toLowerCase()
 
         if (!query) {
-            setFriends(friendsList)
+            setPeople(friends)
             return;
         }
 
-        const data = friendsList.filter(user => {
+        const data = allPeople.filter(user => {
             const userString = (user.firstName + ' ' + user.lastName + ' ' + user.username).toLowerCase()
-
+            if (userFriends.some(person => person.id == user.id)) {
+                user.isFriend = true
+            }
             return userString.includes(query)
         })
 
-        setFriends(data)
+        data.sort(function (x, y) {
+            return x.isFriend - y.isFriend;
+        })
+        setPeople(data)
     }
 
     const renderFriendsList = friend => {
-        return (
-            <FriendCard person={friend.item} {...props} />
-        );
+        if(friend.id === userId){
+            return
+        } else {
+            return (
+                <FriendCard person={friend.item} {...props} />
+            );
+        }
     }
 
     return (
         <View style={styles.container}>
             <SearchBar
                 value={searchText}
-                placeholder='Search friends..'
+                placeholder='Search for people..'
                 onChangeText={(text) => handleSearch(text)}
                 inputContainerStyle={styles.searchBar}
                 containerStyle={{ backgroundColor: Colors.backgroundColor }}
@@ -84,7 +128,7 @@ function Friends_Screen(props) {
             />
             {friends.length > 0
                 ? <FlatList
-                    data={friends}
+                    data={people}
                     renderItem={renderFriendsList}
                     keyExtractor={(friend, index) => index.toString()}
                 />

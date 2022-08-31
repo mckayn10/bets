@@ -21,14 +21,14 @@ export default function BetCard(props) {
     const user = useSelector(state => state.auth.userInfo)
     const comments = useSelector(state => state.bets.comments)
     const dispatch = useDispatch()
+    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id, date_complete, is_open, id, sports_bet, customOdds, potentialWinnings, bet_odds } = props.bet
 
-    const { description, amount, other_bettor, other_id, date, won_bet, is_complete, is_verified, is_accepted, creator, creator_id, date_complete, is_open, id } = props.bet
     const showNotAccepted = is_verified && !is_accepted
     const parsedDateUpdated = new Date(date_complete)
     const parsedDateCreated = new Date(date)
 
     let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
-
+    const hasPermission = creator_id === userId || other_id === userId ? true : false
     let infoToDisplayBasedOnUser = {
         otherBettorname: props.personId === creator.id ? `${other_bettor.firstName} ${other_bettor.lastName}` :`${creator.firstName} ${creator.lastName}`,
         creatorName: creator_id === userId ? 'You' : creator.firstName,
@@ -54,11 +54,13 @@ export default function BetCard(props) {
     }, [props])
 
     useEffect(() =>{
+        refreshComments()
+    }, [comments, numComments, props.bet])
+
+    const refreshComments = () => {
         let numberOfComments = getBetComments(id, comments)
         setNumComments(numberOfComments.length)
-    }, [comments])
-
-
+    }
 
     const openViewBet = () => {
         props.navigation.navigate('View Bet', {
@@ -76,8 +78,6 @@ export default function BetCard(props) {
             props.navigation.push('User Profile')
         }
         else if(infoToDisplayBasedOnUser.opponent.id){
-            console.log(props.route.name)
-
             if(props.route.name === 'Home'){
                 props.navigation.push('Person Profile', {
                     person: person,
@@ -178,7 +178,7 @@ export default function BetCard(props) {
             <Button
                 title='Accept'
                 buttonStyle={[styles.btn]}
-                titleStyle={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}
+                titleStyle={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}
                 onPress={() => confirmAcceptOpenBet()}
             />
         )
@@ -190,7 +190,7 @@ export default function BetCard(props) {
                 <View>
                     <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         {is_verified
-                            ? <AntDesign name='checkcircle' size={13} color={Colors.primaryColor} style={{marginRight: 3, alignSelf: 'flex-start', marginTop: 2}}/>
+                            ? <AntDesign name='checkcircle' size={13} color={Colors.green} style={{marginRight: 3, alignSelf: 'flex-start', marginTop: 2}}/>
                             : null
                         }
                         <Text style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
@@ -210,7 +210,7 @@ export default function BetCard(props) {
                 <View>
                     <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         {is_verified
-                            ? <AntDesign name='checkcircle' size={13} color={Colors.primaryColor} style={{marginRight: 3}}/>
+                            ? <AntDesign name='checkcircle' size={13} color={Colors.green} style={{marginRight: 3}}/>
                             : null
                         }
                         <Text style={is_verified ? {fontWeight: 'bold'} : {fontWeight: 'normal'}} onPress={() => openPersonProfile(infoToDisplayBasedOnUser.opponent)}>{infoToDisplayBasedOnUser.otherBettorname}</Text>
@@ -227,30 +227,30 @@ export default function BetCard(props) {
 
     const displayStatus = () => {
         if(is_open){
-            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, marginTop: 3 }}>Open</Text>
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, marginTop: 3, fontWeight: 'bold' }}>Open</Text>
         }
         else if (!is_accepted && is_verified) {
             // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-minus-outline" size={22} color={Colors.red} />
-            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, marginTop: 3 }}>Pending</Text>
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, marginTop: 3, fontWeight: 'bold' }}>Pending</Text>
         }
         else if (!is_verified && !is_complete) {
-            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
-            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.primaryColor, marginTop: 3 }}>Pending</Text>
+            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.green} />
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, marginTop: 3, fontWeight: 'bold' }}>Pending</Text>
 
         }
         else if (!is_accepted && !is_verified && is_complete) {
-            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
-            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.primaryColor, marginTop: 3 }}>Complete</Text>
+            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.green} />
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.green, marginTop: 3, fontWeight: 'bold' }}>Complete</Text>
 
         }
         else if (is_accepted && !is_complete) {
-            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.primaryColor} />
-            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.red, marginTop: 3 }}>Not Complete</Text>
+            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check-outline" size={22} color={Colors.green} />
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.red, marginTop: 3, fontWeight: 'bold' }}>Not Complete</Text>
 
         }
         else if (is_accepted) {
-            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check" size={22} color={Colors.primaryColor} />
-            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.primaryColor, marginTop: 3 }}>Complete</Text>
+            // return <MaterialCommunityIcons style={{ alignSelf: 'flex-end' }} name="account-multiple-check" size={22} color={Colors.green} />
+            return <Text style={{ alignSelf: 'flex-end', fontSize: 10, color: Colors.green, marginTop: 3, fontWeight: 'bold' }}>Complete</Text>
         }
     }
 
@@ -278,7 +278,7 @@ export default function BetCard(props) {
                 </View>
 
                 <View style={styles.amountContainer}>
-                    {creator_id === userId || other_id === userId || is_open
+                    {(creator_id === userId || other_id === userId || is_open) && (is_complete || !potentialWinnings || potentialWinnings == amount)
                         ? <Text style={[ styles.amount, !isPending ? (won_bet != props.personId ? styles.negative : styles.positive) : '']}>
                             {!isPending ? (won_bet != props.personId ? '-' : '+') : ''}${parseFloat(Math.abs(amount)).toFixed(2)}
                           </Text>
@@ -287,11 +287,24 @@ export default function BetCard(props) {
                     {displayStatus()}
                 </View>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8}}>
+            {(is_open || potentialWinnings) && (potentialWinnings != amount)
+                ?
+                <View style={{marginLeft: 59, marginTop: 15, marginBottom: 10}}>
+                    <Text style={{marginBottom: 8}}>{creator_id == userId ? "Opponent" : "You"} would win: ${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
+                    <Text>{creator_id == userId ? 'You' : creator.firstName} would win: ${parseFloat(Math.abs(potentialWinnings)).toFixed(2)}</Text>
+                </View>
+                : null
+            }
+
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Text style={{marginLeft: 59, fontSize: 15}}>{numComments} </Text>
                     <FontAwesome name="comments-o" size={23}  />
+                    <View style={{flexDirection: 'row', marginLeft: 15}}>
+                        {(hasPermission || is_open) && bet_odds ? <View style={{flexDirection: 'row'}}><Text style={{fontWeight: 'bold'}}>{customOdds ? 'Custom Odds' : amount != potentialWinnings ? 'Odds: ' : ''}</Text><Text>{bet_odds && !customOdds && amount != potentialWinnings ? bet_odds : ''}</Text></View> : null}
+                    </View>
                 </View>
+
                 {is_open && creator_id != userId ? openBetButtons() : null}
                 {/*<View style={styles.bottomContainer}>*/}
 
@@ -334,8 +347,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         alignSelf: "flex-end"
     },
-    amountContainer: {
-    },
+
     negative: {
         color: Colors.red
     },
@@ -355,7 +367,7 @@ const styles = StyleSheet.create({
         color: 'gray',
         fontSize: 10,
         marginTop: 5,
-        marginLeft: 2
+        marginLeft: 1
     },
     image: {
         alignSelf: 'flex-start',
@@ -365,7 +377,8 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     btn: {
-        width: 80,
+        width: 60,
+        padding: 5,
         alignSelf: 'flex-end',
     }
 });

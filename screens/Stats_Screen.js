@@ -115,7 +115,7 @@ function Stats_Screen(props) {
             <View style={styles.container}>
                 <View style={[styles.statContainer, { width: '95%' }]}>
                     <HeaderText style={styles.statTitle}>Your total Gains/Losses</HeaderText>
-                    <Text style={[styles.statNumber, { fontSize: 40, color: totalAmountCompleted() < 0 ? colors.red : colors.primaryColor }]}>{totalAmountCompleted() < 0 ? '-' : ''}${parseFloat(Math.abs(totalAmountCompleted())).toFixed(2)}</Text>
+                    <Text style={[styles.statNumber, { fontSize: 40, color: totalAmountCompleted() < 0 ? colors.red : Colors.green }]}>{totalAmountCompleted() < 0 ? '-' : ''}${parseFloat(Math.abs(totalAmountCompleted())).toFixed(2)}</Text>
                 </View>
                 <View style={[styles.statContainer]}>
                     <HeaderText style={styles.statTitle}>Win Percentage</HeaderText>
@@ -127,7 +127,7 @@ function Stats_Screen(props) {
                 </View>
                 <View style={[styles.statContainer, { width: '95%' }]}>
                     <HeaderText style={styles.statTitle}>Avg Winnings Per Bet</HeaderText>
-                    <Text style={[styles.statNumber, { fontSize: 40, color: totalAmountCompleted() < 0 ? colors.red : colors.primaryColor  }]}>{totalAmountCompleted() < 0 ? '-' : ''}${perBetAvg}</Text>
+                    <Text style={[styles.statNumber, { fontSize: 40, color: totalAmountCompleted() < 0 ? colors.red : Colors.green  }]}>{totalAmountCompleted() < 0 ? '-' : ''}${perBetAvg}</Text>
                 </View>
                 <View style={[styles.statContainer, styles.thirdColumn]}>
                     <HeaderText style={styles.statTitle}>Complete</HeaderText>
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 15,
         marginTop: 15,
-        color: colors.primaryColor,
+        color: Colors.green,
         fontWeight: 'bold'
     },
     statTitle: {

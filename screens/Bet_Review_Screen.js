@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
-import colors from '../constants/colors'
+import Colors from '../constants/colors'
 import { completedCriteria } from '../constants/utils'
 import { db } from '../firebase/firestore'
 import { deleteBet, updateBet } from '../store/actions/bets'
@@ -126,8 +126,12 @@ export default function Bet_Review_Screen(props) {
                     <Text style={styles.text}>{infoToDisplayBasedOnUser.displayOtherName}</Text>
                 </View>
                 <View style={styles.row}>
-                    <Text style={styles.text}>Amount:</Text>
+                    <Text style={styles.text}>{bet.creator_id == userId ? 'Your' : infoToDisplayBasedOnUser.displayOtherName+"'s"} bet amount:</Text>
                     <Text style={styles.text}>${parseFloat(bet.amount).toFixed(2)}</Text>
+                </View>
+                <View style={styles.row}>
+                    <Text style={styles.text}>{bet.other_id == userId ? 'Your' : infoToDisplayBasedOnUser.displayOtherName+"'s"} bet amount:</Text>
+                    <Text style={styles.text}>${bet.potentialWinnings ? parseFloat(bet.potentialWinnings).toFixed(2) : parseFloat(bet.amount).toFixed(2)}</Text>
                 </View>
                 <View style={[styles.row, { flexDirection: 'column' }]}>
                     <Text style={[styles.text, { marginBottom: 10 }]}>Description:</Text>
@@ -135,7 +139,10 @@ export default function Bet_Review_Screen(props) {
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.text}>Status:</Text>
-                    <Text style={styles.text}>{status ? 'Complete' : 'Pending'}</Text>
+                    {notiData.type == 'betDelete'
+                        ?<Text style={styles.text}>{'Deleted'}</Text>
+                        :<Text style={styles.text}>{status ? 'Complete' : 'Pending'}</Text>
+                    }
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.text}>Winner of Bet:</Text>
@@ -173,7 +180,7 @@ export default function Bet_Review_Screen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.backgroundColor,
+        backgroundColor: Colors.backgroundColor,
         alignItems: 'center',
         padding: 15,
         width: '100%'
@@ -185,7 +192,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         borderBottomWidth: 1,
-        borderBottomColor: colors.grayLight
+        borderBottomColor: Colors.grayLight
     },
     text: {
         fontSize: 18
@@ -203,11 +210,11 @@ const styles = StyleSheet.create({
         width: 100
     },
     btnAccept: {
-        backgroundColor: colors.primaryColor,
-        borderColor: colors.primaryColor
+        backgroundColor: Colors.green,
+        borderColor: Colors.green
     },
     btnDecline: {
-        backgroundColor: colors.red,
-        borderColor: colors.red
+        backgroundColor: Colors.red,
+        borderColor: Colors.red
     }
 })

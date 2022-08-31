@@ -4,9 +4,8 @@ import { useDispatch } from 'react-redux'
 import Colors from '../constants/colors'
 import BetCard from './BetCard'
 import { MaterialIcons } from '@expo/vector-icons';
-import {fetchBets, fetchFeedBets} from '../store/actions/bets';
+import {fetchBets, fetchComments, fetchFeedBets} from '../store/actions/bets';
 import HeaderText from './HeaderText'
-import colors from '../constants/colors'
 
 function BetList(props) {
     const [isRefreshing, setIsRefreshing] = useState(false)
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         padding: 5,
-        color: colors.grayDark
+        color: Colors.grayDark
     },
     icon: {
         alignSelf: 'center',

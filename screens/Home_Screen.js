@@ -191,13 +191,13 @@ function Home_Screen(props) {
       <NavBar props={props} />
       <View style={styles.toggleScreenContainer}>
         <Pressable  style={[styles.toggleBtn]}  onPress={() => toggleButtons('feed')}>
-          <HeaderText style={styles.toggleText} >FEED</HeaderText>
+          <HeaderText style={styles.toggleText} >Feed</HeaderText>
         </Pressable>
         <Pressable  style={[styles.toggleBtn]} onPress={() => toggleButtons('complete')}>
-          <HeaderText style={[styles.toggleText]} >COMPLETE</HeaderText>
+          <HeaderText style={[styles.toggleText]} >Complete</HeaderText>
         </Pressable>
         <Pressable  style={[styles.toggleBtn]} onPress={() => toggleButtons('pending')} >
-          <HeaderText style={[styles.toggleText]} >PENDING</HeaderText>
+          <HeaderText style={[styles.toggleText]} >Pending</HeaderText>
 
         </Pressable>
         <Animated.View style={[styles.animatedToggle, activeAnimatedStyle]} />

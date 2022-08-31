@@ -6,18 +6,23 @@ import { db } from '../firebase/firestore'
 const TestComponent = () => {
 
     const testRequest = () => {
-        Linking.openURL('venmo://paycharge?txn=paycharge&recipients=Weston-Farnsworth&amount=1.00&note=testing%20a%20lot%20of%20things')
-    }
+        const options = {
+            method: 'GET',
+            headers: {
+                'x-api-key': '17694fa2-25af-11ed-89ba-0ae9bc51dafd',
+            }
+        };
 
-    const testPay = () => {
-        Linking.openURL('venmo://paycharge?txn=pay&recipients=Weston-Farnsworth&amount=1.00&note=testing')
+        fetch('https://jsonodds.com/api/odds/nfl', options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
     }
 
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Button title="Request Payment" onPress={() => testRequest()} />
-            <Button title="Pay Bet" onPress={() => testPay()} />
+        <View>
+            <Button title="Test Request" onPress={() => testRequest()} />
 
         </View>
     )

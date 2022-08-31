@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { StyleSheet, Text, View, Platform, Alert, TouchableOpacity } from 'react-native'
+import {StyleSheet, Text, View, Platform, Alert, TouchableOpacity, TextInput} from 'react-native'
 import Colors from '../constants/colors'
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -14,7 +14,7 @@ import { completedCriteria } from '../constants/utils';
 
 const Edit_Bet_Screen = props => {
 
-    const { description, amount, other_bettor, date, won_bet, is_complete, id, is_open, date_complete, is_verified, is_accepted, creator_id, other_id, creator } = props.bet
+    const { description, amount, other_bettor, date, won_bet, is_complete, id, is_open, date_complete, is_verified, is_accepted, creator_id, other_id, creator, sports_bet, lineChosen } = props.bet
     const userId = useSelector(state => state.auth.userId)
     const user = useSelector(state => state.auth.userInfo)
     const otherPersonId = userId === creator_id ? other_id : creator_id
@@ -26,8 +26,12 @@ const Edit_Bet_Screen = props => {
     const [betDescription, setBetDescription] = useState('');
     const [betComplete, setBetComplete] = useState(false);
     const [betWon, setBetWon] = useState(false);
+    const [oddsBetAmount, setOddsBetAmount] = useState('');
+    const [potentialWinnings, setPotentialWinnings] = useState('');
     // const [toggleModal, setToggleModal] = useState(props.modalVisible)
     const [hasPermission, setHasPermissions] = useState(props.permissions)
+    const [customOdds, setCustomOdds] = useState(false)
+
 
     useEffect(() => {
         setNameOfBettor(other_bettor.firstName)
@@ -59,6 +63,16 @@ const Edit_Bet_Screen = props => {
         setBetWon(false)
         props.navigation.goBack()
     }
+    const toggleCustomOdds = () => {
+        let potentialAmount = ''
+        if(!customOdds){
+            setPotentialWinnings(potentialWinnings)
+        } else {
+            calculatePotentialWinnings(oddsBetAmount)
+        }
+        setCustomOdds(!customOdds)
+    }
+
 
     const handleUpdateBet = async () => {
         const betData = props.bet
@@ -80,6 +94,23 @@ const Edit_Bet_Screen = props => {
         dispatch(updateBet(betData, statusChanged))
 
 
+    }
+
+    const calculatePotentialWinnings = (oddsBetAmount) => {
+        setOddsBetAmount(oddsBetAmount)
+        if(lineChosen){
+            if(lineChosen.type === 'spread'){
+                let newAmount = (oddsBetAmount * 100) / parseFloat(lineChosen.line)
+                let positiveNumber = Math.abs(newAmount)
+                let roundedNum = Math.round(positiveNumber)
+                if(Math.abs(newAmount.toFixed(2) == 0)){
+                    setPotentialWinnings('')
+                } else {
+                    setPotentialWinnings(Math.abs(newAmount.toFixed(2)).toString())
+                }
+                return oddsBetAmount
+            }
+        }
     }
 
     const showUpdateAlert = () => {
@@ -109,7 +140,7 @@ const Edit_Bet_Screen = props => {
                         <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bettors: </Text>
                         <Input
                             style={styles.input}
-                            leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.primaryColor} />}
+                            leftIcon={<Icon style={styles.icon} name='user' size={20} color={Colors.green} />}
                             onChangeText={nameOfBettor => setNameOfBettor(nameOfBettor)}
                             defaultValue={other_bettor.firstName + ' ' + other_bettor.lastName}
                             disabled={hasPermission ? false : true}
@@ -118,13 +149,48 @@ const Edit_Bet_Screen = props => {
                     : null
 
                 }
+                {sports_bet.id
+                    ?
+                    <View>
+                        <View style={styles.amountContainer}>
+                            <Text style={styles.questionText}>Amount you want to bet:</Text>
+                            <TextInput
+                                style={{minWidth: 90, borderWidth: 1, borderColor: Colors.grayDark, padding: 10, fontSize: 30, borderRadius: 5}}
+                                placeholder='$0.00'
+                                keyboardType='numeric'
+                                placeholderTextColor={Colors.grayDark}
+                                onChangeText={oddsBetAmount => calculatePotentialWinnings(oddsBetAmount)}
+                                defaultValue={oddsBetAmount}
+                            />
+                        </View>
+                        <View style={styles.amountContainer}>
+                            <Text style={styles.questionText}>Amount you would win:</Text>
+                            <View>
+                                <TextInput
+                                    style={{minWidth: 90, borderWidth: 1, borderColor: customOdds ? Colors.grayDark : 'transparent', padding: 10, fontSize: 30, borderRadius: 5}}
+                                    placeholder='$0.00'
+                                    keyboardType='numeric'
+                                    placeholderTextColor={Colors.grayDark}
+                                    onChangeText={potentialWinnings => setPotentialWinnings(potentialWinnings)}
+                                    value={potentialWinnings}
+                                    defaultValue={potentialWinnings}
+                                    editable={customOdds ? true : false}
+                                />
+                                <TouchableOpacity>
+                                    <Text onPress={() => toggleCustomOdds()} style={{fontSize: 10, marginTop: 5, color: 'blue', alignSelf: 'center'}}>{!customOdds ? 'Set Custom Odds' : 'Use Actual Odds'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                    : null
 
+                }
                 <View style={styles.editDetailRow}>
                     <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bet Amount: </Text>
                         <Input
                             style={styles.input}
                             placeholder='0.00'
-                            leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={Colors.primaryColor} />}
+                            leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={Colors.green} />}
                             keyboardType='numeric'
                             onChangeText={betAmount => setBetAmount(betAmount)}
                             defaultValue={amount.toString() + '.00'}
@@ -145,7 +211,7 @@ const Edit_Bet_Screen = props => {
                             <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Is this bet complete? </Text>
                             <Switch
                                 value={betComplete}
-                                color={Colors.primaryColor}
+                                color={Colors.green}
                                 onValueChange={() => setBetComplete(!betComplete)}
                             />
                         </View>
@@ -154,7 +220,7 @@ const Edit_Bet_Screen = props => {
                                 <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Did you win this bet? </Text>
                                 <Switch
                                     value={betWon}
-                                    color={Colors.primaryColor}
+                                    color={Colors.green}
                                     onValueChange={() => setBetWon(!betWon)}
                                 />
                             </View>
@@ -249,7 +315,7 @@ const styles = StyleSheet.create({
 
     },
     updateButton: {
-        backgroundColor: Colors.primaryColor,
+        backgroundColor: Colors.green,
         width: '90%',
         alignSelf: 'center'
     }
