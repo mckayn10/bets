@@ -12,7 +12,8 @@ import { placeholderPic } from '../constants/urls';
 export default function FriendCard(props) {
     const { firstName, lastName, email, username, id } = props.person
     const user = useSelector(state => state.auth.userInfo)
-    const isUser = user.id === props.person.id
+    const userId = useSelector(state => state.auth.userId)
+    const isUser = userId === props.person.id
     const [profileImage, setProfileImage] = useState()
 
     useEffect(() => {
