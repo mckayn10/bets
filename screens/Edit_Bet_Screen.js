@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import {StyleSheet, Text, View, Platform, Alert, TouchableOpacity, TextInput} from 'react-native'
+import {
+    StyleSheet,
+    Text,
+    View,
+    Platform,
+    Alert,
+    TouchableOpacity,
+    TextInput,
+    Keyboard,
+    TouchableWithoutFeedback
+} from 'react-native'
 import Colors from '../constants/colors'
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -27,7 +37,7 @@ const Edit_Bet_Screen = props => {
     const [betComplete, setBetComplete] = useState(false);
     const [betWon, setBetWon] = useState(false);
     const [oddsBetAmount, setOddsBetAmount] = useState('');
-    const [potentialWinnings, setPotentialWinnings] = useState('');
+    const [potentialWinnings, setPotentialWinnings] = useState();
     // const [toggleModal, setToggleModal] = useState(props.modalVisible)
     const [hasPermission, setHasPermissions] = useState(props.permissions)
     const [customOdds, setCustomOdds] = useState(false)
@@ -77,7 +87,8 @@ const Edit_Bet_Screen = props => {
     const handleUpdateBet = async () => {
         const betData = props.bet
         betData.other_bettor.firstName = nameOfBettor
-        betData.amount = parseFloat(betAmount)
+        betData.amount = parseFloat(oddsBetAmount)
+        betData.potentialWinnings = parseFloat(potentialWinnings)
         betData.is_complete = betComplete
         betData.won_bet = betWon ? userId : otherPersonId
         betData.description = betDescription
@@ -99,17 +110,34 @@ const Edit_Bet_Screen = props => {
     const calculatePotentialWinnings = (oddsBetAmount) => {
         setOddsBetAmount(oddsBetAmount)
         if(lineChosen){
-            if(lineChosen.type === 'spread'){
-                let newAmount = (oddsBetAmount * 100) / parseFloat(lineChosen.line)
+            if(lineChosen.line && lineChosen.line != 0){
+                let newAmount = 0
+                if(parseFloat(lineChosen.line) > 0){
+                    newAmount = oddsBetAmount * (parseFloat(lineChosen.line) / 100)
+                } else if(lineChosen.line < 0) {
+                    newAmount = (oddsBetAmount * 100) / parseFloat(lineChosen.line)
+                } else {
+                    console.log({oddsBetAmount})
+
+                    newAmount = parseFloat(oddsBetAmount)
+                }
+                console.log({newAmount})
                 let positiveNumber = Math.abs(newAmount)
                 let roundedNum = Math.round(positiveNumber)
-                if(Math.abs(newAmount.toFixed(2) == 0)){
+
+                console.log('yes', Math.abs(newAmount.toFixed(2))== 0)
+                if(Math.abs(newAmount.toFixed(2) ) == 0){
                     setPotentialWinnings('')
                 } else {
+                    console.log('blah blah', newAmount)
                     setPotentialWinnings(Math.abs(newAmount.toFixed(2)).toString())
                 }
                 return oddsBetAmount
+            }else {
+                setPotentialWinnings(oddsBetAmount.toString())
             }
+        } else {
+            setPotentialWinnings(oddsBetAmount.toString())
         }
     }
 
@@ -132,7 +160,8 @@ const Edit_Bet_Screen = props => {
     };
 
     return (
-        <View style={[styles.container]}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+            <View style={[styles.container]}>
             <View style={styles.detailsContainer}>
                 {!is_open
                     ?
@@ -149,14 +178,24 @@ const Edit_Bet_Screen = props => {
                     : null
 
                 }
-                {sports_bet.id
+                <View behavior='position'>
+                    <View style={styles.editDetailRow}>
+                        <Text style={[styles.betText, { fontWeight: 'bold', width: '30%' }]} >Description: </Text>
+                        <Input
+                            style={styles.input}
+                            onChangeText={betDescription => setBetDescription(betDescription)}
+                            defaultValue={description}
+                        />
+                    </View>
+                </View>
+                {true
                     ?
                     <View>
                         <View style={styles.amountContainer}>
                             <Text style={styles.questionText}>Amount you want to bet:</Text>
                             <TextInput
-                                style={{minWidth: 90, borderWidth: 1, borderColor: Colors.grayDark, padding: 10, fontSize: 30, borderRadius: 5}}
-                                placeholder='$0.00'
+                                style={styles.betAmountBox}
+                                placeholder={'$'+props.bet.amount.toString()}
                                 keyboardType='numeric'
                                 placeholderTextColor={Colors.grayDark}
                                 onChangeText={oddsBetAmount => calculatePotentialWinnings(oddsBetAmount)}
@@ -164,11 +203,18 @@ const Edit_Bet_Screen = props => {
                             />
                         </View>
                         <View style={styles.amountContainer}>
-                            <Text style={styles.questionText}>Amount you would win:</Text>
+                            <View>
+                                <Text style={styles.questionText}>Amount your opponent bets:</Text>
+                                <TouchableOpacity>
+                                    <Text onPress={() => toggleCustomOdds()} style={{fontSize: 10, marginTop: 5, color: 'blue'}}>
+                                        {!customOdds ? 'Set Custom Odds' : 'Use Default Odds'}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                             <View>
                                 <TextInput
-                                    style={{minWidth: 90, borderWidth: 1, borderColor: customOdds ? Colors.grayDark : 'transparent', padding: 10, fontSize: 30, borderRadius: 5}}
-                                    placeholder='$0.00'
+                                    style={[styles.betAmountBox, {borderColor: customOdds ? Colors.grayDark : 'transparent'}]}
+                                    placeholder={'$'+props.bet.potentialWinnings.toString()}
                                     keyboardType='numeric'
                                     placeholderTextColor={Colors.grayDark}
                                     onChangeText={potentialWinnings => setPotentialWinnings(potentialWinnings)}
@@ -176,36 +222,23 @@ const Edit_Bet_Screen = props => {
                                     defaultValue={potentialWinnings}
                                     editable={customOdds ? true : false}
                                 />
-                                <TouchableOpacity>
-                                    <Text onPress={() => toggleCustomOdds()} style={{fontSize: 10, marginTop: 5, color: 'blue', alignSelf: 'center'}}>{!customOdds ? 'Set Custom Odds' : 'Use Actual Odds'}</Text>
-                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
                     : null
 
                 }
-                <View style={styles.editDetailRow}>
-                    <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bet Amount: </Text>
-                        <Input
-                            style={styles.input}
-                            placeholder='0.00'
-                            leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={Colors.green} />}
-                            keyboardType='numeric'
-                            onChangeText={betAmount => setBetAmount(betAmount)}
-                            defaultValue={amount.toString() + '.00'}
-                        />
-                </View>
-                <View behavior='position'>
-                    <View style={styles.editDetailRow}>
-                        <Text style={[styles.betText, { fontWeight: 'bold', width: '30%' }]} >Description: </Text>
-                            <Input
-                                style={styles.input}
-                                onChangeText={betDescription => setBetDescription(betDescription)}
-                                defaultValue={description}
-                            />
-                    </View>
-                </View>
+                {/*<View style={styles.editDetailRow}>*/}
+                {/*    <Text style={[styles.betText, { fontWeight: 'bold' }]}>Bet Amount: </Text>*/}
+                {/*        <Input*/}
+                {/*            style={styles.input}*/}
+                {/*            placeholder='0.00'*/}
+                {/*            leftIcon={<Icon style={styles.icon} name='dollar' size={20} color={Colors.green} />}*/}
+                {/*            keyboardType='numeric'*/}
+                {/*            onChangeText={betAmount => setBetAmount(betAmount)}*/}
+                {/*            defaultValue={amount.toString() + '.00'}*/}
+                {/*        />*/}
+                {/*</View>*/}
                     <View style={is_open ? {display: 'none'} : null}>
                         <View style={[styles.detailRow, styles.betStatusContainer]}>
                             <Text style={[{ fontWeight: 'bold' }, styles.statusText]}>Is this bet complete? </Text>
@@ -246,7 +279,8 @@ const Edit_Bet_Screen = props => {
                 </View>
                 : null
             }
-        </View>
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 
@@ -318,6 +352,25 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.green,
         width: '90%',
         alignSelf: 'center'
+    },
+    amountContainer: {
+        width: '95%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginTop: 2,
+        marginBottom: 2,
+    },
+    betAmountBox: {
+        minWidth: 90,
+        maxWidth: 130,
+        borderWidth: 1,
+        borderColor: Colors.grayDark,
+        padding: 7,
+        fontSize: 30,
+        textAlign: 'center',
+        borderRadius: 5
     }
 
 

@@ -41,7 +41,7 @@ const Create_Bet_Screen = props => {
     const [oddsLines, setOddsLines] = useState([]);
     const [oddsBetAmount, setOddsBetAmount] = useState('');
     const [potentialWinnings, setPotentialWinnings] = useState('');
-    const [isSportsBet, setIsSportsBet] = useState(props.route.params ? true : false)
+    const [isSportsBet, setIsSportsBet] = useState(props.route.params && props.route.params.matchData ? true : false)
     const [customOdds, setCustomOdds] = useState(false)
     const [betOdds, setBetOdds] = useState()
 
@@ -369,7 +369,6 @@ const toggleCustomOdds = () => {
 const renderAmountInputs = () => {
         return (
             <View>
-
                 <View style={styles.amountContainer}>
                     <Text style={styles.questionText}>Amount you want to bet:</Text>
                     <TextInput
@@ -469,7 +468,7 @@ return (
 
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View scrollEnabled={false} style={styles.container}>
-        {!betTypeChosen
+        {!betTypeChosen && !person
             ?
         <View style={styles.betTypeContainer}>
             <Text style={styles.betTypeTitle}>Open Bet or Bet with a Friend?</Text>

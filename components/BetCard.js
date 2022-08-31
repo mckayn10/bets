@@ -280,7 +280,7 @@ export default function BetCard(props) {
                 <View style={styles.amountContainer}>
                     {(creator_id === userId || other_id === userId || is_open) && (is_complete || !potentialWinnings || potentialWinnings == amount)
                         ? <Text style={[ styles.amount, !isPending ? (won_bet != props.personId ? styles.negative : styles.positive) : '']}>
-                            {!isPending ? (won_bet != props.personId ? '-' : '+') : ''}${parseFloat(Math.abs(amount)).toFixed(2)}
+                            {!isPending ? (won_bet != props.personId ? '-' : '+') : ''}${parseFloat(Math.abs(won_bet == creator_id ? potentialWinnings : amount)).toFixed(2)}
                           </Text>
                         : null
                     }
