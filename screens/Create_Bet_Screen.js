@@ -8,6 +8,7 @@ import {
     Alert,
     ScrollView,
     SafeAreaView,
+    Pressable,
     TextInput, TouchableWithoutFeedback, Keyboard
 } from 'react-native'
 import Colors from '../constants/colors'
@@ -21,6 +22,7 @@ import { AntDesign } from '@expo/vector-icons';
 import MySearchableDropdown from '../components/SearchableDropdown';
 import {check_val} from "../utils/utils";
 import DropDownPicker from 'react-native-dropdown-picker';
+import HeaderText from "../components/HeaderText";
 
 
 const Create_Bet_Screen = props => {
@@ -532,20 +534,34 @@ return (
                         <View style={openBet ? {display: 'none'} : null}>
                             <View style={styles.betStatusContainer}>
                                 <Text style={styles.questionText}>Is this bet complete?</Text>
-                                <Switch
-                                    value={betComplete}
-                                    color={Colors.green}
-                                    onValueChange={() => setBetComplete(!betComplete)}
-                                />
+                                <View style={{flexDirection: 'row'}}>
+                                    <Pressable onPress={() => setBetComplete(!betComplete)}>
+                                        <HeaderText
+                                            style={[styles.radioBtn, betComplete ? styles.yesBtn : styles.noBtn]}
+                                        >Yes</HeaderText>
+                                    </Pressable>
+                                    <Pressable onPress={() => setBetComplete(!betComplete)}>
+                                        <HeaderText
+                                            style={[styles.radioBtn, betComplete ? styles.noBtn : styles.yesBtn]}
+                                        >No</HeaderText>
+                                    </Pressable>
+                                </View>
                             </View>
                             {betComplete ?
                                 <View style={styles.betStatusContainer}>
                                     <Text style={styles.questionText}>Did you win this bet?</Text>
-                                    <Switch
-                                        value={betWon}
-                                        color={Colors.green}
-                                        onValueChange={() => setBetWon(!betWon)}
-                                    />
+                                    <View style={{flexDirection: 'row'}}>
+                                        <Pressable onPress={() => setBetWon(!betWon)}>
+                                            <HeaderText
+                                                style={[styles.radioBtn, betWon ? styles.yesBtn : styles.noBtn]}
+                                            >Yes</HeaderText>
+                                        </Pressable>
+                                        <Pressable onPress={() => setBetWon(!betWon)}>
+                                            <HeaderText
+                                                style={[styles.radioBtn, betWon ? styles.noBtn : styles.yesBtn]}
+                                            >No</HeaderText>
+                                        </Pressable>
+                                    </View>
                                 </View> : null}
                         </View>
                     </View>
@@ -718,6 +734,25 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: 'center',
         borderRadius: 5
+    },
+    radioBtn: {
+        padding: 10,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: Colors.grayDark,
+        width: 70,
+        marginLeft: 1,
+        textAlign: 'center'
+    },
+    yesBtn: {
+        overflow: 'hidden',
+        backgroundColor: Colors.primaryColor,
+        color: 'white'
+    },
+    noBtn: {
+        overflow: 'hidden',
+        backgroundColor: Colors.backgroundColor,
+        color: Colors.primaryColor
     }
 
 

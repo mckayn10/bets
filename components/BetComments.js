@@ -111,7 +111,7 @@ function BetComments(props) {
                     onPress={() => openPersonProfile(newComment.commentor)}
                 />
                 <View style={{width: '100%',borderBottomWidth: 1, borderBottomColor: Colors.grayLight, paddingBottom: 5, flexWrap: 'wrap'}}>
-                    <Text onPress={() => openPersonProfile(newComment.commentor)} style={{fontSize: 13, fontWeight: 'bold', marginBottom: 3}}>{newComment.commentor.firstName} {newComment.commentor.lastName}</Text>
+                    <Text onPress={() => openPersonProfile(newComment.commentor)} style={{fontSize: 13, fontWeight: 'bold', paddingBottom: 5}}>{newComment.commentor.firstName} {newComment.commentor.lastName}</Text>
                     <Text style={styles.date}>{new Date(newComment.date).toLocaleString()}</Text>
                     <Text style={{marginTop: 10, fontSize: 13, width: '95%'}}>{newComment.description}</Text>
                 </View>
@@ -207,8 +207,8 @@ const styles = StyleSheet.create({
     },
     image: {
         alignSelf: 'flex-start',
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
         borderRadius: 100,
         marginRight: 8,
     },

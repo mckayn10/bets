@@ -207,14 +207,14 @@ export default function BetCard(props) {
             return (
                 <View style={{marginLeft: 59, marginTop: 15, marginBottom: 10}}>
                     <Text style={{marginBottom: 8}}>{creator_id == userId ? is_accepted ? `${other_bettor.firstName}'s` : "Opponent's" : "Your"} bet: ${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
-                    <Text>{creator_id == userId && is_verified ? 'Your' : `${creator.firstName}'s`} bet: ${parseFloat(Math.abs(potentialWinnings)).toFixed(2)}</Text>
+                    <Text>{creator_id == userId && is_verified ? 'Your' : `${creator.firstName}'s`} bet: ${parseFloat(Math.abs(potentialWinnings ? potentialWinnings : amount)).toFixed(2)}</Text>
                 </View>
             )
         } else {
             return (
                 <View style={{marginLeft: 59, marginTop: 15, marginBottom: 10}}>
                     <Text style={{marginBottom: 8}}>Your bet: ${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
-                    <Text>{`${other_bettor.firstName}'s`} bet: ${parseFloat(Math.abs(potentialWinnings)).toFixed(2)}</Text>
+                    <Text>{!is_open ? `${other_bettor.firstName}'s` : "Opponent's"} bet: ${parseFloat(Math.abs(potentialWinnings ? potentialWinnings : amount)).toFixed(2)}</Text>
                 </View>
             )
         }
@@ -254,7 +254,7 @@ export default function BetCard(props) {
                             ? <AntDesign name='checkcircle' size={13} color={Colors.green} style={{marginRight: 3, alignSelf: 'flex-start', marginTop: 2}}/>
                             : null
                         }
-                        <Text style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                        <Text style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '95%'}}>
                             <Text onPress={() => openPersonProfile(creator)} style={{fontWeight: 'bold'}}>{creator_id === userId ? 'You' : creator.firstName }</Text>
                              {getBetTitleResult()}
                             <Text onPress={() => openPersonProfile(other_bettor)} style={is_verified ? {fontWeight: 'bold'} : {fontWeight: 'normal'}}>{other_id === userId ? 'You' : `${other_bettor.firstName}` }</Text>
@@ -348,7 +348,7 @@ export default function BetCard(props) {
                     {displayStatus()}
                 </View>
             </View>
-            {((is_open && potentialWinnings) || (creator_id === userId || other_id === userId)) && (potentialWinnings != amount)
+            {((is_open && potentialWinnings) || (creator_id === userId || other_id === userId)) && (potentialWinnings && potentialWinnings != amount)
                 ? getOddsAmountsText()
                 : null
             }
@@ -373,14 +373,16 @@ export default function BetCard(props) {
 const styles = StyleSheet.create({
     container: {
         minHeight: 110,
-        width: '100%',
+        width: '90%',
+        alignSelf: 'center',
         justifyContent: 'space-between',
         borderBottomWidth: 1,
         borderBottomColor: Colors.grayDark,
         paddingTop: 10,
-        paddingRight: 10,
-        paddingLeft: 10,
+        // paddingRight: 10,
+        // paddingLeft: 10,
         paddingBottom: 10,
+
     },
     descriptionContainer: {
         display: 'flex',
@@ -420,7 +422,7 @@ const styles = StyleSheet.create({
     date: {
         color: 'gray',
         fontSize: 10,
-        marginTop: 5,
+        marginTop: 4,
         marginLeft: 1
     },
     image: {

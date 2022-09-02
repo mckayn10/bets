@@ -3,39 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-hdpi/notification_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-hdpi/notification_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-hdpi/splashscreen_image.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-hdpi/splashscreen_image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-mdpi/notification_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-mdpi/notification_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-mdpi/splashscreen_image.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-mdpi/splashscreen_image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xhdpi/notification_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-xhdpi/notification_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xhdpi/splashscreen_image.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-xhdpi/splashscreen_image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxhdpi/notification_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxhdpi/notification_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxhdpi/splashscreen_image.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxhdpi/splashscreen_image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxxhdpi/notification_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxxhdpi/notification_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxxhdpi/splashscreen_image.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxxhdpi/splashscreen_image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/BetCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-20x20@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-20x20@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-20x20@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-20x20@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-20x20@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-20x20@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-29x29@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-29x29@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-29x29@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-29x29@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-29x29@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-29x29@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-40x40@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-40x40@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-40x40@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-40x40@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-40x40@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-40x40@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-60x60@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-60x60@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-60x60@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-60x60@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-76x76@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-76x76@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-76x76@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-76x76@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-83.5x83.5@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/App-Icon-83.5x83.5@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/ItunesArtwork@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/AppIcon.appiconset/ItunesArtwork@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreen.imageset/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreen.imageset/image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreenBackground.imageset/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreenBackground.imageset/image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/BetComments.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetComments.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +72,7 @@
       <workItem from="1661265800190" duration="42457000" />
       <workItem from="1661451322666" duration="60318000" />
       <workItem from="1661834521126" duration="3932000" />
-      <workItem from="1661887489313" duration="61290000" />
+      <workItem from="1661887489313" duration="65970000" />
     </task>
     <servers />
   </component>
@@ -133,7 +104,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/screens/Create_Bet_Screen.js</url>
-          <line>469</line>
+          <line>471</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
         </line-breakpoint>

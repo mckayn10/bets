@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, StatusBar} from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import betsReducer from './store/reducers/bets';
 import authReducer from './store/reducers/auth';
 import notificationsReducer from './store/reducers/notifications';
 import ReduxThunk from 'redux-thunk'
-import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -54,7 +53,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <StatusBar style='auto' />
+      <StatusBar barStyle={'light-content'} />
       <AppNavigator />
     </Provider>
 
