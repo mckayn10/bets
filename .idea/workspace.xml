@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/BetCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/BetComments.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetComments.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/mybetz/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Info.plist" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,18 +25,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/mckaynilsson/projects/bets/ios/mybetz/Images.xcassets/SplashScreen.imageset",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "ts.external.directory.path": "/private/var/folders/jm/ht5h1g8j2txd2s90xzk5nd5h0000gn/T/AppTranslocation/BD96272B-88A6-48C7-9BF2-E39E8FB22954/d/PhpStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mckaynilsson/projects/bets/ios/mybetz/Images.xcassets/SplashScreen.imageset&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/private/var/folders/jm/ht5h1g8j2txd2s90xzk5nd5h0000gn/T/AppTranslocation/BD96272B-88A6-48C7-9BF2-E39E8FB22954/d/PhpStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreen.imageset" />
@@ -72,7 +69,8 @@
       <workItem from="1661265800190" duration="42457000" />
       <workItem from="1661451322666" duration="60318000" />
       <workItem from="1661834521126" duration="3932000" />
-      <workItem from="1661887489313" duration="65970000" />
+      <workItem from="1661887489313" duration="66188000" />
+      <workItem from="1662155657883" duration="17000" />
     </task>
     <servers />
   </component>
@@ -105,13 +103,11 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/screens/Create_Bet_Screen.js</url>
           <line>471</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/components/BetCard.js</url>
           <line>348</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
