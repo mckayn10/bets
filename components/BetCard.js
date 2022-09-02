@@ -8,7 +8,7 @@ import CachedImage from 'react-native-expo-cached-image';
 import { placeholderPic } from '../constants/urls';
 import {Button} from "react-native-elements";
 import {completedCriteria} from "../constants/utils";
-import {updateBet} from "../store/actions/bets";
+import {deleteBet, updateBet} from "../store/actions/bets";
 import {deleteNotification, sendBetResponse} from "../store/actions/notifications";
 import {getBetComments} from "../utils/utils";
 import {FontAwesome} from "@expo/vector-icons";
@@ -108,7 +108,18 @@ export default function BetCard(props) {
         }
 
     }
-    const handleAcceptOpenBetOffer = () => {
+
+    const handleDeclined = () => {
+        let notificationType = 'betDecline'
+        try {
+            dispatch(deleteBet(props.bet.id))
+        } catch (err) {
+            console.error(err)
+        }
+        sendBetResponse(props.bet, notificationType)
+    }
+
+    const handleAcceptBetOffer = () => {
         let updatedBet = props.bet
         updatedBet.is_accepted = true
         updatedBet.other_id = userId
@@ -126,7 +137,7 @@ export default function BetCard(props) {
         sendBetResponse(updatedBet, notificationType)
     }
 
-    const confirmAcceptOpenBet = () => {
+    const confirmAcceptBetOffer = () => {
         return Alert.alert(
             "Are you sure you want to accept this bet offer?",
             "",
@@ -137,12 +148,31 @@ export default function BetCard(props) {
                 {
                     text: "Yes",
                     onPress: () => {
-                        handleAcceptOpenBetOffer()
+                        handleAcceptBetOffer()
                     },
                 },
             ]
         );
     };
+
+    const confirmDeclineBetOffer = () => {
+        return Alert.alert(
+            "Are you sure you want to decline this bet offer?",
+            "",
+            [
+                {
+                    text: "No",
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        handleDeclined()
+                    },
+                },
+            ]
+        );
+    };
+
 
     const getOpenBetTitle = () => {
         if(props.feed){
@@ -197,7 +227,7 @@ export default function BetCard(props) {
                     title='Accept'
                     buttonStyle={[styles.btn]}
                     titleStyle={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}
-                    onPress={() => confirmAcceptOpenBet()}
+                    onPress={() => confirmAcceptBetOffer()}
                 />
                 {!is_open
                     ?
@@ -205,7 +235,7 @@ export default function BetCard(props) {
                         title='Decline'
                         buttonStyle={[styles.btn, {backgroundColor: Colors.red, marginLeft: 8}]}
                         titleStyle={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}
-                        onPress={() => confirmAcceptOpenBet()}
+                        onPress={() => confirmDeclineBetOffer()}
                     />
                     : null
                 }
