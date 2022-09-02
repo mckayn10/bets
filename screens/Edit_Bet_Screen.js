@@ -46,6 +46,8 @@ const Edit_Bet_Screen = props => {
     useEffect(() => {
         setNameOfBettor(other_bettor.firstName)
         setBetAmount(amount)
+        setOddsBetAmount(amount)
+        setPotentialWinnings(props.bet.potentialWinnings)
         setBetDescription(description)
         setBetWon(won_bet === userId)
         setBetComplete(is_complete)
@@ -117,19 +119,14 @@ const Edit_Bet_Screen = props => {
                 } else if(lineChosen.line < 0) {
                     newAmount = (oddsBetAmount * 100) / parseFloat(lineChosen.line)
                 } else {
-                    console.log({oddsBetAmount})
-
                     newAmount = parseFloat(oddsBetAmount)
                 }
-                console.log({newAmount})
                 let positiveNumber = Math.abs(newAmount)
                 let roundedNum = Math.round(positiveNumber)
 
-                console.log('yes', Math.abs(newAmount.toFixed(2))== 0)
                 if(Math.abs(newAmount.toFixed(2) ) == 0){
                     setPotentialWinnings('')
                 } else {
-                    console.log('blah blah', newAmount)
                     setPotentialWinnings(Math.abs(newAmount.toFixed(2)).toString())
                 }
                 return oddsBetAmount
@@ -214,7 +211,7 @@ const Edit_Bet_Screen = props => {
                             <View>
                                 <TextInput
                                     style={[styles.betAmountBox, {borderColor: customOdds ? Colors.grayDark : 'transparent'}]}
-                                    placeholder={'$'+props.bet.potentialWinnings.toString()}
+                                    placeholder={props.bet.potentialWinnings ? `$${props.bet.potentialWinnings.toString()}` : `$${props.bet.amount.toString()}`}
                                     keyboardType='numeric'
                                     placeholderTextColor={Colors.grayDark}
                                     onChangeText={potentialWinnings => setPotentialWinnings(potentialWinnings)}

@@ -15,6 +15,7 @@ import FriendCard from "../components/FriendCard";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {SearchBar} from "react-native-elements";
 import {unJuiceLines} from "../utils/utils";
+import {formatDate} from "../constants/utils";
 
 
 function Sport_Odds_Screen(props) {
@@ -90,7 +91,20 @@ function Sport_Odds_Screen(props) {
 
     const renderSportsList = matchData => {
         let match = unJuiceLines(matchData.item)
+        // ET timezone offset in hours.
+        let date = new Date(match.MatchTime)
+        var timezone = date.getTimezoneOffset() / 60;
+        // Timezone offset in minutes + the desired offset in minutes, converted to ms.
+        // This offset should be the same for ALL date calculations, so you should only need to calculate it once.
+        var offset = (date.getTimezoneOffset() + (timezone)) * 60 * 1000;
 
+        let finalTime = new Date(date.getTime() - offset);
+        finalTime.setMinutes(finalTime.getMinutes() + 6)
+        // let formattedDate = finalTime.getHours()
+        let time = finalTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+        let index = time.indexOf('0')
+
+        let formattedTime = index == 0 ? time.replace('0', '') : time
         let odds = match.Odds[0]
         return (
             // <ImageBackground source={require('../assets/fb-bg.jpeg')} resizeMode='cover' style={{marginBottom: 2}}>
@@ -114,7 +128,7 @@ function Sport_Odds_Screen(props) {
                     </View>
                     <View style={[styles.cellContainer]}>
                         <Text style={[styles.cellTitle]}>O/U Total Points</Text>
-                        <Text style={[styles.itemText, styles.oddsText, {marginBottom: -28, marginTop: 20, fontSize: 25}]}>{odds.TotalNumber} {parseFloat(odds.OverLine) > 0 ? '+' : ""}</Text>
+                        <Text style={[styles.itemText, styles.oddsText, {marginBottom: -10, marginTop: 2, fontSize: 25}]}>{odds.TotalNumber} {parseFloat(odds.OverLine) > 0 ? '+' : ""}</Text>
                     </View>
                     <View style={styles.cellContainer}>
                         <Text style={styles.cellTitle}>Home Spread</Text>
@@ -127,6 +141,8 @@ function Sport_Odds_Screen(props) {
                         <Text style={[styles.itemText, styles.oddsText]}>{parseFloat(odds.MoneyLineAway) > 0 ? '+' : ""}{odds.MoneyLineAway}</Text>
                     </View>
                     <View style={styles.cellContainer}>
+                        <Text style={{textAlign: 'center', fontSize: 12, fontWeight: 'bold', marginBottom: 3}}>{finalTime.toLocaleDateString()}</Text>
+                        <Text style={{textAlign: 'center', fontSize: 12, fontWeight: 'bold'}}>{formattedTime}</Text>
                     </View>
                     <View style={styles.cellContainer}>
                         <Text style={styles.cellTitle}>Home Moneyline</Text>

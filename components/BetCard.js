@@ -28,7 +28,6 @@ export default function BetCard(props) {
     const parsedDateCreated = new Date(date)
 
     let isPending = !is_complete && !is_verified || is_verified && !is_accepted || is_accepted && !is_complete
-    const hasPermission = creator_id === userId || other_id === userId ? true : false
     let infoToDisplayBasedOnUser = {
         otherBettorname: props.personId === creator.id ? `${other_bettor.firstName} ${other_bettor.lastName}` :`${creator.firstName} ${creator.lastName}`,
         creatorName: creator_id === userId ? 'You' : creator.firstName,
@@ -173,14 +172,46 @@ export default function BetCard(props) {
         }
     }
 
+    const getOddsAmountsText = () => {
+        if(is_verified){
+            return (
+                <View style={{marginLeft: 59, marginTop: 15, marginBottom: 10}}>
+                    <Text style={{marginBottom: 8}}>{creator_id == userId ? is_accepted ? `${other_bettor.firstName}'s` : "Opponent's" : "Your"} bet: ${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
+                    <Text>{creator_id == userId && is_verified ? 'Your' : `${creator.firstName}'s`} bet: ${parseFloat(Math.abs(potentialWinnings)).toFixed(2)}</Text>
+                </View>
+            )
+        } else {
+            return (
+                <View style={{marginLeft: 59, marginTop: 15, marginBottom: 10}}>
+                    <Text style={{marginBottom: 8}}>Your bet: ${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
+                    <Text>{`${other_bettor.firstName}'s`} bet: ${parseFloat(Math.abs(potentialWinnings)).toFixed(2)}</Text>
+                </View>
+            )
+        }
+    }
+
     const openBetButtons = () => {
         return (
-            <Button
-                title='Accept'
-                buttonStyle={[styles.btn]}
-                titleStyle={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}
-                onPress={() => confirmAcceptOpenBet()}
-            />
+            <View style={{flexDirection: 'row'}}>
+                <Button
+                    title='Accept'
+                    buttonStyle={[styles.btn]}
+                    titleStyle={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}
+                    onPress={() => confirmAcceptOpenBet()}
+                />
+                {!is_open
+                    ?
+                    <Button
+                        title='Decline'
+                        buttonStyle={[styles.btn, {backgroundColor: Colors.red, marginLeft: 8}]}
+                        titleStyle={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}
+                        onPress={() => confirmAcceptOpenBet()}
+                    />
+                    : null
+                }
+
+            </View>
+
         )
     }
 
@@ -280,19 +311,15 @@ export default function BetCard(props) {
                 <View style={styles.amountContainer}>
                     {(creator_id === userId || other_id === userId || is_open) && (is_complete || !potentialWinnings || potentialWinnings == amount)
                         ? <Text style={[ styles.amount, !isPending ? (won_bet != props.personId ? styles.negative : styles.positive) : '']}>
-                            {!isPending ? (won_bet != props.personId ? '-' : '+') : ''}${parseFloat(Math.abs(won_bet == creator_id ? potentialWinnings : amount)).toFixed(2)}
+                            {!isPending ? (won_bet != props.personId ? '-' : '+') : ''}${parseFloat(Math.abs(won_bet == creator_id ? (potentialWinnings ? potentialWinnings : amount) : amount)).toFixed(2)}
                           </Text>
                         : null
                     }
                     {displayStatus()}
                 </View>
             </View>
-            {(is_open || potentialWinnings) && (potentialWinnings != amount)
-                ?
-                <View style={{marginLeft: 59, marginTop: 15, marginBottom: 10}}>
-                    <Text style={{marginBottom: 8}}>{creator_id == userId ? "Opponent" : "You"} would win: ${parseFloat(Math.abs(amount)).toFixed(2)}</Text>
-                    <Text>{creator_id == userId ? 'You' : creator.firstName} would win: ${parseFloat(Math.abs(potentialWinnings)).toFixed(2)}</Text>
-                </View>
+            {((is_open && potentialWinnings) || (creator_id === userId || other_id === userId)) && (potentialWinnings != amount)
+                ? getOddsAmountsText()
                 : null
             }
 
@@ -300,12 +327,9 @@ export default function BetCard(props) {
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Text style={{marginLeft: 59, fontSize: 15}}>{numComments} </Text>
                     <FontAwesome name="comments-o" size={23}  />
-                    <View style={{flexDirection: 'row', marginLeft: 15}}>
-                        {(hasPermission || is_open) && bet_odds ? <View style={{flexDirection: 'row'}}><Text style={{fontWeight: 'bold'}}>{customOdds ? 'Custom Odds' : amount != potentialWinnings ? 'Odds: ' : ''}</Text><Text>{bet_odds && !customOdds && amount != potentialWinnings ? bet_odds : ''}</Text></View> : null}
-                    </View>
                 </View>
 
-                {is_open && creator_id != userId ? openBetButtons() : null}
+                {(is_open && creator_id != userId || !is_accepted && other_id == userId) ? openBetButtons() : null}
                 {/*<View style={styles.bottomContainer}>*/}
 
                 {/*</View>*/}

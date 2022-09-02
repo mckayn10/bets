@@ -148,7 +148,7 @@ const Create_Bet_Screen = props => {
         let obj = props.route.params.matchData
         let autoDescription = ''
         if(oddTypeChosen === 'moneyline'){
-            autoDescription = `${lineChosen.team} will beat ${obj.AwayTeam}`
+            autoDescription = `${lineChosen.team} will beat ${lineChosen.team == obj.AwayTeam ? obj.HomeTeam : obj.AwayTeam}`
         } else if (oddTypeChosen === 'over/under'){
             autoDescription = `${obj.HomeTeam} vs. ${obj.AwayTeam} will hit the ${lineChosen.sideChosen} on ${obj.Odds[0].TotalNumber} total points`
         } else if (oddTypeChosen === 'spread'){
@@ -297,11 +297,8 @@ const calculatePotentialWinnings = (oddsBetAmount) => {
             } else if(lineChosen.line < 0) {
                 newAmount = (oddsBetAmount * 100) / parseFloat(lineChosen.line)
             } else {
-                console.log({oddsBetAmount})
-
                 newAmount = parseFloat(oddsBetAmount)
             }
-            console.log({newAmount})
             let positiveNumber = Math.abs(newAmount)
             let roundedNum = Math.round(positiveNumber)
 
@@ -309,7 +306,6 @@ const calculatePotentialWinnings = (oddsBetAmount) => {
             if(Math.abs(newAmount.toFixed(2) ) == 0){
                 setPotentialWinnings('')
             } else {
-                console.log('blah blah', newAmount)
                 setPotentialWinnings(Math.abs(newAmount.toFixed(2)).toString())
             }
             return oddsBetAmount

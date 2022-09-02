@@ -12,7 +12,7 @@
     "orientation": "portrait",
     "icon": "./assets/new-splash-logo.png",
     "splash": {
-      "image": "./new-splash-logo.png",
+      "image": "./assets/new-splash-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#1c2e4a"
     },

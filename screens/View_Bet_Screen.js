@@ -41,7 +41,6 @@ const View_Bet_Screen = props => {
     const user = useSelector(state => state.auth.userInfo)
     const otherPersonId = userId === creator_id ? other_id : creator_id
     const otherPerson = userId === creator_id ? other_bettor : creator
-
     const [editMode, setEditMode] = useState(false)
     const [nameOfBettor, setNameOfBettor] = useState('');
     const [betAmount, setBetAmount] = useState(0);
@@ -50,6 +49,7 @@ const View_Bet_Screen = props => {
     const [betWon, setBetWon] = useState(false);
     // const [toggleModal, setToggleModal] = useState(props.modalVisible)
     const [hasPermission, setHasPermissions] = useState(props.route.params.permissions)
+    console.log(props.route.params.bet)
 
     useLayoutEffect(() => {
         props.navigation.setOptions({

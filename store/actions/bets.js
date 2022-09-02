@@ -164,9 +164,9 @@ export const createBet = (betData, sendBetNotification) => {
         betData.date_complete = completedCriteria(betData) ? Date.now() : 0
         betData.date = Date.now()
         betData.creator_id = userId
-        betData.is_double_or_nothing = false
         betData.other_id = betData.other_bettor.id
 
+        console.log(betData)
         betsRef.add(betData)
             .then((docRef) => {
                 betData.id = docRef.id

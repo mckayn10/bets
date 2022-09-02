@@ -3,9 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/new-splash-logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/new-splash-logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/BetCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/constants/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreen.imageset/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreen.imageset/image.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Bet_Review_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Bet_Review_Screen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/Edit_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Edit_Bet_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Sport_Odds_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Sport_Odds_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Sport_Selection_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Sport_Selection_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/View_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/View_Bet_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/bets.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/bets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/notifications.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +42,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/mckaynilsson/projects/bets/assets",
+    "last_opened_file_path": "/Users/mckaynilsson/projects/bets/ios/mybetz/Images.xcassets/SplashScreen.imageset",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.keymap",
     "ts.external.directory.path": "/private/var/folders/jm/ht5h1g8j2txd2s90xzk5nd5h0000gn/T/AppTranslocation/BD96272B-88A6-48C7-9BF2-E39E8FB22954/d/PhpStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
@@ -41,10 +51,12 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ios/mybetz/Images.xcassets/SplashScreen.imageset" />
       <recent name="$PROJECT_DIR$/assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/assets" />
+      <recent name="$PROJECT_DIR$/ios/mybetz/Images.xcassets/image.png" />
       <recent name="$PROJECT_DIR$/certs/ios" />
     </key>
   </component>
@@ -69,7 +81,7 @@
       <workItem from="1661265800190" duration="42457000" />
       <workItem from="1661451322666" duration="60318000" />
       <workItem from="1661834521126" duration="3932000" />
-      <workItem from="1661887489313" duration="35479000" />
+      <workItem from="1661887489313" duration="59190000" />
     </task>
     <servers />
   </component>
@@ -101,9 +113,15 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/screens/Create_Bet_Screen.js</url>
-          <line>473</line>
+          <line>469</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/components/BetCard.js</url>
+          <line>318</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

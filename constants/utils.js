@@ -89,3 +89,20 @@ export function formatTimeSince(date) {
   return Math.floor(seconds) + " seconds";
 }
 
+export const timezone = () => {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone
+}
+
+export const formatDate = (date) => {
+
+// ET timezone offset in hours.
+  var timezone = date.getTimezoneOffset() / -60;
+// Timezone offset in minutes + the desired offset in minutes, converted to ms.
+// This offset should be the same for ALL date calculations, so you should only need to calculate it once.
+  var offset = (date.getTimezoneOffset() + (timezone * 60)) * 60 * 1000;
+
+let finalTime = new Date().setTime(date.getTime() + offset);
+
+  return new Date(finalTime).toLocaleString()
+}
+

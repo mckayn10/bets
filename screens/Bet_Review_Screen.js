@@ -118,6 +118,17 @@ export default function Bet_Review_Screen(props) {
 
     }
 
+    const getButtonTitles = () => {
+        switch (notiData.type){
+            case 'betRequest':
+                return {accept: 'Accept Bet', decline: 'Decline Bet'}
+            case 'betDelete':
+                return {accept: 'Accept Deletion', decline: 'Decline Deletion'}
+            case 'betUpdate':
+                return {accept: 'Accept Update', decline: 'Decline Update'}
+        }
+    }
+
     return (
         !isLoading
             ? <View style={styles.container}>
@@ -126,7 +137,7 @@ export default function Bet_Review_Screen(props) {
                     <Text style={styles.text}>{infoToDisplayBasedOnUser.displayOtherName}</Text>
                 </View>
                 <View style={styles.row}>
-                    <Text style={styles.text}>{bet.creator_id == userId ? 'Your' : infoToDisplayBasedOnUser.displayOtherName+"'s"} bet amount:</Text>
+                    <Text style={styles.text}>{bet.creator_id == userId ? 'Your' : infoToDisplayBasedOnUser.otherBettorName+"'s"} bet amount:</Text>
                     <Text style={styles.text}>${parseFloat(bet.amount).toFixed(2)}</Text>
                 </View>
                 <View style={styles.row}>
@@ -153,17 +164,17 @@ export default function Bet_Review_Screen(props) {
                     ? null
                     : <View style={styles.btnRow}>
                         <Button
-                            title='Accept'
+                            title={getButtonTitles().accept}
                             type="outline"
                             buttonStyle={[styles.btn, styles.btnAccept]}
-                            titleStyle={{ color: 'white' }}
+                            titleStyle={{ color: 'white', fontWeight: 'bold' }}
                             onPress={() => handleAccept()}
                         />
                         <Button
-                            title='Decline'
+                            title={getButtonTitles().decline}
                             type="outline"
                             buttonStyle={[styles.btn, styles.btnDecline]}
-                            titleStyle={{ color: 'white' }}
+                            titleStyle={{ color: 'white', fontWeight: 'bold' }}
                             onPress={() => notiData.type === 'betUpdate' ? handleDeclineUpdate() :  handleDeclined()}
 
                         />
@@ -207,10 +218,13 @@ const styles = StyleSheet.create({
     btn: {
         fontSize: 50,
         margin: 10,
-        width: 100
+        padding: 15,
+        width: 'auto',
+        fontWeight: 'bold',
+        alignSelf: 'center'
     },
     btnAccept: {
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.venmoBlue,
         borderColor: Colors.green
     },
     btnDecline: {
