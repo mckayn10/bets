@@ -31,6 +31,8 @@ function BetComments(props) {
     const { description, amount, other_bettor, date, won_bet, is_complete, id, is_open, date_complete, is_verified, is_accepted, creator_id, other_id, creator } = props.bet
     const [newCommentText, setNewCommentText] = useState('')
     const [commentsState, setCommentsState] = useState([])
+    const [isRefreshing, setIsRefreshing] = useState(false)
+
     const dispatch = useDispatch()
     const comments = useSelector(state => state.bets.comments)
 
@@ -98,6 +100,17 @@ function BetComments(props) {
         setNewCommentText('')
     }
 
+    const loadComments = () => {
+        setIsRefreshing(true)
+        try {
+            dispatch(fetchComments())
+        }
+        catch (err) {
+            console.error(err)
+        }
+        setIsRefreshing(false)
+    }
+
     const renderComment = comment => {
         let newComment = comment.item
         return (
@@ -113,7 +126,7 @@ function BetComments(props) {
                 <View style={{width: '100%',borderBottomWidth: 1, borderBottomColor: Colors.grayLight, paddingBottom: 5, flexWrap: 'wrap'}}>
                     <Text onPress={() => openPersonProfile(newComment.commentor)} style={{fontSize: 13, fontWeight: 'bold', paddingBottom: 5}}>{newComment.commentor.firstName} {newComment.commentor.lastName}</Text>
                     <Text style={styles.date}>{new Date(newComment.date).toLocaleString()}</Text>
-                    <Text style={{marginTop: 10, fontSize: 13, width: '95%'}}>{newComment.description}</Text>
+                    <Text style={{marginTop: 10, fontSize: 13, width: '90%'}}>{newComment.description}</Text>
                 </View>
             </View>
         );
@@ -133,6 +146,8 @@ function BetComments(props) {
                         data={commentsState}
                         renderItem={renderComment}
                         keyExtractor={(comment, index) => index.toString()}
+                        onRefresh={loadComments}
+                        refreshing={isRefreshing}
                     />
                 </SafeAreaView>
                 :

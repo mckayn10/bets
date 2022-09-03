@@ -166,7 +166,6 @@ export const createBet = (betData, sendBetNotification) => {
         betData.creator_id = userId
         betData.other_id = betData.other_bettor.id
 
-        console.log(betData)
         betsRef.add(betData)
             .then((docRef) => {
                 betData.id = docRef.id

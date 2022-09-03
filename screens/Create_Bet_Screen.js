@@ -304,7 +304,6 @@ const calculatePotentialWinnings = (oddsBetAmount) => {
             let positiveNumber = Math.abs(newAmount)
             let roundedNum = Math.round(positiveNumber)
 
-            console.log('yes', Math.abs(newAmount.toFixed(2))== 0)
             if(Math.abs(newAmount.toFixed(2) ) == 0){
                 setPotentialWinnings('')
             } else {

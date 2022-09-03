@@ -100,7 +100,6 @@ export const sendCommentAddedNotification = async (data, type) => {
                 console.error("Error writing document: ", error);
             });
     }
-    console.log('second', data.other_bettor.id)
     if(data.other_bettor.id != 0 && data.other_bettor.id != data.commentor.id){
         let notiData2 = {
             date: Date.now(),

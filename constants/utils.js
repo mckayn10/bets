@@ -106,3 +106,23 @@ let finalTime = new Date().setTime(date.getTime() + offset);
   return new Date(finalTime).toLocaleString()
 }
 
+export const getUserTotalAmount = (betsArr, userId) => {
+  let totalAmount = 0
+  betsArr.forEach(bet => {
+    if (completedCriteria(bet) && bet.won_bet == userId) {
+      if(bet.potentialWinnings && bet.won_bet == bet.creator_id){
+        totalAmount += bet.potentialWinnings
+      } else {
+        totalAmount += bet.amount
+      }
+    } else if (completedCriteria(bet) && bet.won_bet != userId) {
+      if(bet.potentialWinnings && bet.won_bet == bet.creator_id){
+        totalAmount -= bet.potentialWinnings
+      } else {
+        totalAmount -= bet.amount
+      }
+    }
+  })
+  return totalAmount
+}
+

@@ -3,7 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="6fd07a7d-d6b8-4ea3-bc5c-34eea26c578a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/mybetz/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/mybetz/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/BetCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/BetComments.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/BetComments.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/NavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/NavBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/constants/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Create_Bet_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Stats_Screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Stats_Screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/bets.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/bets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/notifications.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +77,8 @@
       <workItem from="1661451322666" duration="60318000" />
       <workItem from="1661834521126" duration="3932000" />
       <workItem from="1661887489313" duration="66188000" />
-      <workItem from="1662155657883" duration="17000" />
+      <workItem from="1662155657883" duration="807000" />
+      <workItem from="1662159995125" duration="3768000" />
     </task>
     <servers />
   </component>
@@ -93,7 +101,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/components/BetComments.js</url>
-          <line>174</line>
+          <line>189</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -102,7 +110,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/screens/Create_Bet_Screen.js</url>
-          <line>471</line>
+          <line>470</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">

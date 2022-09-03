@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { StyleSheet, ScrollView, Text, View, } from 'react-native'
 import Colors from '../constants/colors';
 import { useSelector } from 'react-redux'
-import { completedCriteria, pendingCriteria } from '../constants/utils';
+import {completedCriteria, getUserTotalAmount, pendingCriteria} from '../constants/utils';
 import HeaderText from '../components/HeaderText';
 import MyLineChart from '../components/LineChart';
 import colors from '../constants/colors';
@@ -24,10 +24,18 @@ function Stats_Screen(props) {
           })
         betsArr.forEach(bet => {
             if (completedCriteria(bet) && bet.won_bet == userId) {
-                totalAmount += bet.amount
+                if(bet.potentialWinnings && bet.won_bet == bet.creator_id){
+                    totalAmount += bet.potentialWinnings
+                } else {
+                    totalAmount += bet.amount
+                }
                 dataArr.push(totalAmount)
             } else if (completedCriteria(bet) && bet.won_bet != userId) {
-                totalAmount -= bet.amount
+                if(bet.potentialWinnings && bet.won_bet == bet.creator_id){
+                    totalAmount -= bet.potentialWinnings
+                } else {
+                    totalAmount -= bet.amount
+                }
                 dataArr.push(totalAmount)
             }
         })
@@ -46,16 +54,7 @@ function Stats_Screen(props) {
     }
 
     const totalAmountCompleted = () => {
-        let amountWon = 0
-        let amountLost = 0
-        bets.forEach(bet => {
-            if (completedCriteria(bet) && bet.won_bet == userId) {
-                amountWon += bet.amount
-            } else if (completedCriteria(bet) && bet.won_bet != userId) {
-                amountLost += bet.amount
-            }
-        })
-        return amountWon - amountLost
+        return getUserTotalAmount(bets, userId)
     }
 
     const pendingBetsCount = () => {

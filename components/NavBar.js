@@ -5,6 +5,7 @@ import HeaderText from './HeaderText';
 import { useDispatch, useSelector } from 'react-redux';
 import TestComponent from "./TestComponent";
 import {Feather, FontAwesome, Ionicons} from "@expo/vector-icons";
+import {completedCriteria, getUserTotalAmount} from "../constants/utils";
 
 export default function NavBar({props}) {
 
@@ -17,24 +18,22 @@ export default function NavBar({props}) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    let totalAmount = 0
-    allBetsArr.forEach(bet => {
-        const {is_accepted, is_complete, is_verified} = bet
-        let completedCriteria = is_complete && !is_verified || is_complete && is_accepted
-        if (completedCriteria && bet.won_bet == userId) {
-            if(bet.potentialWinnings && bet.won_bet == bet.creator_id){
-                totalAmount += bet.potentialWinnings
-            } else {
-                totalAmount += bet.amount
-            }
-        } else if (completedCriteria && bet.won_bet != userId) {
-            if(bet.potentialWinnings && bet.won_bet == bet.creator_id){
-                totalAmount -= bet.potentialWinnings
-            } else {
-                totalAmount -= bet.amount
-            }
-        }
-    })
+    let totalAmount = getUserTotalAmount(allBetsArr, userId)
+    // allBetsArr.forEach(bet => {
+    //     if (completedCriteria(bet) && bet.won_bet == userId) {
+    //         if(bet.potentialWinnings && bet.won_bet == bet.creator_id){
+    //             totalAmount += bet.potentialWinnings
+    //         } else {
+    //             totalAmount += bet.amount
+    //         }
+    //     } else if (completedCriteria(bet) && bet.won_bet != userId) {
+    //         if(bet.potentialWinnings && bet.won_bet == bet.creator_id){
+    //             totalAmount -= bet.potentialWinnings
+    //         } else {
+    //             totalAmount -= bet.amount
+    //         }
+    //     }
+    // })
     let num = parseFloat(Math.abs(totalAmount)).toFixed(2)
     let formattedAmount = numberWithCommas(num)
 
