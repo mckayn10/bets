@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator, Linking } from 'react-native'
+import {StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator, Linking, Image} from 'react-native'
 import {CheckBox} from "react-native-elements";
 import Colors from '../constants/colors'
 import { useDispatch } from 'react-redux'
@@ -69,7 +69,8 @@ function Auth_Screen(props) {
                         </View>
                         : null
                     }
-                    <HeaderText style={styles.pageTitle}>mybetz.</HeaderText >
+                    <Image source={require('../assets/hi-res-logo.png')} style={styles.logo}/>
+                    {/*<HeaderText style={styles.pageTitle}>mybetz.</HeaderText >*/}
                     {isSignIn
                         ? <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                             <TextInput
@@ -250,6 +251,10 @@ const styles = StyleSheet.create({
     checkBoxContainer: {
         backgroundColor: Colors.primaryColor,
         borderWidth: 0
+    },
+    logo: {
+        height: 300,
+        width: 300
     }
 })
 

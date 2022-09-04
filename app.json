@@ -8,11 +8,11 @@
       "ios",
       "android"
     ],
-    "version": "1.1.2",
+    "version": "1.1.5",
     "orientation": "portrait",
-    "icon": "./assets/new-splash-logo.png",
+    "icon": "./assets/hi-res-logo.png",
     "splash": {
-      "image": "./assets/new-splash-logo.png",
+      "image": "./assets/hi-res-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#1c2e4a"
     },
@@ -26,7 +26,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nilssonapps.mybetz",
-      "buildNumber": "1.1.2"
+      "buildNumber": "1.1.5"
     },
     "android": {
       "package": "com.nilssonapps.mybetz",
@@ -41,7 +41,7 @@
     },
     "description": "v1.2 Venmo Integration",
     "notification": {
-      "icon": "./assets/new-splash-logo.png"
+      "icon": "./assets/hi-res-logo.png"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"

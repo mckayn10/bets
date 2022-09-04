@@ -15,19 +15,18 @@ function Friends_Screen(props) {
     const dispatch = useDispatch();
     const userFriends = useSelector(state => state.people.friends)
     const userId = useSelector(state => state.auth.userId)
+    let friendsList = useSelector(state => state.people.friends)
+
+    const [searchText, setSearchText] = useState()
+    const [friends, setFriends] = useState([])
+    const [people, setPeople] = useState([])
+
+    const allPeople = useSelector(state => state.people.people)
+    const blockedBy = useSelector(state => state.people.blockedBy)
 
     useEffect(() => {
         try {
             dispatch(fetchAllPeople())
-        }
-        catch (err){
-            console.error(err)
-        }
-    }, [])
-
-    useEffect(() => {
-        try {
-            setPeople(friendsList)
         }
         catch (err){
             console.error(err)
@@ -46,35 +45,6 @@ function Friends_Screen(props) {
             friendsList = []
         }
     }, [friendsList, props.route.params, allPeople])
-
-    // useLayoutEffect(() => {
-    //     props.navigation.setOptions({
-    //         title: props.route.params ? props.route.params.title : 'My Friends',
-    //         headerRight: () => {
-    //             return (
-    //                 <TouchableOpacity {...props}>
-    //                     <MaterialIcons
-    //                         name="person-add-alt-1"
-    //                         size={28} color="black"
-    //                         style={{ color: 'white', marginBottom: 3, padding: 0 }}
-    //                         onPress={() => props.navigation.navigate('Add Friends')}
-    //                     />
-    //                 </TouchableOpacity>
-    //             )
-    //         },
-    //     })
-    //
-    // }, [props.navigation])
-
-
-    let friendsList = useSelector(state => state.people.friends)
-
-    const [searchText, setSearchText] = useState()
-    const [friends, setFriends] = useState([])
-    const [people, setPeople] = useState([])
-
-    const allPeople = useSelector(state => state.people.people)
-    const blockedBy = useSelector(state => state.people.blockedBy)
 
     const checkIfBlockedByUser = (id) => {
         var found = blockedBy.find(user => user.id === id);
@@ -95,11 +65,14 @@ function Friends_Screen(props) {
 
         let arrayToSearch = props.route.params ? friendsList : allPeople
         const data = arrayToSearch.filter(user => {
-            const userString = (user.firstName + ' ' + user.lastName + ' ' + user.username).toLowerCase()
-            if (userFriends.some(person => person.id == user.id)) {
-                user.isFriend = true
+            let isBlocked = checkIfBlockedByUser(user.id)
+            if(!isBlocked){
+                const userString = (user.firstName + ' ' + user.lastName + ' ' + user.username).toLowerCase()
+                if (userFriends.some(person => person.id == user.id)) {
+                    user.isFriend = true
+                }
+                return userString.includes(query)
             }
-            return userString.includes(query)
         })
 
         data.sort(function (x, y) {
