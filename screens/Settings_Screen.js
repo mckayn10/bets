@@ -88,19 +88,19 @@ export default function Settings_Screen(props) {
 
                 </View>
             </TouchableOpacity> */}
-            { <TouchableOpacity
-                style={styles.cardContainer}
-            // onPress={() => handleLogout()}
-            >
-                <View style={styles.descriptionContainer}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <MaterialIcons name="feedback" size={20} color="black" />
-                        <Text style={[styles.name]}>Submit Feedback</Text>
-                    </View>
-                    <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />
+            {/*{ <TouchableOpacity*/}
+            {/*    style={styles.cardContainer}*/}
+            {/*// onPress={() => handleLogout()}*/}
+            {/*>*/}
+            {/*    <View style={styles.descriptionContainer}>*/}
+            {/*        <View style={{ flexDirection: 'row', alignItems: 'center' }}>*/}
+            {/*            <MaterialIcons name="feedback" size={20} color="black" />*/}
+            {/*            <Text style={[styles.name]}>Submit Feedback</Text>*/}
+            {/*        </View>*/}
+            {/*        <SimpleLineIcons name="arrow-right" size={16} color="black" style={styles.arrow} />*/}
 
-                </View>
-            </TouchableOpacity> }
+            {/*    </View>*/}
+            {/*</TouchableOpacity> }*/}
             <TouchableOpacity
                 style={styles.cardContainer}
                 onPress={() => handleLogout()}

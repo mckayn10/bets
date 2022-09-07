@@ -9,7 +9,7 @@ const TestComponent = () => {
         const options = {
             method: 'GET',
             headers: {
-                'x-api-key': '17694fa2-25af-11ed-89ba-0ae9bc51dafd',
+                'x-api-key': 'd8d2dc3b-1450-4337-9fde-c47c96e9b98e',
             }
         };
 

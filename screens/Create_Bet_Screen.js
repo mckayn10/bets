@@ -96,13 +96,13 @@ const Create_Bet_Screen = props => {
                 ]
             } else if (oddTypeChosen === 'over/under'){
                 lineDropdownItems = [
-                    {label: `Under   ${TotalNumber}   Line: ${parseFloat(UnderLine) > 0 ? '+' : ""}${UnderLine}`, value: {team: null, type: oddTypeChosen, line: UnderLine, sideChosen: 'under', key: 1}},
-                    {label: `Over   ${TotalNumber}   Line: ${parseFloat(OverLine) > 0 ? '+' : ""}${OverLine}`, value: {team: null, type: oddTypeChosen, line: OverLine, sideChosen: 'under', key: 2}},
+                    {label: `Under   ${TotalNumber}  `, value: {team: null, type: oddTypeChosen, line: UnderLine, sideChosen: 'under', key: 1}},
+                    {label: `Over   ${TotalNumber}   `, value: {team: null, type: oddTypeChosen, line: OverLine, sideChosen: 'over', key: 2}},
                 ]
             } else if (oddTypeChosen === 'spread'){
                 lineDropdownItems = [
-                    {label: `${HomeTeam}   ${parseFloat(PointSpreadHome) > 0 ? '+' : ""}${PointSpreadHome}   Line: ${parseFloat(PointSpreadHomeLine) > 0 ? '+' : ""}${PointSpreadHomeLine}`, value: {team: HomeTeam, type: oddTypeChosen, spread: PointSpreadHome, line: PointSpreadHomeLine, key: 1}},
-                    {label: `${AwayTeam}   ${parseFloat(PointSpreadAway) > 0 ? '+' : ""}${PointSpreadAway}   Line: ${parseFloat(PointSpreadAwayLine) > 0 ? '+' : ""}${PointSpreadAwayLine}`, value: {team: AwayTeam, type: oddTypeChosen, spread: PointSpreadAway, line: PointSpreadAwayLine, key: 2}},
+                    {label: `${HomeTeam}   ${parseFloat(PointSpreadHome) > 0 ? '+' : ""}${PointSpreadHome}   `, value: {team: HomeTeam, type: oddTypeChosen, spread: PointSpreadHome, line: PointSpreadHomeLine, key: 1}},
+                    {label: `${AwayTeam}   ${parseFloat(PointSpreadAway) > 0 ? '+' : ""}${PointSpreadAway}   `, value: {team: AwayTeam, type: oddTypeChosen, spread: PointSpreadAway, line: PointSpreadAwayLine, key: 2}},
                 ]
             }
             setOddsLines(lineDropdownItems)
@@ -154,7 +154,7 @@ const Create_Bet_Screen = props => {
         } else if (oddTypeChosen === 'over/under'){
             autoDescription = `${obj.HomeTeam} vs. ${obj.AwayTeam} will hit the ${lineChosen.sideChosen} on ${obj.Odds[0].TotalNumber} total points`
         } else if (oddTypeChosen === 'spread'){
-            autoDescription = `${lineChosen.team} will cover the ${lineChosen.spread > 0 ? '+' : ''}${lineChosen.spread} spread against the ${lineChosen.team == obj.AwayTeam ? obj.HomeTeam : obj.AwayTeam}`
+            autoDescription = `${lineChosen.team} will cover the ${lineChosen.spread > 0 ? '+' : ''}${lineChosen.spread} spread against ${lineChosen.team == obj.AwayTeam ? obj.HomeTeam : obj.AwayTeam}`
         }
         return autoDescription
     }

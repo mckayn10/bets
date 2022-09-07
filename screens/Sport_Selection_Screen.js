@@ -1,10 +1,10 @@
 import React, { useLayoutEffect, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, ActivityIndicator} from 'react-native'
+import {StyleSheet, SafeAreaView, FlatList, Text, View, TouchableOpacity, ActivityIndicator, Image} from 'react-native'
 import Colors from '../constants/colors'
 import HeaderText from "../components/HeaderText";
 import FriendCard from "../components/FriendCard";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 import {BackgroundImage} from "react-native-elements/dist/config";
 
 
@@ -18,7 +18,7 @@ function Sports_Selection_Screen(props) {
         const options = {
             method: 'GET',
             headers: {
-                'x-api-key': '17694fa2-25af-11ed-89ba-0ae9bc51dafd',
+                'x-api-key': 'd8d2dc3b-1450-4337-9fde-c47c96e9b98e',
             }
         };
         let arr = []
@@ -45,10 +45,34 @@ function Sports_Selection_Screen(props) {
     }
 
     const renderSportsList = sport => {
+        let logo = null
+        switch(sport.item.name){
+            case "mlb":
+                logo = <Image source={require('../assets/mlb-logo.png')} style={{height: 50, width: 50, marginLeft: 15}} />
+                break;
+            case "ncaab":
+                logo = <Image source={require('../assets/ncaab-logo.png')} style={{height: 40, width: 40, marginLeft: 15}} />
+                break;
+            case "nba":
+                logo = <Image source={require('../assets/nba-logo.png')} style={{height: 50, width: 20, marginLeft: 15}} />
+                break;
+            case "ncaaf":
+                logo = <Image source={require('../assets/ncaaf-logo.png')} style={{height: 40, width: 40, marginLeft: 15}} />
+                break;
+            case "nfl":
+                logo = <Image source={require('../assets/nfl-logo.png')} style={{height: 40, width: 40, marginLeft: 15, marginBottom: 5}} />
+                break;
+            case "nhl":
+                logo = <Image source={require('../assets/nhl-logo.png')} style={{height: 40, width: 40, marginLeft: 15}} />
+                break;
+        }
         return (
             // <BackgroundImage source={require('../assets/nba.jpeg')} resizeMode={'cover'} style={{marginBottom: 5}}>
                     <TouchableOpacity style={styles.itemContainer} onPress={() => viewSportOdds(sport.item)}>
-                        <HeaderText style={{fontWeight: 'bold', fontSize: 30, color: 'white'}}>{sport.item.name.toUpperCase()}</HeaderText>
+                        <View style={styles.textLogoContainer}>
+                            <HeaderText style={{fontWeight: 'bold', fontSize: 30, color: 'white'}}>{sport.item.name.toUpperCase()}</HeaderText>
+                            {logo}
+                        </View>
                     </TouchableOpacity>
             // </BackgroundImage>
 
@@ -75,7 +99,7 @@ function Sports_Selection_Screen(props) {
                         />
                         :
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', width: '60%', alignSelf: 'center'}} >
-                            <Text style={{fontSize: 20, textAlign: 'center'}}>Sportsbook Lines are not available at this time</Text>
+                            <Text style={{fontSize: 20, textAlign: 'center', color: 'white'}}>Sportsbook Odds are not available at this time</Text>
                         </View>
             }
 
@@ -94,7 +118,13 @@ const styles = StyleSheet.create({
         margin: 3,
 
     },
+    textLogoContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     itemContainer: {
+        flexDirection: 'row',
         height: 150,
         width: "100%",
         backgroundColor: "rgb(32,32,42)",

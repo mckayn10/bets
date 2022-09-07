@@ -30,7 +30,7 @@ function Sport_Odds_Screen(props) {
         const options = {
             method: 'GET',
             headers: {
-                'x-api-key': '17694fa2-25af-11ed-89ba-0ae9bc51dafd',
+                'x-api-key': 'd8d2dc3b-1450-4337-9fde-c47c96e9b98e',
             }
         };
         let arr = []
@@ -207,7 +207,7 @@ function Sport_Odds_Screen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "rgba(0,0,0,0.8)",
+        backgroundColor: "rgba(38,38,38,0.8)",
 
     },
     listContainer: {
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
         // padding: 5,
         width: "95%",
         alignSelf: 'center',
-        backgroundColor: "rgba(234,234,234,0.96)",
+        backgroundColor: "rgba(255,255,255,0.95)",
         // alignItems: 'center',
         marginBottom: 7,
         minHeight: 150,
